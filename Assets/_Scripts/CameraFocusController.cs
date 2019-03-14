@@ -4,6 +4,8 @@ using Vuforia;
 
 public class CameraFocusController : MonoBehaviour
 {
+	public Transform focusCursor;
+
 	void Start()
 	{
 		var vuforia = VuforiaARController.Instance;
@@ -24,6 +26,8 @@ public class CameraFocusController : MonoBehaviour
 			// Set again autofocus mode when app is resumed
 			CameraDevice.Instance.SetFocusMode(
 			   CameraDevice.FocusMode.FOCUS_MODE_CONTINUOUSAUTO);
+
+			focusCursor.position = Input.GetTouch(0).position;
 		}
 	}
 }
