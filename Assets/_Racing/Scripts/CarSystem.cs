@@ -6,6 +6,13 @@ using UnityEngine.Networking;
 
 public class CarSystem : MonoBehaviour
 {
+	[Header("Photon")]
+	public PhotonView photonView;
+	Vector3 selfPos;                            //Вектор смягчения движения в сети
+	public bool devTesting = false;             //Переменная тестирования (если true - отключаем мульиплеер)
+
+	[Header("CheckPoints")]
+	Vector3 lastCheckpointPos;                  //точка последнего чекпоинта машины
 
 	float turnTurtleDistance;                   // Расстояние до земли если машина перевернулась
 	float toGroundDistance;                     // Расстояние до земли если машина стоит на колесах
@@ -13,20 +20,20 @@ public class CarSystem : MonoBehaviour
 	float normalDistanceTurnTheBorder = 0.3f;   // Нормальное расстояние, чтобы машина могла развернуться, если она уперлась в бортик
 	Transform frontOfTransport;
 
-	//private string m_MovementAxisName;          // The name of the input axis for moving forward and back.
-	//private string m_TurnAxisName;              // The name of the input axis for turning.
+
 	private Rigidbody m_Rigidbody;              // Reference used to move the tank.
 	private float movementInputValue;         // The current value of the movement input.
 	private float turnInputValue;             // The current value of the turn input.
 	private int roadLayerMask;                  // LayerMask для дороги
 	private int borderLayerMask;                // LayerMask для ограничивающего бортика
 
+
 	CarBlueprint carStats;
 
+	//Кеш
 	Transform _transform;
 	Vector3 _globalPosition;
 
-	public Transform focusCursor;
 
 	private void Awake()
 	{
@@ -40,7 +47,10 @@ public class CarSystem : MonoBehaviour
 		turnTurtleDistance = carStats.turnTurtleDistance;
 		toGroundDistance = carStats.toGroundDistance;
 		toBorderDistance = carStats.toBorderDistance;
-		print(normalDistanceTurnTheBorder);
+
+		lastCheckpointPos = GameObject.Find("Checkpoint 1").transform.position;
+
+		photonView = GetComponent<PhotonView>();
 
 		//кеширование
 		_transform = GetComponent<Transform>();
@@ -62,15 +72,6 @@ public class CarSystem : MonoBehaviour
 		// When the car is turned off, set it to kinematic so it stops moving.
 		m_Rigidbody.isKinematic = true;
 	}
-
-
-	private void Start()
-	{
-		//// The axes names are based on player number.
-		//m_MovementAxisName = "Vertical";
-		//m_TurnAxisName = "Horizontal";
-	}
-
 
 	private void Update()
 	{
@@ -95,9 +96,24 @@ public class CarSystem : MonoBehaviour
 
 	private void FixedUpdate()
 	{
-		//if (!isLocalPlayer)
-		//	return;
+		if (!devTesting)
+		{
+			//проверка на то, управляем ли мы нашим игроком Photon
+			if (photonView.isMine)
+				ReadyController();
+			else
+				SmoothNetMovement();
 
+			//else
+			//	SmoothNetMovement();
+		}
+
+		else
+			ReadyController();
+	}
+
+	void ReadyController()
+	{
 		if (LeanOnBorder())
 		{
 			Turn();
@@ -125,9 +141,10 @@ public class CarSystem : MonoBehaviour
 		if (Physics.Raycast(_transform.position, _transform.up, turnTurtleDistance, roadLayerMask) ||
 			Physics.Raycast(_transform.position, _transform.right, turnTurtleDistance, roadLayerMask) ||
 			Physics.Raycast(_transform.position, -_transform.right, turnTurtleDistance, roadLayerMask))
-
+		{
+			BackToTrack();
 			return true;
-
+		}
 		return false;
 	}
 
@@ -170,7 +187,6 @@ public class CarSystem : MonoBehaviour
 		m_Rigidbody.MovePosition(m_Rigidbody.position + movement);
 	}
 
-
 	private void Turn()
 	{
 		// Determine the number of degrees to be turned based on the input, speed and time between frames.
@@ -183,5 +199,52 @@ public class CarSystem : MonoBehaviour
 		m_Rigidbody.MoveRotation(m_Rigidbody.rotation * turnRotation);
 	}
 
+	//возврат на трек после вылета
+	public void BackToTrack()
+	{
+		transform.position = lastCheckpointPos;
+		transform.rotation = Quaternion.identity;
+	}
+
+	void SmoothNetMovement()
+	{
+		transform.position = Vector3.Lerp(transform.position, selfPos, Time.deltaTime * 8);
+	}
+
+	void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+	{
+		if (stream.isWriting)
+			stream.SendNext(transform.position);
+		else
+			selfPos = (Vector3)stream.ReceiveNext();
+	}
+
+	public void OnTriggerEnter(Collider other)
+	{
+		//проверка на вход в чекпоинт
+		if (other.CompareTag("Checkpoint"))
+		{
+			lastCheckpointPos = other.transform.position;
+			Debug.Log(other.name);
+		}
+
+		//проверка на вход в финиш
+		else if (other.CompareTag("Finish"))
+		{
+			carStats.score++;
+			carStats.scoreText.text = carStats.score.ToString();
+
+			//проверка на то, победил ли игрок
+			GameManager.Instance.GetGameWinner();
+		}
+	}
+
+	public void OnTriggerExit(Collider other)
+	{
+		if (other.CompareTag("Border"))
+		{
+			BackToTrack();
+		}
+	}
 
 }

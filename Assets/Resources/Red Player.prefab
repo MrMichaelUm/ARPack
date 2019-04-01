@@ -248,6 +248,7 @@ GameObject:
   - component: {fileID: 6455873055015249603}
   - component: {fileID: 6455873055015249605}
   - component: {fileID: 6455873055015249607}
+  - component: {fileID: 8485060759513795564}
   m_Layer: 0
   m_Name: Red Player
   m_TagString: Untagged
@@ -264,7 +265,7 @@ Transform:
   m_GameObject: {fileID: 6455873055015249606}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0.3718, y: 0.03, z: -0.425}
-  m_LocalScale: {x: 0.05, y: 0.05, z: 0.05}
+  m_LocalScale: {x: 0.25, y: 0.25, z: 0.25}
   m_Children:
   - {fileID: 7856346592090353521}
   - {fileID: 6455873055015353068}
@@ -311,7 +312,7 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: -0.35, y: 0.27, z: 0.98}
+  m_Size: {x: 0.35, y: 0.27, z: 0.98}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &6455873055015249605
 MonoBehaviour:
@@ -320,11 +321,13 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6455873055015249606}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1b34adf228816aa46bea56f780108cdd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  photonView: {fileID: 8485060759513795564}
+  devTesting: 0
 --- !u!114 &6455873055015249607
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -337,11 +340,40 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b4104a094be5b7c4b97a6dc71861ff5f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Speed: 40
-  m_TurnSpeed: 180
+  speed: 15
+  turnSpeed: 180
   turnTurtleDistance: 0.4
   toGroundDistance: 0.2
   toBorderDistance: 0.15
+  score: 0
+  scoreText: {fileID: 0}
+--- !u!114 &8485060759513795564
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6455873055015249606}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ownerId: 0
+  group: 0
+  OwnerShipWasTransfered: 0
+  prefixBackup: -1
+  synchronization: 3
+  onSerializeTransformOption: 3
+  onSerializeRigidBodyOption: 2
+  ownershipTransfer: 0
+  ObservedComponents:
+  - {fileID: 6455873055015249605}
+  ObservedComponentsFoldoutOpen: 1
+  viewIdField: 0
+  instantiationId: -1
+  currentMasterID: -1
+  isRuntimeInstantiated: 0
 --- !u!1 &6455873055015249608
 GameObject:
   m_ObjectHideFlags: 0
@@ -1189,7 +1221,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &7856346592498367711
 Transform:
   m_ObjectHideFlags: 0
@@ -1226,7 +1258,7 @@ Camera:
     y: 0
     width: 1
     height: 1
-  near clip plane: 0.3
+  near clip plane: 0.01
   far clip plane: 1000
   field of view: 60
   orthographic: 0
