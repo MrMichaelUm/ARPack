@@ -96,6 +96,10 @@ public class CarSystem : MonoBehaviour
 
 	private void FixedUpdate()
 	{
+		//если игра не началась - выходим !!!!! проверить быстродействие, возможно, стоит при старте заезда включать скрипт CarSystem из скрипта GameManager 
+		//if (!GameManager.gameStarted)
+		//	return;
+
 		if (!devTesting)
 		{
 			//проверка на то, управляем ли мы нашим игроком Photon

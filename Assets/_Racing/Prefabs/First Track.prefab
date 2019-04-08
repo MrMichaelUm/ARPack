@@ -1300,11 +1300,11 @@ GameObject:
   m_Component:
   - component: {fileID: 65784994823875114}
   - component: {fileID: 107868865588127612}
-  - component: {fileID: 103596368076375938}
+  - component: {fileID: 996054559042980054}
+  - component: {fileID: 264149951926455414}
   - component: {fileID: 103780176096788464}
   - component: {fileID: 51214960361510558}
   - component: {fileID: 41010959873663068}
-  - component: {fileID: 264149951926455414}
   m_Layer: 0
   m_Name: First Track
   m_TagString: Untagged
@@ -1347,7 +1347,7 @@ MonoBehaviour:
   mImageTargetType: 0
   mWidth: 5
   mHeight: 2.405
---- !u!114 &103596368076375938
+--- !u!114 &996054559042980054
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1356,9 +1356,23 @@ MonoBehaviour:
   m_GameObject: {fileID: 64067937491660694}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5a917f0af64a6423093132dab321c15f, type: 3}
+  m_Script: {fileID: 11500000, guid: 55da32faacddcc24794238c5a42a7534, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &264149951926455414
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 64067937491660694}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 879ef6444796d8940aa9a155ed6081b9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spawnPosition1: {fileID: 732692608741231079}
+  spawnPosition2: {fileID: 3312401984057808468}
 --- !u!114 &103780176096788464
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1416,20 +1430,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 64067937491660694}
   m_Mesh: {fileID: 0}
---- !u!114 &264149951926455414
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 64067937491660694}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 879ef6444796d8940aa9a155ed6081b9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  spawnPosition1: {fileID: 732692608741231079}
-  spawnPosition2: {fileID: 3312401984057808468}
 --- !u!1001 &729218242055125797
 PrefabInstance:
   m_ObjectHideFlags: 0

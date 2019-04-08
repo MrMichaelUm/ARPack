@@ -8,7 +8,9 @@ public class MenuLogic : MonoBehaviour
 {
 	public PhotonButton photonButton;
 
-	public GameObject[] environment;						//массив targetImages, который будет заменяться на массив окружения выбранной игры 
+	public static int countOfTrackingFound = 0;				//переменная, обозначающая количество игроков, распознавших купюру 
+
+	public GameObject[] environment;                        //массив targetImages, который будет заменяться на массив окружения выбранной игры 
 	public EnvironmentStats selectedEnvironment;            //выбранное окружение, которое будет загружаться
 
 	//!!!Создать в магазине массив объектов с PlayerPrefs, который будет запоминать выбранные в магазине машины/самолеты/ракеты и в зависимости от выбранной игры 
@@ -25,10 +27,10 @@ public class MenuLogic : MonoBehaviour
 		SceneManager.sceneLoaded += OnSceneFinishedLoading;
 	}
 
-	public void CreateNewRoom()
-	{
-		PhotonNetwork.CreateRoom(photonButton.createRoomInput.text, new RoomOptions() { MaxPlayers = 2 }, null);
-	}
+	//public void CreateNewRoom()
+	//{
+	//	PhotonNetwork.CreateRoom(photonButton.createRoomInput.text, new RoomOptions() { MaxPlayers = 2 }, null);
+	//}
 
 	public void JoinOrCreateRoom()
 	{
@@ -59,16 +61,18 @@ public class MenuLogic : MonoBehaviour
 
 	void Spawn()
 	{
-		//создаем только 1 экземпляр окружения
-		//if (PhotonNetwork.countOfPlayers < 2)
-		//{
-			selectedEnvironment = Instantiate(environment[ChooseGameController.environmentNum], Vector3.zero, Quaternion.identity).GetComponent<EnvironmentStats>();
-		//}
+		selectedEnvironment = Instantiate(environment[ChooseGameController.environmentNum], Vector3.zero, Quaternion.identity).GetComponent<EnvironmentStats>();
 
 		if (PhotonNetwork.countOfPlayers == 1)
 		{
+			//создаем машину в выбранном окружении
 			GameObject car = PhotonNetwork.Instantiate(playerObject.name, selectedEnvironment.spawnPosition1.position, playerObject.transform.rotation, 0) as GameObject;
+			//удочеряем ее TargetImage
 			car.transform.SetParent(selectedEnvironment.transform.Find("Add Content As Children Here"));
+			//добавляем машину в массив всех машин GameManager
+			GameManager.Instance.cars[0] = car.GetComponent<CarBlueprint>();
+			//Устанавливаем для машины управление
+			UIManager.Instance.SetControl(car.GetComponent<CarSystem>());
 		}
 
 		else if (PhotonNetwork.countOfPlayers == 2)
@@ -76,6 +80,8 @@ public class MenuLogic : MonoBehaviour
 			Debug.Log("2 PLAYERS!!!");
 			GameObject car = PhotonNetwork.Instantiate(playerObject.name, selectedEnvironment.spawnPosition2.position, playerObject.transform.rotation, 0) as GameObject;
 			car.transform.SetParent(selectedEnvironment.transform.Find("Add Content As Children Here"));
+			GameManager.Instance.cars[1] = car.GetComponent<CarBlueprint>();
+			UIManager.Instance.SetControl(car.GetComponent<CarSystem>());
 		}
 
 		//EventTrigger.Entry entry = new EventTrigger.Entry();

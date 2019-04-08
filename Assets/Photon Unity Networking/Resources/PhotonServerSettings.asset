@@ -37,4 +37,7 @@ MonoBehaviour:
   - PunRespawn
   - RequestForPickupItems
   - RequestForPickupTimes
+  - CountTrackerFind
+  - GameStarter
+  - MeReady
   DisableAutoOpenWizard: 1

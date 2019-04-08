@@ -141,10 +141,10 @@ Transform:
   m_Children:
   - {fileID: 1227156322}
   - {fileID: 1755395468}
-  - {fileID: 1862431106}
   - {fileID: 1471314770}
-  - {fileID: 646867080}
   - {fileID: 568566179}
+  - {fileID: 646867080}
+  - {fileID: 1862431106}
   - {fileID: 363344152}
   m_Father: {fileID: 1931338556}
   m_RootOrder: 1
@@ -407,7 +407,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &363344152
 RectTransform:
   m_ObjectHideFlags: 0
@@ -550,7 +550,7 @@ RectTransform:
   m_Children:
   - {fileID: 242700892}
   m_Father: {fileID: 53076510}
-  m_RootOrder: 5
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -664,7 +664,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &646867080
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1492,7 +1492,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 53076510}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -2084,7 +2084,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1862431106
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2099,7 +2099,7 @@ RectTransform:
   - {fileID: 1189019689}
   - {fileID: 1756391078}
   m_Father: {fileID: 53076510}
-  m_RootOrder: 2
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -2560,7 +2560,7 @@ GameObject:
   - component: {fileID: 2074351650}
   m_Layer: 0
   m_Name: PhotonMenuController
-  m_TagString: Untagged
+  m_TagString: MenuLogic
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2580,6 +2580,7 @@ MonoBehaviour:
   photonButton: {fileID: 792804333}
   environment:
   - {fileID: 0}
+  selectedEnvironment: {fileID: 0}
   playerObject: {fileID: 6455873055015249606, guid: c2cbd8fbc50f7ed459e91c3bcae2a6c4,
     type: 3}
 --- !u!4 &2074351651

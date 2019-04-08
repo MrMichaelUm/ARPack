@@ -9,10 +9,10 @@ public class PhotonButton : MonoBehaviour
 
 	public InputField createRoomInput, joinRoomInput;
 
-	public void OnClickCreateRoom()
-	{
-		menuLogic.CreateNewRoom();
-	}
+	//public void OnClickCreateRoom()
+	//{
+	//	menuLogic.CreateNewRoom();
+	//}
 
 	public void OnClickJoinRoom()
 	{

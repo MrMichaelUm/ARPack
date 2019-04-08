@@ -23,7 +23,6 @@ public class ChooseGameController : MonoBehaviour
 	//Добавить этот скрипт на OnClick кнопки выбора номинала купюры (num для первого номинала 0, для кождого последующего +1)
 	public void SetEnvironment(int num)
 	{
-		//menuLogic.selectedEnvironment = menuLogic.environment[num]
 		environmentNum = num;
 	}
 }
