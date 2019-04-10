@@ -7,6 +7,8 @@ TagManager:
   - Checkpoint
   - Border
   - MenuLogic
+  - GravityOn
+  - GravityOff
   layers:
   - Default
   - TransparentFX

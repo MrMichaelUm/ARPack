@@ -99,7 +99,7 @@ public class TransportTrackableEventHandler : MonoBehaviour, ITrackableEventHand
 		foreach (var component in canvasComponents)
 			component.enabled = true;
 
-		IsReady.Instance.CheckPlayers();
+		//IsReady.Instance.CheckPlayers();
 
 	}
 

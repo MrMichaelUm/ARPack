@@ -5,9 +5,7 @@ using TMPro;
 
 public class CarBlueprint : MonoBehaviour
 {
-	public float speed;
-	public float turnSpeed = 180f;
-
+	[Header("Distances")]
 	[Tooltip("Расстояние до земли если машина перевернулась")]
 	public float turnTurtleDistance;
 	[Tooltip("Расстояние до земли если машина стоит на колесах")]
@@ -15,13 +13,23 @@ public class CarBlueprint : MonoBehaviour
 	[Tooltip("Расстояния до ограничивающего бортика, если машина уперлась")]
 	public float toBorderDistance;
 
+	[Space]
+
+	[Header("Speed")]
+	public float movingSpeed;
+	public float turnSpeed = 180f;
+	[Tooltip("Скорость, с которой машина останавливается перед бортом")]
+	public float stopSpeed;
+	[Tooltip("Скорость, с которой машина набирает разгон")]
+	public float accelerationSpeed;
+
 	[HideInInspector]
 	public int score = 0;               //количество пройденных кругов машиной
 	public TextMeshProUGUI scoreText;
 
 	private void Start()
 	{
-		speed = transform.localScale.x * 300;
+		//speed = transform.localScale.x * 300;
 	}
 
 	private void OnDrawGizmos()

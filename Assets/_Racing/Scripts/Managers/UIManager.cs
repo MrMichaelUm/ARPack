@@ -44,7 +44,7 @@ public class UIManager : MonoBehaviour
 		entryRightDown.callback.AddListener((data) => { OnPointerDownRightDelegate((PointerEventData)data, car); });
 		rightButton.triggers.Add(entryRightDown);
 
-		//Устанавливаем управление для левой кнопки (нажатие_
+		//Устанавливаем управление для левой кнопки (нажатие)
 
 		EventTrigger.Entry entryLeftDown = new EventTrigger.Entry();
 		entryLeftDown.eventID = EventTriggerType.PointerDown;
