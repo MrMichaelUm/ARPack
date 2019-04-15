@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.EventSystems;
+using Racing;
 
 public class MenuLogic : MonoBehaviour
 {
@@ -23,10 +24,10 @@ public class MenuLogic : MonoBehaviour
 	void OnSceneFinishedLoading(Scene scene, LoadSceneMode mode)
 	{
 		if (scene.name == "Racing")
-			Spawn();
+			SpawnRacing();
 	}
 
-	void Spawn()
+	void SpawnRacing()
 	{
 		selectedEnvironment = Instantiate(environment[ChooseGameController.environmentNum], Vector3.zero, Quaternion.identity).GetComponent<EnvironmentStats>();
 
@@ -35,7 +36,7 @@ public class MenuLogic : MonoBehaviour
 			//удочеряем ее TargetImage
 			car.transform.SetParent(selectedEnvironment.transform.Find("Add Content As Children Here"));
 			//добавляем машину в массив всех машин GameManager
-			GameManager.Instance.cars[0] = car.GetComponent<CarBlueprint>();
+			Racing.GameManager.Instance.cars[0] = car.GetComponent<CarBlueprint>();
 			//Устанавливаем для машины управление
 			UIManager.Instance.SetControl(car.GetComponent<CarSystem>());
 

@@ -3,46 +3,50 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
-public class CarBlueprint : MonoBehaviour
+namespace Racing
 {
-	[Header("Distances")]
-	[Tooltip("Расстояние до земли если машина перевернулась")]
-	public float turnTurtleDistance;
-	[Tooltip("Расстояние до земли если машина стоит на колесах")]
-	public float toGroundDistance;
-	[Tooltip("Расстояния до ограничивающего бортика, если машина уперлась")]
-	public float toBorderDistance;
-
-	[Space]
-
-	[Header("Speed")]
-	public float movingSpeed;
-	public float turnSpeed = 180f;
-	[Tooltip("Скорость, с которой машина останавливается перед бортом")]
-	public float stopSpeed;
-	[Tooltip("Скорость, с которой машина набирает разгон")]
-	public float accelerationSpeed;
-
-	[HideInInspector]
-	public int score = 0;               //количество пройденных кругов машиной
-	public TextMeshProUGUI scoreText;
-
-	private void Start()
+	public class CarBlueprint : MonoBehaviour
 	{
-		//speed = transform.localScale.x * 300;
-	}
+		[Header("Distances")]
+		[Tooltip("Расстояние до земли если машина перевернулась")]
+		public float turnTurtleDistance;
+		[Tooltip("Расстояние до земли если машина стоит на колесах")]
+		public float toGroundDistance;
+		[Tooltip("Расстояния до ограничивающего бортика, если машина уперлась")]
+		public float toBorderDistance;
 
-	private void OnDrawGizmos()
-	{
-		Gizmos.color = Color.red;
-		Gizmos.DrawRay(transform.position, -transform.up * toGroundDistance);
+		[Space]
 
-		Gizmos.color = Color.yellow;
-		Gizmos.DrawRay(transform.position, transform.right * turnTurtleDistance);
-		Gizmos.DrawRay(transform.position, -transform.right * turnTurtleDistance);
-		Gizmos.DrawRay(transform.position, transform.up * turnTurtleDistance);
+		[Header("Speed")]
+		public float movingSpeed;
+		public float turnSpeed = 180f;
+		[Tooltip("Скорость, с которой машина останавливается перед бортом")]
+		public float stopSpeed;
+		[Tooltip("Скорость, с которой машина набирает разгон")]
+		public float accelerationSpeed;
 
-		Gizmos.color = Color.green;
-		Gizmos.DrawRay(transform.position, transform.forward * toBorderDistance);
+
+		[HideInInspector]
+		public int score = 0;               //количество пройденных кругов машиной
+		public TextMeshProUGUI scoreText;
+
+		private void Start()
+		{
+			//speed = transform.localScale.x * 300;
+		}
+
+		private void OnDrawGizmos()
+		{
+			Gizmos.color = Color.red;
+			Gizmos.DrawRay(transform.position, -transform.up * toGroundDistance);
+
+			Gizmos.color = Color.yellow;
+			Gizmos.DrawRay(transform.position, transform.right * turnTurtleDistance);
+			Gizmos.DrawRay(transform.position, -transform.right * turnTurtleDistance);
+			Gizmos.DrawRay(transform.position, transform.up * turnTurtleDistance);
+
+			Gizmos.color = Color.green;
+			Gizmos.DrawRay(transform.position, transform.forward * toBorderDistance);
+		}
 	}
 }

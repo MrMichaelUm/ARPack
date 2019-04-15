@@ -9,6 +9,7 @@ TagManager:
   - MenuLogic
   - GravityOn
   - GravityOff
+  - SpeedUp
   layers:
   - Default
   - TransparentFX
