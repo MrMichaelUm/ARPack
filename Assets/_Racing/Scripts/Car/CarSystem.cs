@@ -196,7 +196,13 @@ namespace Racing
 		}
 
 		//increase player speed
-		public IEnumerator SpeedUp(float speedUp, float effectTime, float backToNormalTime)
+		public void SpeedUp(float speedUp, float effectTime, float backToNormalTime)
+		{
+			StartCoroutine(SpeedUpCoroutine(speedUp, effectTime, backToNormalTime));
+		}
+
+		//increase player speed coroutine
+		public IEnumerator SpeedUpCoroutine(float speedUp, float effectTime, float backToNormalTime)
 		{
 			movingSpeed += speedUp;
 			yield return new WaitForSeconds(effectTime);

@@ -81,17 +81,22 @@ namespace Racing
 
 		private void Update()
 		{
-			if (!GameManager.gameStarted && GameManager.countdownGameStarted)
+			//if game is not started but countdown stated
+			if (!GameManager.gameIsGoing && GameManager.countdownGameStarted)
 			{
+				//back to standart size of timer
+				timerText.GetComponent<Animator>().SetBool("GameStarted", false);
 				timer -= Time.deltaTime;
 				timerText.text = Mathf.Ceil(timer).ToString();
 			}
-			else if (GameManager.gameStarted)
+			//if game is started
+			else if (GameManager.gameIsGoing)
 			{
 				timerText.text = "GO!";
-				//стартуем анимацию, когда игра началась
-				//timerText.GetComponent<Animator>().Play("StartGameTimer");
-				timerText.GetComponent<Animator>().SetTrigger("GameStarted");
+				//start anim
+				timerText.GetComponent<Animator>().SetBool("GameStarted", true);
+				//set standart value for timer
+				timer = startGameTime;
 			}
 		}
 	}
