@@ -1,34 +1,37 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-public abstract class CharacterPrint : MonoBehaviour
+namespace Planes
 {
-    protected float timer;
-    public float timeBetweenShoots = 0.3f;
-    protected float effectsDisplayTime = 0.2f;
-    public float health;
-    protected Slider _sliderHealth;
-    protected SingleShoot shootingR;
-    protected SingleShoot shootingL;
-
-    public static float CRUSH = -1;
-
-    public abstract void Shooting();
-
-    virtual public void TakeDamage(float damage)
+    public abstract class CharacterPrint : MonoBehaviour
     {
-        if (damage == CRUSH)
+        protected float timer;
+        public float timeBetweenShoots = 0.3f;
+        protected float effectsDisplayTime = 0.2f;
+        public float health;
+        protected Slider _sliderHealth;
+        protected SingleShoot shootingR;
+        protected SingleShoot shootingL;
+
+        public static float CRUSH = -1;
+
+        public abstract void Shooting();
+
+        virtual public void TakeDamage(float damage)
         {
-            health = 0;
+            if (damage == CRUSH)
+            {
+                health = 0;
+            }
+            else
+            {
+                health -= damage;
+            }
+            if (health <= 0)
+            {
+                Destroy(gameObject);
+            }
+            _sliderHealth.value = health;
         }
-        else
-        {
-            health -= damage;
-        }
-        if (health <= 0)
-        {
-            Destroy(gameObject);
-        }
-        _sliderHealth.value = health;
     }
 }

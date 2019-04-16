@@ -1,28 +1,31 @@
 ﻿using UnityEngine;
 
 //Реагирует на выход игрока из некоторой сферы-зоны вокруг купюры - пространства, где игрок не улетает слишком далеко от купюры
-public class SphereZone : MonoBehaviour
+namespace Planes
 {
-    //если игрок покидает сферу-зону
-    private void OnTriggerExit(Collider other)
+    public class SphereZone : MonoBehaviour
     {
-        RedSphere sphere = other.GetComponentInChildren<RedSphere>(); //если триггер среагировал на игрока, то у него будет данный компонент
-        if (sphere != null) //соответственно ссылка не будет null
+        //если игрок покидает сферу-зону
+        private void OnTriggerExit(Collider other)
         {
-            sphere.inSphere = false; //устанавливаем, что игрок покинул сферу-зону
-            sphere.disabling = false; //прекращаем убирать красный шар вокруг игрока, если это в данный момент происходит
-            sphere.EnableSphere(); //запускаем показ красного шара вокруг игрока
+            RedSphere sphere = other.GetComponentInChildren<RedSphere>(); //если триггер среагировал на игрока, то у него будет данный компонент
+            if (sphere != null) //соответственно ссылка не будет null
+            {
+                sphere.inSphere = false; //устанавливаем, что игрок покинул сферу-зону
+                sphere.disabling = false; //прекращаем убирать красный шар вокруг игрока, если это в данный момент происходит
+                sphere.EnableSphere(); //запускаем показ красного шара вокруг игрока
+            }
         }
-    }
 
-    //если игрок возвращается в сферу
-    private void OnTriggerEnter(Collider other)
-    {
-        RedSphere sphere = other.GetComponentInChildren<RedSphere>(); //если триггер среагировал на игрока, то у него будет данный компонент
-        if (sphere != null) //соответственно ссылка не будет null
+        //если игрок возвращается в сферу
+        private void OnTriggerEnter(Collider other)
         {
-            sphere.inSphere = true; //устанавливаем, что игрок находится в зоне-сфере
-            sphere.DisableSphere(); //убираем предупреждающую сферу вокруг игрока (ограничения на то, что игрок должен не опускаться ниже купюры, включены в эту функцию)
+            RedSphere sphere = other.GetComponentInChildren<RedSphere>(); //если триггер среагировал на игрока, то у него будет данный компонент
+            if (sphere != null) //соответственно ссылка не будет null
+            {
+                sphere.inSphere = true; //устанавливаем, что игрок находится в зоне-сфере
+                sphere.DisableSphere(); //убираем предупреждающую сферу вокруг игрока (ограничения на то, что игрок должен не опускаться ниже купюры, включены в эту функцию)
+            }
         }
     }
 }

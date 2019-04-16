@@ -1,43 +1,45 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-public class SliderRecharge : MonoBehaviour
+namespace Planes
 {
-    Slider _slider;
-    public float rechargeDelay = 0.2f;
-    float maxCharge;
-    //float timer;
-
-    void Awake()
+    public class SliderRecharge : MonoBehaviour
     {
-        _slider = GetComponent<Slider>();
-        maxCharge = _slider.value;
-    }
+        Slider _slider;
+        public float rechargeDelay = 0.2f;
+        float maxCharge;
+        //float timer;
 
-    void FixedUpdate()
-    {
-        //timer += Time.deltaTime;
-        if (_slider.value >= maxCharge)
+        void Awake()
         {
-            return;
+            _slider = GetComponent<Slider>();
+            maxCharge = _slider.value;
         }
-        /*if (_slider.value <= 10.5f && _slider.value >= 10.0f)
+
+        void FixedUpdate()
         {
-            Debug.Log(timer);
+            //timer += Time.deltaTime;
+            if (_slider.value >= maxCharge)
+            {
+                return;
+            }
+            /*if (_slider.value <= 10.5f && _slider.value >= 10.0f)
+            {
+                Debug.Log(timer);
+            }
+            else if (_slider.value <= 20.5f && _slider.value >= 20.0f)
+            {
+                Debug.Log(timer);
+            }
+            else if (_slider.value <= 30.5f && _slider.value >= 30.0f)
+            {
+                Debug.Log(timer);
+            }*/
+
+            _slider.value += Mathf.Lerp(0.01f, _slider.value, rechargeDelay * Time.deltaTime);
         }
-        else if (_slider.value <= 20.5f && _slider.value >= 20.0f)
-        {
-            Debug.Log(timer);
-        }
-        else if (_slider.value <= 30.5f && _slider.value >= 30.0f)
-        {
-            Debug.Log(timer);
-        }*/
-        
-        _slider.value += Mathf.Lerp(0.01f, _slider.value, rechargeDelay * Time.deltaTime);
     }
 }
-
 
 
 

@@ -1,16 +1,19 @@
 ﻿using UnityEngine;
 
 //перемещает камеру следом за игроком, нужен только для тестировки без купюры
-public class CameraFollowDEL : MonoBehaviour
+namespace Planes
 {
-    public Transform player;
-    public Vector3 offset;
-
-    void Update()
+    public class CameraFollowDEL : MonoBehaviour
     {
-        if (player != null)
+        public Transform player;
+        public Vector3 offset;
+
+        void Update()
         {
-            transform.position = player.position + offset;
+            if (player != null)
+            {
+                transform.position = player.position + offset;
+            }
         }
     }
 }

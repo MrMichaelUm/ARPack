@@ -1,40 +1,42 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-public class EnemyRedPrint : CharacterPrint
+namespace Planes
 {
-    void Awake()
+    public class EnemyRedPrint : CharacterPrint
     {
-        shootingR = GameObject.FindWithTag("EnemyShootPointR").GetComponentInChildren<SingleShoot>();
-        shootingL = GameObject.FindWithTag("EnemyShootPointL").GetComponentInChildren<SingleShoot>();
-        _sliderHealth = GameObject.FindWithTag("EnemyHealth").GetComponent<Slider>();
-        health = _sliderHealth.value;
-    }
-
-    void Update()
-    {
-        timer += Time.deltaTime;
-
-        if (timer >= timeBetweenShoots * effectsDisplayTime)
+        void Awake()
         {
-            shootingR.DisableEffects();
-            shootingL.DisableEffects();
+            shootingR = GameObject.FindWithTag("EnemyShootPointR").GetComponentInChildren<SingleShoot>();
+            shootingL = GameObject.FindWithTag("EnemyShootPointL").GetComponentInChildren<SingleShoot>();
+            _sliderHealth = GameObject.FindWithTag("EnemyHealth").GetComponent<Slider>();
+            health = _sliderHealth.value;
         }
-        if (timer >= timeBetweenShoots)
-        {
-            Shooting();
-        }
-    }
 
-    override public void Shooting()
-    {
-        //Debug.Log("RRRRShoot!");
-        shootingL.Shoot();
-        shootingR.Shoot();
-        timer = 0f;
+        void Update()
+        {
+            timer += Time.deltaTime;
+
+            if (timer >= timeBetweenShoots * effectsDisplayTime)
+            {
+                shootingR.DisableEffects();
+                shootingL.DisableEffects();
+            }
+            if (timer >= timeBetweenShoots)
+            {
+                Shooting();
+            }
+        }
+
+        override public void Shooting()
+        {
+            //Debug.Log("RRRRShoot!");
+            shootingL.Shoot();
+            shootingR.Shoot();
+            timer = 0f;
+        }
     }
 }
-
 /*ВАРИАНТ ДО ИНТЕРФЕЙСА
  * 
  * 
