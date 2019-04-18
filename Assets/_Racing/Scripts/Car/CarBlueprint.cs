@@ -14,6 +14,8 @@ namespace Racing
 		public float toGroundDistance;
 		[Tooltip("Расстояния до ограничивающего бортика, если машина уперлась")]
 		public float toBorderDistance;
+		[Tooltip("Расстояние, при котором мы будем менять следующий чекпоинт для врага")]
+		public float switchCheckpointDistance;
 
 		[Space]
 
@@ -27,7 +29,7 @@ namespace Racing
 
 
 		[HideInInspector]
-		public int score = 0;               //количество пройденных кругов машиной
+		public int score = 0;						//count of laps completed
 		public TextMeshProUGUI scoreText;
 
 		private void Start()
@@ -44,6 +46,7 @@ namespace Racing
 			Gizmos.DrawRay(transform.position, transform.right * turnTurtleDistance);
 			Gizmos.DrawRay(transform.position, -transform.right * turnTurtleDistance);
 			Gizmos.DrawRay(transform.position, transform.up * turnTurtleDistance);
+			Gizmos.DrawWireSphere(transform.position, switchCheckpointDistance);
 
 			Gizmos.color = Color.green;
 			Gizmos.DrawRay(transform.position, transform.forward * toBorderDistance);

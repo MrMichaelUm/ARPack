@@ -8,20 +8,27 @@ namespace Racing
 {
 	public class CarSystem : MonoBehaviour
 	{
+		public enum Character { Player, Enemy }
+		[Tooltip("Кто наша машина: игрок или враг")]
+		public Character character;                            //who is our car: player or enemy
+
 		[Header("CheckPoints")]
-		public Vector3 lastCheckpointPos;                  //точка последнего чекпоинта машины
+		public Transform checkpointsHolder;
+		float switchCheckpointDistance;              //distance when we change enemy waypoint
+		Vector3[] checkpointsPosition;
+		Vector3 enemyCheckpointTarget;                  //next waypoint of enemy
+		Vector3 lastCheckpointPos;                  //точка последнего чекпоинта машины
+		int enemyCheckpointTargetIndex = 0;                 //index of waypoint
 
 		float normalMovingSpeed;
 		float movingSpeed;
 		float stopSpeed = 30;                       //Скорость, с которой машина останавливается перед бортом
 		float accelerationSpeed;
-		Transform frontOfTransport;
+		float turnSpeed;
 
 		float turnTurtleDistance;                   // Расстояние до земли если машина перевернулась
 		float toGroundDistance;                     // Расстояние до земли если машина стоит на колесах
 		float toBorderDistance;                     // Расстояния до ограничивающего бортика, если машина уперлась
-		float normalDistanceTurnTheBorder = 0.3f;   // Нормальное расстояние, чтобы машина могла развернуться, если она уперлась в бортик
-
 
 		private Rigidbody m_Rigidbody;              // Reference used to move the tank.
 		private float movementInputValue;         // The current value of the movement input.
@@ -34,23 +41,23 @@ namespace Racing
 
 		//Кеш
 		Transform _transform;
-		Vector3 _globalPosition;
 
 
 		private void Awake()
 		{
 			m_Rigidbody = GetComponent<Rigidbody>();
 			carStats = GetComponent<CarBlueprint>();
-			frontOfTransport = transform.Find("_FRONT");
 
 
 			//Получение данных из CarBlueprint
 			normalMovingSpeed = carStats.movingSpeed;
 			stopSpeed = carStats.stopSpeed;
 			accelerationSpeed = carStats.accelerationSpeed;
+			turnSpeed = carStats.turnSpeed;
 			turnTurtleDistance = carStats.turnTurtleDistance;
 			toGroundDistance = carStats.toGroundDistance;
 			toBorderDistance = carStats.toBorderDistance;
+			switchCheckpointDistance = carStats.switchCheckpointDistance;
 
 
 			movingSpeed = normalMovingSpeed;
@@ -59,12 +66,18 @@ namespace Racing
 			roadLayerMask = LayerMask.GetMask("Road");
 			borderLayerMask = LayerMask.GetMask("Border");
 
-			//lastCheckpointPos = GameObject.Find("Checkpoint 1").transform.position;
+
+			checkpointsPosition = new Vector3[checkpointsHolder.childCount];
+
+			for (int i = 0; i < checkpointsHolder.childCount; i++)
+			{
+				checkpointsPosition[i] = checkpointsHolder.GetChild(i).position;
+			}
+			enemyCheckpointTarget = checkpointsPosition[0];
+			lastCheckpointPos = checkpointsPosition[0];
 
 			//cash
 			_transform = GetComponent<Transform>();
-			_globalPosition = _transform.TransformPoint(frontOfTransport.position);
-			normalDistanceTurnTheBorder *= 2;
 		}
 
 		private void OnEnable()
@@ -84,6 +97,13 @@ namespace Racing
 
 		private void Update()
 		{
+			Debug.Log(enemyCheckpointTargetIndex);
+			movementInputValue = Mathf.Clamp(movementInputValue, 0, 1);
+			LeanOnBorder();
+
+			if (character == Character.Enemy)
+				return;
+
 			if (Input.GetKey(KeyCode.LeftArrow))
 				TurnCar(-1);
 			if (Input.GetKey(KeyCode.RightArrow))
@@ -98,14 +118,22 @@ namespace Racing
 			{
 				turnInputValue = 0;
 			}
+
 		}
 
 		private void FixedUpdate()
 		{
-			ReadyController();
+			if (character == Character.Enemy)
+			{
+				if (!OnTurnTurtle())
+					EnemyMovement();
+				return;
+			}
+
+			PlayerController();
 		}
 
-		void ReadyController()
+		void PlayerController()
 		{
 			if (!OnTurnTurtle())
 				Move();
@@ -114,6 +142,45 @@ namespace Racing
 
 
 			movementInputValue = Mathf.Clamp(movementInputValue, 0, 1);
+
+		}
+
+		void EnemyMovement()
+		{
+			//create a vector, that move us forward
+			Vector3 movement = _transform.forward * movementInputValue * movingSpeed * Time.deltaTime * 0.2f;
+			//move our player by this vector
+			m_Rigidbody.MovePosition(m_Rigidbody.position + movement);
+			//check for the next checkpoint
+			if (OnGround())
+				NextWaypoint();
+			//rotatate our enemy
+			EnemyRotation();
+		}
+
+		void EnemyRotation()
+		{
+			//find our rotation vector
+			Vector3 direction = enemyCheckpointTarget - _transform.position;
+			//look for this vector
+			Quaternion lookRotation = Quaternion.LookRotation(direction);
+			//rotate our player smoothly
+			Vector3 rotation = Quaternion.Lerp(_transform.rotation, lookRotation, Time.deltaTime * turnSpeed).eulerAngles;
+			//apply our rotations by y coordinate
+			_transform.rotation = Quaternion.Euler(0, rotation.y, 0);
+		}
+
+		void NextWaypoint()
+		{
+			//if our distance is less than switchCheckpointDistance
+			if ((_transform.position - enemyCheckpointTarget).sqrMagnitude <= switchCheckpointDistance * switchCheckpointDistance)
+			{
+				Debug.Log(enemyCheckpointTargetIndex);
+				//infinity cicle, in the end we will back to first element of array
+				enemyCheckpointTargetIndex = (enemyCheckpointTargetIndex + 1) % checkpointsPosition.Length;
+				enemyCheckpointTarget = checkpointsPosition[enemyCheckpointTargetIndex];
+			}
+
 
 		}
 
@@ -168,7 +235,6 @@ namespace Racing
 
 		private void Move()
 		{
-			LeanOnBorder();
 			// Create a vector in the direction the tank is facing with a magnitude based on the input, speed and the time between frames.
 			Vector3 movement = _transform.forward * movementInputValue * movingSpeed * Time.deltaTime * 0.2f;
 
@@ -179,7 +245,7 @@ namespace Racing
 		private void Turn()
 		{
 			// Determine the number of degrees to be turned based on the input, speed and time between frames.
-			float turn = turnInputValue * carStats.turnSpeed * Time.deltaTime;
+			float turn = turnInputValue * turnSpeed * Time.deltaTime;
 
 			// Make this into a rotation in the y axis.
 			Quaternion turnRotation = Quaternion.Euler(0f, turn, 0f);
@@ -191,8 +257,8 @@ namespace Racing
 		//возврат на трек после вылета
 		public void BackToTrack()
 		{
-			transform.position = lastCheckpointPos;
-			transform.rotation = Quaternion.identity;
+			_transform.position = lastCheckpointPos;
+			_transform.rotation = Quaternion.identity;
 		}
 
 		//increase player speed

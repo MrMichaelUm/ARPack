@@ -6,16 +6,15 @@ public class EnemyMovement : MonoBehaviour
 {
 	public Transform pathHolder;
 
-
 	//Draw waypoints positions
 	private void OnDrawGizmos()
 	{
-		Vector3 statPos = pathHolder.GetChild(0).position;
-		Vector3 previousPos = statPos;
+		Vector3 startPos = pathHolder.GetChild(0).position;
+		Vector3 previousPos = startPos;
 
 		foreach(Transform waypoint in pathHolder)
 		{
-			Gizmos.DrawSphere(waypoint.position, .035f);
+			Gizmos.DrawSphere(waypoint.position, 0.1f);
 			Gizmos.DrawLine(previousPos, waypoint.position);
 
 			previousPos = waypoint.position;
