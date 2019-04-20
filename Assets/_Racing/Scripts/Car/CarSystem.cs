@@ -10,36 +10,36 @@ namespace Racing
 	{
 		public enum Character { Player, Enemy }
 		[Tooltip("Кто наша машина: игрок или враг")]
-		public Character character;                            //who is our car: player or enemy
+		public Character character;                         //who is our car: player or enemy
 
 		[Header("CheckPoints")]
 		public Transform checkpointsHolder;
-		float switchCheckpointDistance;              //distance when we change enemy waypoint
+		float switchCheckpointDistance;						//distance when we change enemy waypoint
 		Vector3[] checkpointsPosition;
-		Vector3 enemyCheckpointTarget;                  //next waypoint of enemy
-		Vector3 lastCheckpointPos;                  //точка последнего чекпоинта машины
+		Vector3 enemyCheckpointTarget;						//next waypoint of enemy
+		Vector3 lastCheckpointPos;							//last checpoint position
 		int enemyCheckpointTargetIndex = 0;                 //index of waypoint
 
 		float normalMovingSpeed;
 		float movingSpeed;
-		float stopSpeed = 30;                       //Скорость, с которой машина останавливается перед бортом
+		float stopSpeed = 30;								//Speed with which our car stop in front of the board
 		float accelerationSpeed;
 		float turnSpeed;
 
-		float turnTurtleDistance;                   // Расстояние до земли если машина перевернулась
-		float toGroundDistance;                     // Расстояние до земли если машина стоит на колесах
-		float toBorderDistance;                     // Расстояния до ограничивающего бортика, если машина уперлась
+		float turnTurtleDistance;							// Distance to the ground if the car is turned turtle
+		float toGroundDistance;								// Distance to the ground if the car is normal
+		float toBorderDistance;								// Distance to bord if car is leaned on board
 
-		private Rigidbody m_Rigidbody;              // Reference used to move the tank.
-		private float movementInputValue;         // The current value of the movement input.
-		private float turnInputValue;             // The current value of the turn input.
-		private int roadLayerMask;                  // LayerMask для дороги
-		private int borderLayerMask;                // LayerMask для ограничивающего бортика
+		private Rigidbody m_Rigidbody;						// Reference used to move the tank.
+		private float movementInputValue;					// The current value of the movement input.
+		private float turnInputValue;						// The current value of the turn input.
+		private int roadLayerMask;							// LayerMask for road
+		private int borderLayerMask;						// LayerMask for bord
 
 
 		CarBlueprint carStats;
 
-		//Кеш
+		//Cash
 		Transform _transform;
 
 
@@ -49,6 +49,7 @@ namespace Racing
 			carStats = GetComponent<CarBlueprint>();
 
 
+			//get data from the CarBlueprint
 			//Получение данных из CarBlueprint
 			normalMovingSpeed = carStats.movingSpeed;
 			stopSpeed = carStats.stopSpeed;
@@ -97,7 +98,6 @@ namespace Racing
 
 		private void Update()
 		{
-			Debug.Log(enemyCheckpointTargetIndex);
 			movementInputValue = Mathf.Clamp(movementInputValue, 0, 1);
 			LeanOnBorder();
 
@@ -180,7 +180,24 @@ namespace Racing
 				enemyCheckpointTargetIndex = (enemyCheckpointTargetIndex + 1) % checkpointsPosition.Length;
 				enemyCheckpointTarget = checkpointsPosition[enemyCheckpointTargetIndex];
 			}
+		}
 
+		//accelerate our car after stop/slowdown
+		void AccelerateCar()
+		{
+			//after start moving increase our speed with a time
+			movementInputValue += Time.deltaTime * accelerationSpeed;
+		}
+
+		//slowdown car
+		void SlowdownCar()
+		{
+			//until the some speed (0.4) we slowdown the car
+			if (movementInputValue > 0.4f)
+				movementInputValue -= Time.deltaTime * stopSpeed;
+			//after that moment set the speed to 0
+			else
+				movementInputValue = Mathf.Epsilon;
 
 		}
 
@@ -189,6 +206,7 @@ namespace Racing
 			return Physics.Raycast(_transform.position, -_transform.up, toGroundDistance, roadLayerMask);
 		}
 
+		//if car is turned turtle (lie on the side or roof)
 		//если машина перевернулась (лежит на боку либо на крыше)
 		bool OnTurnTurtle()
 		{
@@ -202,6 +220,7 @@ namespace Racing
 			return false;
 		}
 
+		//if car is lean on boarder
 		//если машина уперлась в стену
 		bool LeanOnBorder()
 		{
@@ -209,19 +228,11 @@ namespace Racing
 
 			if (Physics.Raycast(_transform.position, _transform.forward, out hit, toBorderDistance, borderLayerMask))
 			{
-
-				//до определенного момента медленно умеьшаем скорость
-				if (movementInputValue > 0.4f)
-					movementInputValue -= Time.deltaTime * stopSpeed;
-				//после этой грани ставим скорость почти в 0
-				else
-					movementInputValue = 0.1f;
-
+				SlowdownCar();
 				return true;
 
 			}
-			//после начала движения постепенно увеличиваем скорость
-			movementInputValue += Time.deltaTime * accelerationSpeed;
+			AccelerateCar();
 			return false;
 		}
 
@@ -254,6 +265,7 @@ namespace Racing
 			m_Rigidbody.MoveRotation(m_Rigidbody.rotation * turnRotation);
 		}
 
+		//back to track if our car is off track
 		//возврат на трек после вылета
 		public void BackToTrack()
 		{
@@ -262,13 +274,13 @@ namespace Racing
 		}
 
 		//increase player speed
-		public void SpeedUp(float speedUp, float effectTime, float backToNormalTime)
+		public void ChangeSpeedBonus(float speedUp, float effectTime, float backToNormalTime)
 		{
-			StartCoroutine(SpeedUpCoroutine(speedUp, effectTime, backToNormalTime));
+			StartCoroutine(ChangeSpeedBonusCoroutine(speedUp, effectTime, backToNormalTime));
 		}
 
 		//increase player speed coroutine
-		public IEnumerator SpeedUpCoroutine(float speedUp, float effectTime, float backToNormalTime)
+		public IEnumerator ChangeSpeedBonusCoroutine(float speedUp, float effectTime, float backToNormalTime)
 		{
 			movingSpeed += speedUp;
 			yield return new WaitForSeconds(effectTime);
@@ -284,6 +296,7 @@ namespace Racing
 
 		public void OnTriggerEnter(Collider other)
 		{
+			//check for enter the checkpoint
 			//проверка на вход в чекпоинт
 			if (other.CompareTag("Checkpoint"))
 			{
@@ -291,12 +304,14 @@ namespace Racing
 				Debug.Log(other.name);
 			}
 
+			//check for enter the finish
 			//проверка на вход в финиш
 			else if (other.CompareTag("Finish"))
 			{
 				carStats.score++;
 				//carStats.scoreText.text = carStats.score.ToString();
 
+				//check for winner of the game
 				//проверка на то, победил ли игрок
 				Racing.GameManager.Instance.GetGameWinner();
 			}

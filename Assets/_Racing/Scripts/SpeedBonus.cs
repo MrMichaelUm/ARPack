@@ -22,8 +22,12 @@ namespace Racing {
 		{
 			if (other.CompareTag("Player"))
 			{
-				player.SpeedUp(speedUp, effectTime, backToNormalTime);
+				//apply our speeUp bonus
+				player.ChangeSpeedBonus(speedUp, effectTime, backToNormalTime);
 				gameObject.SetActive(false);
+
+				//say our bonus manager that we can spawn next bonus
+				BonusManager.Instance.bonusSpawned = false;
 			}
 		}
 	}
