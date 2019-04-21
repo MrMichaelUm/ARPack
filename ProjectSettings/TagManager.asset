@@ -10,6 +10,7 @@ TagManager:
   - GravityOn
   - GravityOff
   - SpeedUp
+  - SwitchAgent
   layers:
   - Default
   - TransparentFX
@@ -19,7 +20,7 @@ TagManager:
   - UI
   - 
   - 
-  - 
+  - Car
   - Road
   - Border
   - 

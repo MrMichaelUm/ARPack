@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 using UnityEngine.EventSystems;
 using UnityEngine.Networking;
 
@@ -14,33 +15,36 @@ namespace Racing
 
 		[Header("CheckPoints")]
 		public Transform checkpointsHolder;
-		float switchCheckpointDistance;						//distance when we change enemy waypoint
+		float switchCheckpointDistance;                     //distance when we change enemy waypoint
 		Vector3[] checkpointsPosition;
-		Vector3 enemyCheckpointTarget;						//next waypoint of enemy
-		Vector3 lastCheckpointPos;							//last checpoint position
+		Vector3 enemyCheckpointTarget;                      //next waypoint of enemy
+		Vector3 lastCheckpointPos;                          //last checpoint position
 		int enemyCheckpointTargetIndex = 0;                 //index of waypoint
 
 		float normalMovingSpeed;
 		float movingSpeed;
-		float stopSpeed = 30;								//Speed with which our car stop in front of the board
+		float stopSpeed = 30;                               //Speed with which our car stop in front of the board
 		float accelerationSpeed;
 		float turnSpeed;
 
-		float turnTurtleDistance;							// Distance to the ground if the car is turned turtle
-		float toGroundDistance;								// Distance to the ground if the car is normal
-		float toBorderDistance;								// Distance to bord if car is leaned on board
+		//agent
+		float standardAgentAcceleration;                            //acceleration variable in navmeshagent
 
-		private Rigidbody m_Rigidbody;						// Reference used to move the tank.
-		private float movementInputValue;					// The current value of the movement input.
-		private float turnInputValue;						// The current value of the turn input.
-		private int roadLayerMask;							// LayerMask for road
-		private int borderLayerMask;						// LayerMask for bord
+		float turnTurtleDistance;                           // Distance to the ground if the car is turned turtle
+		float toGroundDistance;                             // Distance to the ground if the car is normal
+		float toBorderDistance;                             // Distance to bord if car is leaned on board
 
+		private Rigidbody m_Rigidbody;                      // Reference used to move the tank.
+		private float movementInputValue;                   // The current value of the movement input.
+		private float turnInputValue;                       // The current value of the turn input.
+		private int roadLayerMask;                          // LayerMask for road
+		private int borderLayerMask;                        // LayerMask for bord
 
-		CarBlueprint carStats;
 
 		//Cash
 		Transform _transform;
+		CarBlueprint carStats;
+		NavMeshAgent agent;
 
 
 		private void Awake()
@@ -48,6 +52,11 @@ namespace Racing
 			m_Rigidbody = GetComponent<Rigidbody>();
 			carStats = GetComponent<CarBlueprint>();
 
+			if (character == Character.Enemy)
+			{
+				agent = GetComponent<NavMeshAgent>();
+				standardAgentAcceleration = agent.acceleration;
+			}
 
 			//get data from the CarBlueprint
 			//Получение данных из CarBlueprint
@@ -141,21 +150,39 @@ namespace Racing
 				Turn();
 
 
-			movementInputValue = Mathf.Clamp(movementInputValue, 0, 1);
+			//movementInputValue = Mathf.Clamp(movementInputValue, 0, 1);
 
 		}
 
 		void EnemyMovement()
 		{
-			//create a vector, that move us forward
-			Vector3 movement = _transform.forward * movementInputValue * movingSpeed * Time.deltaTime * 0.2f;
-			//move our player by this vector
-			m_Rigidbody.MovePosition(m_Rigidbody.position + movement);
 			//check for the next checkpoint
 			if (OnGround())
 				NextWaypoint();
 			//rotatate our enemy
 			EnemyRotation();
+
+			//if we use agent moving system
+			if (agent.enabled)
+				agent.SetDestination(enemyCheckpointTarget);
+
+			else
+			{
+				//create a vector, that move us forward
+				Vector3 movement = _transform.forward * movementInputValue * movingSpeed * Time.deltaTime * 0.2f;
+				//move our player by this vector
+				m_Rigidbody.MovePosition(m_Rigidbody.position + movement);
+			}
+
+			////create a vector, that move us forward
+			//Vector3 movement = _transform.forward * movementInputValue * movingSpeed * Time.deltaTime * 0.2f;
+			////move our player by this vector
+			//m_Rigidbody.MovePosition(m_Rigidbody.position + movement);
+			////check for the next checkpoint
+			//if (OnGround())
+			//	NextWaypoint();
+			////rotatate our enemy
+			//EnemyRotation();
 		}
 
 		void EnemyRotation()
@@ -195,9 +222,9 @@ namespace Racing
 			//until the some speed (0.4) we slowdown the car
 			if (movementInputValue > 0.4f)
 				movementInputValue -= Time.deltaTime * stopSpeed;
-			//after that moment set the speed to 0
+			//after that moment set the speed to 0.1
 			else
-				movementInputValue = Mathf.Epsilon;
+				movementInputValue = 0.1f;
 
 		}
 
@@ -230,8 +257,8 @@ namespace Racing
 			{
 				SlowdownCar();
 				return true;
-
 			}
+
 			AccelerateCar();
 			return false;
 		}
@@ -325,6 +352,18 @@ namespace Racing
 			{
 				m_Rigidbody.useGravity = true;
 			}
+
+			//switch controller between navmeshagent and linear moving
+			else if (other.CompareTag("SwitchAgent"))
+			{
+				if (character == Character.Enemy)
+				{
+					//increase car acceleration to any big num to delete a speed gap when controllers are switching
+					agent.acceleration = 500_000;
+					//switch controllers
+					agent.enabled = !agent.enabled;
+				}
+			}
 		}
 
 		public void OnTriggerExit(Collider other)
@@ -332,6 +371,13 @@ namespace Racing
 			if (other.CompareTag("Border"))
 			{
 				BackToTrack();
+			}
+
+			//back car acceleration to standard acceleration
+			else if (other.CompareTag("SwitchAgent"))
+			{
+				if (character == Character.Enemy)
+					agent.acceleration = standardAgentAcceleration;
 			}
 		}
 
