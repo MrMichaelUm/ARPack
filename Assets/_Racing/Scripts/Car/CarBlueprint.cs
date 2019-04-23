@@ -31,10 +31,14 @@ namespace Racing
 		[HideInInspector]
 		public int score = 0;						//count of laps completed
 		public TextMeshProUGUI scoreText;
+		[Tooltip("Цвет, который обозначает игрока")]
+		public Color carMenuColor;
 
-		private void Start()
+		//increase score and call UIManger method
+		public void UpdateScore()
 		{
-			//speed = transform.localScale.x * 300;
+			score++;
+			UIManager.Instance.UpdateScore(scoreText, score);
 		}
 
 		private void OnDrawGizmos()

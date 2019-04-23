@@ -132,14 +132,15 @@ namespace Racing
 
 		private void FixedUpdate()
 		{
-			if (character == Character.Enemy)
+			if (character == Character.Player)
 			{
-				if (!OnTurnTurtle())
-					EnemyMovement();
+				PlayerController();
 				return;
 			}
 
-			PlayerController();
+
+			if (!OnTurnTurtle())
+				EnemyMovement();
 		}
 
 		void PlayerController()
@@ -202,7 +203,6 @@ namespace Racing
 			//if our distance is less than switchCheckpointDistance
 			if ((_transform.position - enemyCheckpointTarget).sqrMagnitude <= switchCheckpointDistance * switchCheckpointDistance)
 			{
-				Debug.Log(enemyCheckpointTargetIndex);
 				//infinity cicle, in the end we will back to first element of array
 				enemyCheckpointTargetIndex = (enemyCheckpointTargetIndex + 1) % checkpointsPosition.Length;
 				enemyCheckpointTarget = checkpointsPosition[enemyCheckpointTargetIndex];
@@ -335,12 +335,12 @@ namespace Racing
 			//проверка на вход в финиш
 			else if (other.CompareTag("Finish"))
 			{
-				carStats.score++;
-				//carStats.scoreText.text = carStats.score.ToString();
+				carStats.UpdateScore();
 
 				//check for winner of the game
 				//проверка на то, победил ли игрок
 				Racing.GameManager.Instance.GetGameWinner();
+
 			}
 
 			else if (other.CompareTag("GravityOff"))

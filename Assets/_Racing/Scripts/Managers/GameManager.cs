@@ -79,6 +79,13 @@ namespace Racing
 			}
 			return null;
 		}
+
+		public CarBlueprint GetGameLeader()
+		{
+			if (cars[0].score >= cars[1].score)
+				return cars[0];
+			return cars[1];
+		}
 	}
 
 }
