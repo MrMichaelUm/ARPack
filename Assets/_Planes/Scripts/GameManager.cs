@@ -10,6 +10,15 @@ namespace Planes
         bool paused = false; //указывает, нажата ли пауза
         Image _pauseScreen; //полупрозрачный экран, который появляется, когда нажата пауза
 
+        static int currentDifficlty; 
+        //варианты сложности врага
+        public static int EASY = 1;
+        public static int MEDIUM = 2;
+        public static int HARD = 3;
+        public static int NEXT_DIFFICULTY = -1; //следующая сложность
+
+        GameObject _enemy;
+
         private void Awake()
         {
             #region Singleton
@@ -26,6 +35,8 @@ namespace Planes
 
             _pauseScreen = GameObject.FindWithTag("PauseScreen").GetComponent<Image>();
             _pauseScreen.enabled = false;
+            _enemy = GameObject.FindWithTag("Enemy");
+            //ChangeDifficulty(EASY); //начинаем с первой сложности
         }
 
         public void PauseButtonPressed()
@@ -46,6 +57,37 @@ namespace Planes
                 _pauseScreen.enabled = true; //включить экран
                 return;
             }
+        }
+
+        public void ChangeDifficulty (int newDifficulty) //регулировка сложности уровня
+        {
+            if (newDifficulty == NEXT_DIFFICULTY)
+            {
+                newDifficulty = currentDifficlty + 1;
+                if (newDifficulty > 3)
+                {
+                    newDifficulty = 1;
+                }
+            }
+            switch (newDifficulty)
+            {
+                case 1:
+                    {
+                        _enemy.AddComponent<EnemyGreenPrint>();
+                        break;
+                    }
+                case 2:
+                    {
+                        _enemy.AddComponent<EnemyYellowPrint>();
+                        break;
+                    }
+                case 3:
+                    {
+                        _enemy.AddComponent<EnemyRedPrint>();
+                        break;
+                    }
+            }
+            currentDifficlty = newDifficulty;
         }
     }
 }

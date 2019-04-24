@@ -5,19 +5,20 @@ namespace Planes
 {
     public abstract class CharacterPrint : MonoBehaviour
     {
-        protected float timer;
-        public float timeBetweenShoots = 0.3f;
-        protected float effectsDisplayTime = 0.2f;
-        public float health;
-        protected Slider _sliderHealth;
-        protected SingleShoot shootingR;
-        protected SingleShoot shootingL;
+        public bool isPlayer; //является ли наследник класса игроком (true) или врагом (false)
+        protected float timer; //таймер для подсчета времени между выстрелами/отображением эффектов
+        public float timeBetweenShoots = 0.3f; //время между выстрелами
+        protected float effectsDisplayTime = 0.2f; //время отображения эффектов
+        public float health; //здоровье
+        public float aimRange = 10;
+        protected Slider _sliderHealth; //слайдер, показывающий здоровье
+        protected SingleShoot[] shootingPoints; //точки, откуда делаются выстрелы
 
-        public static float CRUSH = -1;
+        public static float CRUSH = -1; //крушение: мгновенно убивает персонажа
+        
+        public abstract void Shooting(); //стрельба персонажа
 
-        public abstract void Shooting();
-
-        virtual public void TakeDamage(float damage)
+        virtual public void TakeDamage(float damage) //отнять у персонажа здоровье
         {
             if (damage == CRUSH)
             {
@@ -29,7 +30,9 @@ namespace Planes
             }
             if (health <= 0)
             {
-                Destroy(gameObject);
+                if (!isPlayer)
+                    GameManager.instance.ChangeDifficulty(GameManager.NEXT_DIFFICULTY); //если умирает враг, то игра переходит на следующую сложность
+                Destroy(this);
             }
             _sliderHealth.value = health;
         }

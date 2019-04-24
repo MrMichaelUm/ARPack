@@ -9,9 +9,9 @@ namespace Planes
 
         void Awake()
         {
+            isPlayer = true; //объект является игроком
             _gunCharge = GameObject.FindWithTag("PlayerCharge").GetComponent<Slider>();
-            shootingR = GameObject.FindWithTag("ShootPointR").GetComponentInChildren<SingleShoot>();
-            shootingL = GameObject.FindWithTag("ShootPointL").GetComponentInChildren<SingleShoot>();
+            shootingPoints = GetComponentsInChildren<SingleShoot>();
             _sliderHealth = GameObject.FindWithTag("PlayerHealth").GetComponent<Slider>();
             health = _sliderHealth.value;
         }
@@ -22,8 +22,10 @@ namespace Planes
 
             if (timer >= timeBetweenShoots * effectsDisplayTime)
             {
-                shootingR.DisableEffects();
-                shootingL.DisableEffects();
+                foreach (SingleShoot point in shootingPoints)
+                {
+                    point.DisableEffects();
+                }
             }
         }
 
@@ -46,17 +48,13 @@ namespace Planes
                 return;
             }
 
-            shootingR.Shoot();
-            shootingL.Shoot();
+            foreach (SingleShoot point in shootingPoints)
+            {
+                point.Shoot();
+            }
             _gunCharge.value -= 1;
             timer = 0f;
         }
-
-        /*override public void TakeDamage(float damage)
-        {
-            base.TakeDamage(damage);
-        }*/
-
     }
 }
 
