@@ -1,33 +1,16 @@
 fileFormatVersion: 2
-guid: 54a2b81d6482fb143a1a39a39c328a40
+guid: f3ae7f294c149d248bb963c5e43358ae
 ModelImporter:
   serializedVersion: 23
   fileIDToRecycleName:
-    100000: Camera
-    100002: Cube.000
-    100004: Cube.004
-    100006: Lamp
-    100008: //RootNode
-    400000: Camera
-    400002: Cube.000
-    400004: Cube.004
-    400006: Lamp
-    400008: //RootNode
-    2000000: Camera
-    2100000: Material.004
-    2100002: Material
-    2100004: Material.001
-    2100006: Material.011
-    2100008: Material.002
-    2100010: Material.008
-    2300000: Cube.000
-    2300002: Cube.004
-    3300000: Cube.000
-    3300002: Cube.004
-    4300000: Cube.004
-    4300002: Cube.000
-    10800000: Lamp
-    2186277476908879412: ImportLogs
+    100000: //RootNode
+    400000: //RootNode
+    2100000: unnamed
+    2300000: //RootNode
+    3300000: //RootNode
+    4300000: Plane
+    7400000: Default Take
+    9500000: //RootNode
   externalObjects: {}
   materials:
     importMaterials: 1
@@ -81,7 +64,7 @@ ModelImporter:
     secondaryUVPackMargin: 4
     useFileScale: 1
     previousCalculatedGlobalScale: 1
-    hasPreviousCalculatedGlobalScale: 0
+    hasPreviousCalculatedGlobalScale: 1
   tangentSpace:
     normalSmoothAngle: 60
     normalImportMode: 0
@@ -108,7 +91,7 @@ ModelImporter:
     hasExtraRoot: 0
     skeletonHasParents: 1
   lastHumanDescriptionAvatarSource: {instanceID: 0}
-  animationType: 0
+  animationType: 2
   humanoidOversampling: 1
   additionalBone: 0
   userData: 

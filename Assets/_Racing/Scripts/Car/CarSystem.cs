@@ -20,6 +20,7 @@ namespace Racing
 		Vector3 enemyCheckpointTarget;                      //next waypoint of enemy
 		Vector3 lastCheckpointPos;                          //last checpoint position
 		int enemyCheckpointTargetIndex = 0;                 //index of waypoint
+		bool fullLoop = false;								//did the player complete a full loop?
 
 		float normalMovingSpeed;
 		float movingSpeed;
@@ -96,7 +97,9 @@ namespace Racing
 			m_Rigidbody.isKinematic = false;
 
 			// Also reset the input values.
-			movementInputValue = 1f;
+			movementInputValue = 0f;
+
+			AccelerateCar();
 		}
 
 		private void OnDisable()
@@ -203,6 +206,7 @@ namespace Racing
 			//if our distance is less than switchCheckpointDistance
 			if ((_transform.position - enemyCheckpointTarget).sqrMagnitude <= switchCheckpointDistance * switchCheckpointDistance)
 			{
+				Debug.Log(enemyCheckpointTargetIndex);
 				//infinity cicle, in the end we will back to first element of array
 				enemyCheckpointTargetIndex = (enemyCheckpointTargetIndex + 1) % checkpointsPosition.Length;
 				enemyCheckpointTarget = checkpointsPosition[enemyCheckpointTargetIndex];
@@ -298,6 +302,9 @@ namespace Racing
 		{
 			_transform.position = lastCheckpointPos;
 			_transform.rotation = Quaternion.identity;
+
+			//return speed to startSpeed
+			movingSpeed = normalMovingSpeed;
 		}
 
 		//increase player speed
@@ -312,7 +319,7 @@ namespace Racing
 			movingSpeed += speedUp;
 			yield return new WaitForSeconds(effectTime);
 
-			while (movingSpeed >= normalMovingSpeed)
+			while (Mathf.Abs(movingSpeed-normalMovingSpeed) >= 0.1f)
 			{
 				movingSpeed -= Time.deltaTime * speedUp / backToNormalTime;
 				yield return null;
@@ -333,14 +340,21 @@ namespace Racing
 
 			//check for enter the finish
 			//проверка на вход в финиш
-			else if (other.CompareTag("Finish"))
+			else if (other.CompareTag("Finish") && fullLoop)
 			{
 				carStats.UpdateScore();
 
 				//check for winner of the game
 				//проверка на то, победил ли игрок
 				Racing.GameManager.Instance.GetGameWinner();
+				
+				fullLoop = false;
+			}
 
+			//set point on the middle of the loop to check did the player complete a loop
+			else if (other.CompareTag("CheckForFullLoop"))
+			{
+				fullLoop = true;
 			}
 
 			else if (other.CompareTag("GravityOff"))

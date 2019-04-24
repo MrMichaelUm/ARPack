@@ -11,6 +11,8 @@ TagManager:
   - GravityOff
   - SpeedUp
   - SwitchAgent
+  - Enemy
+  - CheckForFullLoop
   layers:
   - Default
   - TransparentFX

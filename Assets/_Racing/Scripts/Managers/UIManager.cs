@@ -7,7 +7,6 @@ using TMPro;
 
 namespace Racing
 {
-
 	public class UIManager : MonoBehaviour
 	{
 		public static UIManager Instance;
@@ -39,6 +38,8 @@ namespace Racing
 			timer = startGameTime;
 
 			slashAnim = slashText.GetComponent<Animator>();
+
+			SetControl(GameObject.FindWithTag("Player").GetComponent<CarSystem>());
 		}
 
 		private void Update()
