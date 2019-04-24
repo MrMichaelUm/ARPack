@@ -9,19 +9,19 @@ namespace Planes
         public float lowSpeed = 5;
         public  float speed;
         public float lookDelay = 0.3f;
-        Transform _enemy;
-        Rigidbody _enemyRigidbody;
-        Transform _player;
-        Transform _nose;
+        protected Transform _enemy;
+        protected Rigidbody _enemyRigidbody;
+        protected Transform _player;
+        protected Transform _nose;
 
 
-        float shootDelayTimer;
+        protected float shootDelayTimer;
         public float shootDelay = 1f;
-        bool playerInRange = false;
+        protected bool playerInRange = false;
         public float prevShoot = 0;
         public float offset = 5;
 
-        float y = 0f;
+        protected float y = 0f;
 
         void Awake()
         {

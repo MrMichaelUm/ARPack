@@ -51,7 +51,7 @@ namespace Planes
 
             _shootPoint.LookAt(_enemy.position);
             Vector3 rotation = _shootPoint.localEulerAngles;
-            Debug.Log("Rotation after LookAt: " + rotation.x + ", " + rotation.y + ", " + rotation.z);
+            //Debug.Log("Rotation after LookAt: " + rotation.x + ", " + rotation.y + ", " + rotation.z);
             while (!(rotation.x > -180 && rotation.x < 180))
             {
                 if (rotation.x > 180)
@@ -85,7 +85,7 @@ namespace Planes
                     rotation.z += 360;
                 }
             }
-            Debug.Log("Rotation after normalization: " + rotation.x + ", " + rotation.y + ", " + rotation.z);
+            //Debug.Log("Rotation after normalization: " + rotation.x + ", " + rotation.y + ", " + rotation.z);
             if (rotation.x < 0 - aimRange || rotation.x > 0 + aimRange)
             {
                 rotation.x = 0;
@@ -98,7 +98,7 @@ namespace Planes
             {
                 rotation.z = 0;
             }
-            Debug.Log("Rotation after check: " + rotation.x + ", " + rotation.y + ", " + rotation.z);
+            //Debug.Log("Rotation after check: " + rotation.x + ", " + rotation.y + ", " + rotation.z);
             _shootPoint.localEulerAngles = rotation;
             /*neededRotation = Quaternion.ToEulerAngles(Quaternion.LookRotation(_enemy.position - _shootPoint.position));
 

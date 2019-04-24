@@ -17,6 +17,7 @@ TagManager:
   - Enemy
   - PauseScreen
   - EnemyNose
+  - Bonuses
   layers:
   - Default
   - TransparentFX

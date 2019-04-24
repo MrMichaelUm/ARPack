@@ -61,7 +61,7 @@ namespace Planes
 
         public void ChangeDifficulty (int newDifficulty) //регулировка сложности уровня
         {
-            if (newDifficulty == NEXT_DIFFICULTY)
+            /*if (newDifficulty == NEXT_DIFFICULTY)
             {
                 newDifficulty = currentDifficlty + 1;
                 if (newDifficulty > 3)
@@ -87,7 +87,7 @@ namespace Planes
                         break;
                     }
             }
-            currentDifficlty = newDifficulty;
+            currentDifficlty = newDifficulty;*/
         }
     }
 }
