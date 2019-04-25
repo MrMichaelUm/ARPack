@@ -17,12 +17,17 @@ namespace Racing {
 			player = GameObject.FindGameObjectWithTag("Player").GetComponent<CarSystem>();
 		}
 
+		//enable effect of bonus
 		public void OnTriggerEnter(Collider other)
 		{
 			if (other.CompareTag("Player"))
 			{
-				StartCoroutine(player.SpeedUp(speedUp, effectTime, backToNormalTime));
-				//gameObject.SetActive(false);
+				//apply our speeUp bonus
+				player.ChangeSpeedBonus(speedUp, effectTime, backToNormalTime);
+				gameObject.SetActive(false);
+
+				//say our bonus manager that we can spawn next bonus
+				BonusManager.Instance.bonusSpawned = false;
 			}
 		}
 	}

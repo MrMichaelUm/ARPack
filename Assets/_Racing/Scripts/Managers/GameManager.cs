@@ -11,7 +11,7 @@ namespace Racing
 
 		public CarBlueprint[] cars;
 
-		public static bool gameStarted = false;
+		public static bool gameIsGoing = false;
 		public static bool countdownGameStarted = false;                //начался ли обратный отсчет
 
 		[Tooltip("Необходимое количество кругов для победы")]
@@ -42,7 +42,7 @@ namespace Racing
 
 			yield return new WaitForSeconds(3);
 
-			gameStarted = true;
+			gameIsGoing = true;
 
 
 			//!!!! Сейчас стоит в CarSystem в FixedUpdate проверка на gameStarted из  GameManager
@@ -52,6 +52,21 @@ namespace Racing
 			}
 		}
 
+		//use if game is paused or stopped
+		public void StopGame()
+		{
+			//turn off the game
+			gameIsGoing = false;
+			//turn off the countdownTimer
+			countdownGameStarted = false;
+
+			for (int i = 0; i < cars.Length; i++)
+			{
+				cars[i].GetComponent<CarSystem>().enabled = false;
+			}
+		}
+
+		//check for game winner
 		public CarBlueprint GetGameWinner()
 		{
 			for (int i = 0; i < cars.Length; i++)
@@ -63,6 +78,13 @@ namespace Racing
 				}
 			}
 			return null;
+		}
+
+		public CarBlueprint GetGameLeader()
+		{
+			if (cars[0].score >= cars[1].score)
+				return cars[0];
+			return cars[1];
 		}
 	}
 
