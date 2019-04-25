@@ -14,9 +14,9 @@ public class PhotonButton : MonoBehaviour
 	//	menuLogic.CreateNewRoom();
 	//}
 
-	//public void OnClickJoinRoom()
-	//{
-	//	menuLogic.JoinOrCreateRoom();
-	//}
+	public void OnClickJoinRoom()
+	{
+		menuLogic.JoinOrCreateRoom();
+	}
 
 }

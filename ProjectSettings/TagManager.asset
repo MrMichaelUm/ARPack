@@ -7,12 +7,6 @@ TagManager:
   - Checkpoint
   - Border
   - MenuLogic
-  - GravityOn
-  - GravityOff
-  - SpeedUp
-  - SwitchAgent
-  - Enemy
-  - CheckForFullLoop
   layers:
   - Default
   - TransparentFX
@@ -22,7 +16,7 @@ TagManager:
   - UI
   - 
   - 
-  - Car
+  - 
   - Road
   - Border
   - 

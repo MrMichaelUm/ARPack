@@ -4,44 +4,44 @@ using UnityEngine;
 
 public class PhotonConnect : MonoBehaviour
 {
-	//public string versionName = "0.1";
+	public string versionName = "0.1";
 
 
-	//public GameObject sectionView1, sectionView2, sectionView3;
+	public GameObject sectionView1, sectionView2, sectionView3;
 
-	//public void ConnectToPhoton()
-	//{
-	//	PhotonNetwork.ConnectUsingSettings(versionName);
+	public void ConnectToPhoton()
+	{
+		PhotonNetwork.ConnectUsingSettings(versionName);
 
-	//	Debug.Log("Connecting to photon..");
-	//}
+		Debug.Log("Connecting to photon..");
+	}
 
-	//private void OnConnectedToMaster()
-	//{
-	//	PhotonNetwork.JoinLobby(TypedLobby.Default);
+	private void OnConnectedToMaster()
+	{
+		PhotonNetwork.JoinLobby(TypedLobby.Default);
 
-	//	Debug.Log("Connected to server");
-	//}
+		Debug.Log("Connected to server");
+	}
 
-	//private void OnJoinedLobby()
-	//{
-	//	sectionView1.SetActive(false);
-	//	sectionView2.SetActive(true);
+	private void OnJoinedLobby()
+	{
+		sectionView1.SetActive(false);
+		sectionView2.SetActive(true);
 
-	//	Debug.Log("On joined Lobby");
-	//}
+		Debug.Log("On joined Lobby");
+	}
 
-	//private void OnDisconnectedFromPhoton()
-	//{
-	//	sectionView1.SetActive(false);
-	//	sectionView2.SetActive(false);
-	//	sectionView3.SetActive(true);
+	private void OnDisconnectedFromPhoton()
+	{
+		sectionView1.SetActive(false);
+		sectionView2.SetActive(false);
+		sectionView3.SetActive(true);
 
-	//	Debug.Log("Dis from photon");
-	//}
+		Debug.Log("Dis from photon");
+	}
 
-	//private void OnFailedToConnectToPhoton()
-	//{
+	private void OnFailedToConnectToPhoton()
+	{
 		
-	//}
+	}
 }
