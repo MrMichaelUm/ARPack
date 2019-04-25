@@ -99,8 +99,8 @@ public class TransportTrackableEventHandler : MonoBehaviour, ITrackableEventHand
 		foreach (var component in canvasComponents)
 			component.enabled = true;
 
-		//pause off
-		PauseMenu.Instance.PauseOff();
+		IsReady.Instance.CheckPlayers();
+
 	}
 
 
@@ -122,8 +122,6 @@ public class TransportTrackableEventHandler : MonoBehaviour, ITrackableEventHand
 		foreach (var component in canvasComponents)
 			component.enabled = false;
 
-		//pause on
-		PauseMenu.Instance.PauseOn();
 	}
 
 	#endregion // PROTECTED_METHODS
