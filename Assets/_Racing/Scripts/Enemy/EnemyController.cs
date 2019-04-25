@@ -22,12 +22,16 @@ namespace Racing
 		public float forceCoef;
 		[Tooltip("Coef by which we multiply a shock torque")]
 		public float torqueCoef;
+		public float shockTime = 1;
+		float shockTImeCountdown;
+		bool shocked = false;
 
 		[Space]
 		[Header("Spawns Eggs")]
 		[SerializeField]
 		GameObject eggPrefab;
 		GameObject egg;
+
 
 		//cash
 		Transform player;
@@ -41,6 +45,8 @@ namespace Racing
 
 			//set countdowntimer to start value
 			skillCountdown = skillReloadTime;
+
+			shockTImeCountdown = shockTime;
 
 			//spawn the egg at the (0, 0, 0) and disable it
 			if (enemySkill == EnemySkill.SpawnEggs)
@@ -64,24 +70,15 @@ namespace Racing
 
 		public void UseSkill()
 		{
-			if (enemySkill == EnemySkill.ShockWave)
+			if (enemySkill == EnemySkill.ShockWave && !shocked)
 			{
 				if (Vector3.Distance(player.position, _transform.position) < shockWaveRadius)
 				{
-					float shockForce = 1 - (Vector3.Distance(player.position, transform.position) / shockWaveRadius);
-					//player.GetComponent<Rigidbody>().AddExplosionForce(forceCoef, new Vector3((player.position.x - _transform.position.x), 0, (player.position.z - _transform.position.z)).normalized, shockWaveRadius,0, ForceMode.Impulse);
-					//player.GetComponent<Rigidbody>().AddExplosionForce(forceCoef, player.position - _transform.position, shockWaveRadius, 0, ForceMode.Impulse);
+					Debug.Log("SHOCK");
 
-					//player.GetComponent<Rigidbody>().AddTorque(new Vector3(0, (player.position.y - _transform.position.y), 0).normalized * shockForce * torqueCoef, ForceMode.Impulse);
-
-
-					float y = Mathf.Lerp(player.rotation.y, 360 * shockForce, Time.deltaTime);
-					player.rotation = Quaternion.Euler(player.rotation.x, y, player.rotation.z);
-					//player.Rotate(0, 360 * shockForce * Time.deltaTime * 2, 0);
+					StartCoroutine(Shock());
 
 					skillCountdown = skillReloadTime;
-
-					Debug.Log("SHOCK");
 				}
 			}
 
@@ -94,6 +91,21 @@ namespace Racing
 
 				skillCountdown = skillReloadTime;
 			}
+		}
+
+		IEnumerator Shock()
+		{
+			shocked = true;
+
+			while (shockTImeCountdown > 0)
+			{
+				player.GetComponent<Rigidbody>().AddExplosionForce(forceCoef, -player.position + _transform.position, shockWaveRadius, 0, ForceMode.Impulse);
+
+				shockTImeCountdown -= Time.deltaTime;
+				yield return null;
+			}
+			shockTImeCountdown = shockTime;
+			shocked = false;
 		}
 
 		//Draw waypoints positions

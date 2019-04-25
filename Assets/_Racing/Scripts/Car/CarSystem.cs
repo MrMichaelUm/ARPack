@@ -221,7 +221,7 @@ namespace Racing
 		}
 
 		//slowdown car
-		void SlowdownCar()
+		public void SlowdownCar()
 		{
 			//until the some speed (0.4) we slowdown the car
 			if (movementInputValue > 0.4f)
