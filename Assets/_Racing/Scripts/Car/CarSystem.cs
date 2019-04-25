@@ -29,7 +29,7 @@ namespace Racing
 		float turnSpeed;
 
 		//agent
-		float standardAgentAcceleration;                            //acceleration variable in navmeshagent
+		float standardAgentAcceleration;                    //acceleration variable in navmeshagent
 
 		float turnTurtleDistance;                           // Distance to the ground if the car is turned turtle
 		float toGroundDistance;                             // Distance to the ground if the car is normal

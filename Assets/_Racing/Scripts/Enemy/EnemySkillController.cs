@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Racing
 {
-	public class EnemyController : MonoBehaviour
+	public class EnemySkillController : MonoBehaviour
 	{
 		public Transform pathHolder;
 
@@ -20,11 +20,9 @@ namespace Racing
 		public float shockWaveRadius;
 		[Tooltip("Coef by which we multiply a shock force")]
 		public float forceCoef;
-		[Tooltip("Coef by which we multiply a shock torque")]
-		public float torqueCoef;
-		public float shockTime = 1;
-		float shockTImeCountdown;
-		bool shocked = false;
+		public float shockTime = 1;									//time of shock action
+		float shockTImeCountdown;									//help variable to countdown time of action
+		bool shocked = false;										//is the player shocking now?
 
 		[Space]
 		[Header("Spawns Eggs")]
@@ -35,12 +33,14 @@ namespace Racing
 
 		//cash
 		Transform player;
+		Rigidbody playerRB;
 		Transform _transform;
 
 		private void Start()
 		{
 			//cash 
 			player = GameObject.FindGameObjectWithTag("Player").transform;
+			playerRB = player.GetComponent<Rigidbody>();
 			_transform = transform;
 
 			//set countdowntimer to start value
@@ -70,14 +70,16 @@ namespace Racing
 
 		public void UseSkill()
 		{
+			//if shock effect is not attempted
 			if (enemySkill == EnemySkill.ShockWave && !shocked)
 			{
+				//if player is in the trigger zone
 				if (Vector3.Distance(player.position, _transform.position) < shockWaveRadius)
 				{
 					Debug.Log("SHOCK");
 
 					StartCoroutine(Shock());
-
+					//reload skill
 					skillCountdown = skillReloadTime;
 				}
 			}
@@ -97,13 +99,16 @@ namespace Racing
 		{
 			shocked = true;
 
+			//while the player is shocking 
 			while (shockTImeCountdown > 0)
 			{
-				player.GetComponent<Rigidbody>().AddExplosionForce(forceCoef, -player.position + _transform.position, shockWaveRadius, 0, ForceMode.Impulse);
-
+				//add explosion force to player
+				playerRB.AddExplosionForce(forceCoef, _transform.position - player.position, shockWaveRadius, 0, ForceMode.Impulse);
+				//shockTime is going
 				shockTImeCountdown -= Time.deltaTime;
 				yield return null;
 			}
+			//reset time
 			shockTImeCountdown = shockTime;
 			shocked = false;
 		}
