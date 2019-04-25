@@ -5,90 +5,120 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using TMPro;
 
-public class UIManager : MonoBehaviour
+namespace Racing
 {
-	public static UIManager Instance;
-
-	public GameObject turnLeftButton;
-	public GameObject turnRightButton;
-
-	public TextMeshProUGUI timerText;
-
-	float startGameTime = 3;				//Время перед стартом игры
-	float timer;							//таймер, с которым производятся все операции
-
-	#region Singleton
-	private void Awake()
+	public class UIManager : MonoBehaviour
 	{
+		public static UIManager Instance;
 
-		if (Instance != null)
-			return;
-		Instance = this;
-	}
-	#endregion
+		public GameObject turnLeftButton;
+		public GameObject turnRightButton;
 
-	private void Start()
-	{
-		timer = startGameTime;
-	}
+		//text of score slash
+		public TextMeshProUGUI slashText;
+		Animator slashAnim;
 
-	public void SetControl(CarSystem car)
-	{
-		EventTrigger leftButton = turnLeftButton.AddComponent<EventTrigger>();
-		EventTrigger rightButton = turnRightButton.AddComponent<EventTrigger>();
+		public TextMeshProUGUI timerText;
 
-		//Устанавливаем управление для правой кнопки (нажатие)
+		float startGameTime = 3;                //Время перед стартом игры
+		float timer;                            //таймер, с которым производятся все операции
 
-		EventTrigger.Entry entryRightDown = new EventTrigger.Entry();
-		entryRightDown.eventID = EventTriggerType.PointerDown;
-		entryRightDown.callback.AddListener((data) => { OnPointerDownRightDelegate((PointerEventData)data, car); });
-		rightButton.triggers.Add(entryRightDown);
-
-		//Устанавливаем управление для левой кнопки (нажатие_
-
-		EventTrigger.Entry entryLeftDown = new EventTrigger.Entry();
-		entryLeftDown.eventID = EventTriggerType.PointerDown;
-		entryLeftDown.callback.AddListener((data) => { OnPointerDownLeftDelegate((PointerEventData)data, car); });
-		leftButton.triggers.Add(entryLeftDown);
-
-		//Устанавливаем управление для кнопок (отпускание)
-
-		EventTrigger.Entry entryUp = new EventTrigger.Entry();
-		entryUp.eventID = EventTriggerType.PointerUp;
-		entryUp.callback.AddListener((data) => { OnPointerUpDelegate((PointerEventData)data, car); });
-		leftButton.triggers.Add(entryUp);
-		rightButton.triggers.Add(entryUp);
-	}
-
-	void OnPointerDownRightDelegate(PointerEventData data, CarSystem car)
-	{
-		car.TurnCar(1);
-	}
-
-	void OnPointerDownLeftDelegate(PointerEventData data, CarSystem car)
-	{
-		car.TurnCar(-1);
-	}
-
-	void OnPointerUpDelegate(PointerEventData data, CarSystem car)
-	{
-		car.TurnCar(0);
-	}
-
-
-	private void Update()
-	{
-		if (!GameManager.gameStarted && GameManager.countdownGameStarted)
+		#region Singleton
+		private void Awake()
 		{
-			timer -= Time.deltaTime;
-			timerText.text = Mathf.Ceil(timer).ToString();
+
+			if (Instance != null)
+				return;
+			Instance = this;
 		}
-		else if (GameManager.gameStarted)
+		#endregion
+
+		private void Start()
 		{
-			timerText.text = "GO!";
-			//стартуем анимацию, когда игра началась
-			//timerText.GetComponent<Animator>().Play("StartGameTimer");
-			timerText.GetComponent<Animator>().SetTrigger("GameStarted");
+			timer = startGameTime;
+
+			slashAnim = slashText.GetComponent<Animator>();
+
+			SetControl(GameObject.FindWithTag("Player").GetComponent<CarSystem>());
 		}
+
+		private void Update()
+		{
+			//if game is not started but countdown stated
+			if (!GameManager.gameIsGoing && GameManager.countdownGameStarted)
+			{
+				//back to standart size of timer
+				timerText.GetComponent<Animator>().SetBool("GameStarted", false);
+				timer -= Time.deltaTime;
+				timerText.text = Mathf.Ceil(timer).ToString();
+			}
+			//if game is started
+			else if (GameManager.gameIsGoing)
+			{
+				timerText.text = "GO!";
+				//start anim
+				timerText.GetComponent<Animator>().SetBool("GameStarted", true);
+				//set standart value for timer
+				timer = startGameTime;
+			}
+		}
+		
+		//write scoreText and play anim
+		public void UpdateScore(TextMeshProUGUI scoreText, int score)
+		{
+			scoreText.text = score.ToString();
+			//get menu color of car from blueprint
+			slashText.color = GameManager.Instance.GetGameLeader().carMenuColor;
+
+			//play anims
+			scoreText.GetComponent<Animator>().Play(0);
+			slashAnim.Play(0);
+		}
+
+		public void SetControl(CarSystem car)
+		{
+			EventTrigger leftButton = turnLeftButton.AddComponent<EventTrigger>();
+			EventTrigger rightButton = turnRightButton.AddComponent<EventTrigger>();
+
+			//Устанавливаем управление для правой кнопки (нажатие)
+
+			EventTrigger.Entry entryRightDown = new EventTrigger.Entry();
+			entryRightDown.eventID = EventTriggerType.PointerDown;
+			entryRightDown.callback.AddListener((data) => { OnPointerDownRightDelegate((PointerEventData)data, car); });
+			rightButton.triggers.Add(entryRightDown);
+
+			//Устанавливаем управление для левой кнопки (нажатие)
+
+			EventTrigger.Entry entryLeftDown = new EventTrigger.Entry();
+			entryLeftDown.eventID = EventTriggerType.PointerDown;
+			entryLeftDown.callback.AddListener((data) => { OnPointerDownLeftDelegate((PointerEventData)data, car); });
+			leftButton.triggers.Add(entryLeftDown);
+
+			//Устанавливаем управление для кнопок (отпускание)
+
+			EventTrigger.Entry entryUp = new EventTrigger.Entry();
+			entryUp.eventID = EventTriggerType.PointerUp;
+			entryUp.callback.AddListener((data) => { OnPointerUpDelegate((PointerEventData)data, car); });
+			leftButton.triggers.Add(entryUp);
+			rightButton.triggers.Add(entryUp);
+		}
+
+		void OnPointerDownRightDelegate(PointerEventData data, CarSystem car)
+		{
+			car.TurnCar(1);
+		}
+
+		void OnPointerDownLeftDelegate(PointerEventData data, CarSystem car)
+		{
+			car.TurnCar(-1);
+		}
+
+		void OnPointerUpDelegate(PointerEventData data, CarSystem car)
+		{
+			car.TurnCar(0);
+		}
+
+
+
 	}
 }

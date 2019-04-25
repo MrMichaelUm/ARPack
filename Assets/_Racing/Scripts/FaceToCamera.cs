@@ -2,22 +2,25 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FaceToCamera : MonoBehaviour
+namespace Racing
 {
-	public Transform cam;
-
-	Transform _transform;
-
-	private void Start()
+	public class FaceToCamera : MonoBehaviour
 	{
-		_transform = transform;
-	}
+		public Transform cam;
 
-	void Update()
-	{
-		Vector3 dir = _transform.position - cam.position;
-		Quaternion lookRotation = Quaternion.LookRotation(dir);
-		Vector3 rotation = lookRotation.eulerAngles;
-		_transform.rotation = Quaternion.Euler(0, rotation.y, 0);
+		Transform _transform;
+
+		private void Start()
+		{
+			_transform = transform;
+		}
+
+		void Update()
+		{
+			Vector3 dir = _transform.position - cam.position;
+			Quaternion lookRotation = Quaternion.LookRotation(dir);
+			Vector3 rotation = lookRotation.eulerAngles;
+			_transform.rotation = Quaternion.Euler(0, rotation.y, 0);
+		}
 	}
 }
