@@ -8,6 +8,7 @@ namespace Planes
         private void Awake()
         {
             _shootable = LayerMask.NameToLayer("Shootable");
+            //GetComponent<Animator>().Play("IslandFlying");
         }
 
         private void OnTriggerEnter(Collider other)

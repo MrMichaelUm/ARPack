@@ -10,7 +10,7 @@ namespace Planes
         void Awake()
         {
             isPlayer = true; //объект является игроком
-            _gunCharge = GameObject.FindWithTag("PlayerCharge").GetComponent<Slider>();
+            _gunCharge = GameObject.FindWithTag("FireSystem").GetComponent<Slider>();
             shootingPoints = GetComponentsInChildren<SingleShoot>();
             _sliderHealth = GameObject.FindWithTag("PlayerHealth").GetComponent<Slider>();
             health = _sliderHealth.value;

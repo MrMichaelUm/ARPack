@@ -6,6 +6,7 @@ namespace Planes
     public class EnemyYellowPrint : CharacterPrint
     {
         public float standartSpeed = 10;
+        public float maxSpeed = 60;
         public float lowSpeed = 5;
         public float speed;
         public float lookDelay = 0.3f;
@@ -18,7 +19,16 @@ namespace Planes
         public float shootDelay = 1f;
         bool playerInRange = false;
         public float prevShoot = 0;
-        public float offset = 5;
+        public float offsetClose = 5;
+        public float offsetFarBegin = 150f;
+        public float offsetFarEnd = 70f;
+        bool turboMode = false;
+        SandStorm sandStorm;
+        float timeBeforeNextSandStorm = 20f;
+        float timeSinceLastSandStorm = 0;
+        int minTimeBeforeNextSandStorm = 20;
+        int maxTimeBeforeNextSandStorm = 100;
+        System.Random random;
 
         float y = 0f;
 
@@ -32,6 +42,8 @@ namespace Planes
             _player = GameObject.FindWithTag("Player").GetComponent<Transform>();
             _nose = GameObject.FindWithTag("EnemyNose").GetComponent<Transform>();
             _sliderHealth = GameObject.FindWithTag("EnemyHealth").GetComponent<Slider>();
+            sandStorm = GetComponent<SandStorm>();
+            random = new System.Random();
             health = _sliderHealth.value;
             speed = standartSpeed;
         }
@@ -43,7 +55,7 @@ namespace Planes
             //постоянное движение вперед
             _enemy.position = Vector3.MoveTowards(_enemy.position, _nose.position, speed * Time.deltaTime);
             //с небольшой задержкой поворачиваемся в направлении игрока
-            if (Vector3.Distance(_player.position, _enemy.position) < offset)
+            if (Vector3.Distance(_player.position, _enemy.position) < offsetClose) //если подлетел слишком быстро: сбавляет скорость и рандомно меняет направление
             {
                 speed = lowSpeed;
                 System.Random random = new System.Random();
@@ -66,8 +78,19 @@ namespace Planes
             else
             {
                 y = 0f;
-                speed = standartSpeed;
-                Debug.Log("vsio ok");
+                if (Vector3.Distance(_player.position, _enemy.position) > offsetFarBegin || turboMode) //если мы улетели слишком далеко от врага - начинаем ускорение
+                {
+                    turboMode = true;
+                    speed = maxSpeed;
+                    if (Vector3.Distance(_player.position, _enemy.position) < offsetFarEnd)
+                    {
+                        turboMode = false;
+                    }
+                }
+                else
+                {
+                    speed = standartSpeed;
+                }
                 Quaternion neededRotation = Quaternion.LookRotation(_player.position - _enemy.position);
                 _enemy.rotation = Quaternion.Slerp(_enemy.rotation, neededRotation, Time.deltaTime * lookDelay);
             }
@@ -94,8 +117,6 @@ namespace Planes
                 playerInRange = false;
             }
 
-
-
             if (timer - prevShoot >= timeBetweenShoots * effectsDisplayTime)
             {
                 foreach (SingleShoot point in shootingPoints)
@@ -103,9 +124,16 @@ namespace Planes
                     point.DisableEffects();
                 }
             }
+
+            if (timer - timeSinceLastSandStorm >= timeBeforeNextSandStorm)
+            {
+                Debug.Log("Starting SandStorm");
+                sandStorm.StartSandStorm();
+                timeBeforeNextSandStorm = random.Next(minTimeBeforeNextSandStorm, maxTimeBeforeNextSandStorm);
+            }
         }
 
-        override public void Shooting()
+        override public void Shooting() //стрельба
         {
             foreach (SingleShoot point in shootingPoints)
             {

@@ -9,6 +9,7 @@ namespace Planes
 
         bool paused = false; //указывает, нажата ли пауза
         Image _pauseScreen; //полупрозрачный экран, который появляется, когда нажата пауза
+        public bool buttonOrientation = false;
 
         static int currentDifficlty; 
         //варианты сложности врага
@@ -17,7 +18,9 @@ namespace Planes
         public static int HARD = 3;
         public static int NEXT_DIFFICULTY = -1; //следующая сложность
 
-        GameObject _enemy;
+        //GameObject _enemy;
+        Transform _joystick;
+        Transform _fireSystem;
 
         private void Awake()
         {
@@ -35,7 +38,9 @@ namespace Planes
 
             _pauseScreen = GameObject.FindWithTag("PauseScreen").GetComponent<Image>();
             _pauseScreen.enabled = false;
-            _enemy = GameObject.FindWithTag("Enemy");
+            //_enemy = GameObject.FindWithTag("Enemy");
+            _joystick = GameObject.FindWithTag("Joystick").GetComponent<RectTransform>();
+            _fireSystem = GameObject.FindWithTag("FireSystem").GetComponent<RectTransform>();
             //ChangeDifficulty(EASY); //начинаем с первой сложности
         }
 
@@ -88,6 +93,14 @@ namespace Planes
                     }
             }
             currentDifficlty = newDifficulty;*/
+        }
+
+        //нужно вызвать при переключении положения кнопок
+        public void SwapButtons()
+        {
+            float xTemp = _joystick.position.x;
+            _joystick.position = new Vector3(_fireSystem.position.x, _joystick.position.y, 0);
+            _fireSystem.position = new Vector3(xTemp, _fireSystem.position.y, 0);
         }
     }
 }

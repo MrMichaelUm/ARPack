@@ -5,6 +5,7 @@ namespace Planes
     public class PlayerMovement : MonoBehaviour
     {
         public float speed = 10f; //скорость
+        public float rotationSpeed = 1f;
         Transform _player; //позиция игрока
         Transform _nose; //нос - точка, которая находится спереди самолета, и к которой он будет "стремиться"
         FixedJoystick _joystick; //джойстик - управление
@@ -32,12 +33,12 @@ namespace Planes
 
             if (horizontalMove < -0.2f || horizontalMove > 0.2f) //если джойстик потянут горизонтально на некоторую значительную величину
             {
-                _player.Rotate(0, horizontalMove, 0); //вращаем игрока; вместе с ним вращается "нос", в сторону которого он летит
+                _player.Rotate(0, horizontalMove * rotationSpeed, 0); //вращаем игрока; вместе с ним вращается "нос", в сторону которого он летит
             }
 
             if (verticalMove < -0.2f || verticalMove > 0.2f) //если джойстик потянут вертикально на некоторую значительную величину
             {
-                _player.Rotate(-verticalMove, 0, 0); //вращаем игрока; вместе с ним вращается "нос", в сторону которого он летит
+                _player.Rotate(-verticalMove * rotationSpeed, 0, 0); //вращаем игрока; вместе с ним вращается "нос", в сторону которого он летит
             }
         }
     }
