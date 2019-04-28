@@ -30,9 +30,9 @@ namespace Planes
             }
             if (health <= 0)
             {
-                if (!isPlayer)
-                    GameManager.instance.ChangeDifficulty(GameManager.NEXT_DIFFICULTY); //если умирает враг, то игра переходит на следующую сложность
-                Destroy(this);
+                //if (!isPlayer)
+                    //GameManager.instance.ChangeDifficulty(GameManager.NEXT_DIFFICULTY); //если умирает враг, то игра переходит на следующую сложность
+                Destroy(gameObject);
             }
             _sliderHealth.value = health;
         }

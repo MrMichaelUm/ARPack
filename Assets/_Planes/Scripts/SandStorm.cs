@@ -9,7 +9,9 @@ namespace Planes
         bool isStorming = false;
         float timer = 0;
         public float sandStormDurability = 10f;
-        Transform _player;
+        GameObject _player;
+        Transform _playerTransform;
+        PlayerBluePrint _playerScript;
         PlayerMovement _playerMovement;
         FixedJoystick _joystick;
 
@@ -19,14 +21,18 @@ namespace Planes
         public float sandRotationIncrease = 4;
         double timeForRandomRotate = 1.5;
         Vector3 randomRotation;
-
         System.Random random;
+        public float damage;
+        public float deltaTimeDamage;
+        float timeSinceLastDamage;
 
-        void Awake()
+        void Start()
         {
             _joystick = GameObject.FindWithTag("Joystick").GetComponent<FixedJoystick>();
-            _player = GameObject.FindWithTag("Player").GetComponent<Transform>();
-            _playerMovement = GameObject.FindWithTag("Player").GetComponent<PlayerMovement>();
+            _player = GameObject.FindWithTag("Player");
+            _playerTransform = _player.GetComponent<Transform>();
+            _playerMovement = _player.GetComponent<PlayerMovement>();
+            _playerScript = _player.GetComponent<PlayerBluePrint>();
             standartSpeed = _playerMovement.speed;
             standartRotationSpeed = _playerMovement.rotationSpeed;
             random = new System.Random();
@@ -52,7 +58,7 @@ namespace Planes
                     {
                         timeForRandomRotate -= Time.deltaTime;
                         //Debug.Log(timeForRandomRotate);
-                        _player.Rotate(randomRotation * standartRotationSpeed * sandRotationIncrease);
+                        _playerTransform.Rotate(randomRotation * standartRotationSpeed * sandRotationIncrease);
                     }
                     else
                     {
@@ -66,6 +72,11 @@ namespace Planes
                     timeForRandomRotate = 0;
                 }
                 
+                if (timer - timeSinceLastDamage >= deltaTimeDamage)
+                {
+                    _playerScript.TakeDamage(damage);
+                    timeSinceLastDamage = timer;
+                }
             }
             if (isStorming && timer > sandStormDurability)
             {
@@ -82,6 +93,7 @@ namespace Planes
 
                 timer = 0;
                 isStorming = false;
+                timeSinceLastDamage = 0;
                 Debug.Log("Sandstorm ends");
             }
         }
@@ -89,6 +101,7 @@ namespace Planes
         public void StartSandStorm()
         {
             isStorming = true;
+            timer = 0;
         }
     }
 }

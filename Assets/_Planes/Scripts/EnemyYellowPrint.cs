@@ -24,10 +24,10 @@ namespace Planes
         public float offsetFarEnd = 70f;
         bool turboMode = false;
         SandStorm sandStorm;
-        float timeBeforeNextSandStorm = 20f;
+        float timeBeforeNextSandStorm;
         float timeSinceLastSandStorm = 0;
-        int minTimeBeforeNextSandStorm = 20;
-        int maxTimeBeforeNextSandStorm = 100;
+        public int minTimeBeforeNextSandStorm = 30;
+        public int maxTimeBeforeNextSandStorm = 160;
         System.Random random;
 
         float y = 0f;
@@ -39,13 +39,18 @@ namespace Planes
             shootingPoints = GetComponentsInChildren<SingleShoot>();
             _enemy = GetComponent<Transform>();
             _enemyRigidbody = GetComponent<Rigidbody>();
-            _player = GameObject.FindWithTag("Player").GetComponent<Transform>();
             _nose = GameObject.FindWithTag("EnemyNose").GetComponent<Transform>();
             _sliderHealth = GameObject.FindWithTag("EnemyHealth").GetComponent<Slider>();
             sandStorm = GetComponent<SandStorm>();
             random = new System.Random();
+            timeBeforeNextSandStorm = random.Next(minTimeBeforeNextSandStorm, maxTimeBeforeNextSandStorm);
             health = _sliderHealth.value;
             speed = standartSpeed;
+        }
+
+        private void Start()
+        {
+            _player = GameObject.FindWithTag("Player").GetComponent<Transform>();
         }
 
         void Update()
@@ -128,6 +133,7 @@ namespace Planes
             if (timer - timeSinceLastSandStorm >= timeBeforeNextSandStorm)
             {
                 Debug.Log("Starting SandStorm");
+                timeSinceLastSandStorm = timer;
                 sandStorm.StartSandStorm();
                 timeBeforeNextSandStorm = random.Next(minTimeBeforeNextSandStorm, maxTimeBeforeNextSandStorm);
             }

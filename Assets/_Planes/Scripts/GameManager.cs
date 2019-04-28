@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 namespace Planes
 {
@@ -9,18 +10,18 @@ namespace Planes
 
         bool paused = false; //указывает, нажата ли пауза
         Image _pauseScreen; //полупрозрачный экран, который появляется, когда нажата пауза
+        //GameObject _chooseLevelScreen;
         public bool buttonOrientation = false;
+        public enum Difficulties { EASY, MEDIUM, HARD };
+        public Difficulties currentDifficulty;
 
-        static int currentDifficlty; 
-        //варианты сложности врага
-        public static int EASY = 1;
-        public static int MEDIUM = 2;
-        public static int HARD = 3;
-        public static int NEXT_DIFFICULTY = -1; //следующая сложность
-
-        //GameObject _enemy;
         Transform _joystick;
         Transform _fireSystem;
+
+        //префабы врагов и островов
+        public GameObject Island1;//, Island2, Island3;
+        public GameObject GreenEnemy, YellowEnemy;//, RedEnemy;
+        public GameObject Player;
 
         private void Awake()
         {
@@ -35,15 +36,17 @@ namespace Planes
             }
             #endregion
             DontDestroyOnLoad(gameObject); //не позволяем удалять GameManager при перезагрузке сцены
-
+            
             _pauseScreen = GameObject.FindWithTag("PauseScreen").GetComponent<Image>();
             _pauseScreen.enabled = false;
-            //_enemy = GameObject.FindWithTag("Enemy");
+            //_chooseLevelScreen = GameObject.FindWithTag("ChooseLevelScreen");
             _joystick = GameObject.FindWithTag("Joystick").GetComponent<RectTransform>();
             _fireSystem = GameObject.FindWithTag("FireSystem").GetComponent<RectTransform>();
-            //ChangeDifficulty(EASY); //начинаем с первой сложности
+            Time.timeScale = 0;
+            paused = true;
         }
 
+        //ставит/убирает паузу при нажатии на кнопку
         public void PauseButtonPressed()
         {
             if (paused) //если пауза нажата, а мы нажимаем кнопку, то отжимаем паузу
@@ -64,35 +67,46 @@ namespace Planes
             }
         }
 
-        public void ChangeDifficulty (int newDifficulty) //регулировка сложности уровня
+        public void ChangeDifficulty (Difficulties newDifficulty) //регулировка сложности уровня
         {
-            /*if (newDifficulty == NEXT_DIFFICULTY)
+            currentDifficulty = newDifficulty;
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+            //SceneDifficultyManager.instance.
+            /*switch (newDifficulty)
             {
-                newDifficulty = currentDifficlty + 1;
-                if (newDifficulty > 3)
+                case Difficulties.EASY:
                 {
-                    newDifficulty = 1;
+                    Debug.Log("Easy level");
+                    //_chooseLevelScreen.SetActive(false);
+                    SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+                    //Instantiate(Island1);
+                    //Instantiate(GreenEnemy);
+                    break;
+                }
+                case Difficulties.MEDIUM:
+                {
+                    Debug.Log("Medium level");
+                    //_chooseLevelScreen.SetActive(false);
+                    SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+                    Instantiate(YellowEnemy);
+                    break;
+                }
+                case Difficulties.HARD:
+                {
+                    Debug.Log("Hard level");
+                    SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+                    break;
                 }
             }
-            switch (newDifficulty)
-            {
-                case 1:
-                    {
-                        _enemy.AddComponent<EnemyGreenPrint>();
-                        break;
-                    }
-                case 2:
-                    {
-                        _enemy.AddComponent<EnemyYellowPrint>();
-                        break;
-                    }
-                case 3:
-                    {
-                        _enemy.AddComponent<EnemyRedPrint>();
-                        break;
-                    }
-            }
-            currentDifficlty = newDifficulty;*/
+            //Instantiate(Player);
+            inst();*/
+        }
+
+        void inst ()
+        {
+            Instantiate(Island1);
+            Instantiate(GreenEnemy);
+            Instantiate(Player);
         }
 
         //нужно вызвать при переключении положения кнопок

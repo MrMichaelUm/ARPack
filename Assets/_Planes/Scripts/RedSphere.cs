@@ -6,6 +6,7 @@ namespace Planes
     public class RedSphere : MonoBehaviour
     {
         Transform _player;
+        Transform _nose;
         Material _sphere;
         public float maxAlphaOfSphere = 80f; //максимальная непрозрачность шара
         Color currentSphere; //цвет шара в данный момент
@@ -13,12 +14,46 @@ namespace Planes
         public bool disabling = false; //показывает, убирается ли шар в данный момент
         public bool enabling = false; //показывает, создается ли шар в данный момент
         public bool inSphere; //показывает, находится игрок внутри допустимой зоны-сферы
+        LineRenderer _way;
+        GameObject _comeBackText;
+        float timer;
+        public float timeBeforeDamage;
+        public float deltaTimeDamage;
+        float timeSinceLastDamage;
+        public float damage = 2f;
+        PlayerBluePrint _playerScript;
 
         void Awake()
         {
             _player = GameObject.FindWithTag("Player").GetComponent<Transform>();
             _sphere = GetComponent<MeshRenderer>().material;
             currentSphere = _sphere.color;
+            _nose = GameObject.FindWithTag("Nose").GetComponent<Transform>();
+            _way = GetComponent<LineRenderer>();
+            _comeBackText = GameObject.FindWithTag("ComeBackText");
+            _comeBackText.SetActive(false);
+            _playerScript = GetComponentInParent<PlayerBluePrint>();
+        }
+
+        private void Update()
+        {
+            if (enabling)
+            {
+                timer += Time.deltaTime;
+                if (timer > timeBeforeDamage)
+                {
+                    if (timer - timeSinceLastDamage > deltaTimeDamage)
+                    {
+                        _playerScript.TakeDamage(damage);
+                        timeSinceLastDamage = timer;
+                    }
+                }
+            }
+            else
+            {
+                timer = 0;
+                timeSinceLastDamage = 0;
+            }
         }
 
         private void FixedUpdate()
@@ -60,6 +95,11 @@ namespace Planes
 
             currentSphere.a = Mathf.Lerp(currentSphere.a, 0f, enablingTime * Time.deltaTime); //постепенно убираем непрозрачность - от текущей до нуля
             _sphere.color = currentSphere;
+
+            //убираем рекомендуемый путь
+            _way.enabled = false;
+            //убираем предупреждение
+            _comeBackText.SetActive(false);
         }
 
         public void EnableSphere()
@@ -73,6 +113,12 @@ namespace Planes
 
             currentSphere.a = Mathf.Lerp(currentSphere.a, maxAlphaOfSphere, enablingTime * Time.deltaTime); //постепенно добавляем непрозраность - от текущей до максимальной
             _sphere.color = currentSphere;
+
+            //прорисовка пути к купюре
+            _way.enabled = true;
+            _way.SetPositions(new Vector3[] { _nose.position, new Vector3(0, 0, 0)});
+            //вывод предупреждения
+            _comeBackText.SetActive(true);
         }
     }
 }

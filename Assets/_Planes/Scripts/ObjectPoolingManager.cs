@@ -36,7 +36,7 @@ namespace Planes
                 if (!healthBonus.activeInHierarchy)
                 {
                     healthBonus.SetActive(true);
-                    Debug.Log("Found unused object");
+                    //Debug.Log("Found unused object");
                     return healthBonus;
                 }
             }

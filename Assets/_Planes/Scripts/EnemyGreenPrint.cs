@@ -30,11 +30,15 @@ namespace Planes
             shootingPoints = GetComponentsInChildren<SingleShoot>();
             _enemy = GetComponent<Transform>();
             _enemyRigidbody = GetComponent<Rigidbody>();
-            _player = GameObject.FindWithTag("Player").GetComponent<Transform>();
             _nose = GameObject.FindWithTag("EnemyNose").GetComponent<Transform>();
             _sliderHealth = GameObject.FindWithTag("EnemyHealth").GetComponent<Slider>();
             health = _sliderHealth.value;
             speed = standartSpeed;
+        }
+
+        private void Start()
+        {
+            _player = GameObject.FindWithTag("Player").GetComponent<Transform>();
         }
 
         void Update()

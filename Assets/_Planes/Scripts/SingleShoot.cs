@@ -20,7 +20,9 @@ namespace Planes
         float aimRange;
         Vector3 neededRotation;
 
-        void Start()
+        CharacterPrint thisCharacterPrint;
+
+        void Awake()
         {
             shootableMask = LayerMask.GetMask("Shootable");
             _shootPoint = GetComponent<Transform>();
@@ -28,8 +30,12 @@ namespace Planes
             _shootParticles = GetComponent<ParticleSystem>();
             _shootLine = GetComponent<LineRenderer>();
             _shootLight = GetComponent<Light>();
-            CharacterPrint thisCharacterPrint = GetComponentInParent<CharacterPrint>();
+            thisCharacterPrint = GetComponentInParent<CharacterPrint>();
             aimRange = thisCharacterPrint.aimRange;
+        }
+
+        private void Start()
+        {
             if (thisCharacterPrint.isPlayer)
             {
                 _enemy = GameObject.FindWithTag("Enemy").GetComponent<Transform>();

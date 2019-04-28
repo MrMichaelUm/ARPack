@@ -7,8 +7,8 @@ namespace Planes {
     {
         BonusesSpawnManager instance;
         public GameObject healthBonusPrefab;
-        public int minTime = 10;
-        public int maxTime = 30;
+        public int minTime = 20;
+        public int maxTime = 60;
         float timeToNextBonus = 10;
         float timer;
         System.Random random;
@@ -26,6 +26,7 @@ namespace Planes {
             #endregion
 
             random = new System.Random();
+            timeToNextBonus = random.Next(minTime, maxTime);
         }
 
         void FixedUpdate()
@@ -40,7 +41,7 @@ namespace Planes {
 
         void SpawnHealthBonus()
         {
-            Debug.Log("Time to spawn a bonus");
+            //Debug.Log("Time to spawn a bonus");
             GameObject bonus = ObjectPoolingManager.instance.GetHealthBonus(healthBonusPrefab);
             Vector3 pos = new Vector3();
             do

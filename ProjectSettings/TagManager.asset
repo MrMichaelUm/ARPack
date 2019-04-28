@@ -7,10 +7,6 @@ TagManager:
   - Joystick
   - Nose
   - FireButton
-  - ShootPointR
-  - ShootPointL
-  - EnemyShootPointR
-  - EnemyShootPointL
   - PlayerCharge
   - EnemyHealth
   - PlayerHealth
@@ -19,6 +15,10 @@ TagManager:
   - EnemyNose
   - Bonuses
   - FireSystem
+  - ComeBackText
+  - ChooseLevelScreen
+  - EnemyShootPointR
+  - EnemyShootPointL
   layers:
   - Default
   - TransparentFX
