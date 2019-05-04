@@ -62,7 +62,9 @@
   <ItemGroup>
     <Compile Include="Assets\_Rockets\_Scripts\EnemyScripts\EnemyPursuit.cs" />
     <Compile Include="Assets\_Rockets\_Scripts\EnemyScripts\EnemyRotationScript.cs" />
+    <Compile Include="Assets\_Rockets\_Scripts\EnemyScripts\FrostEffectBehaviour.cs" />
     <Compile Include="Assets\_Rockets\_Scripts\GameManagement\BulletScript.cs" />
+    <Compile Include="Assets\_Rockets\_Scripts\GameManagement\GameController.cs" />
     <Compile Include="Assets\_Rockets\_Scripts\GameManagement\MeteorSpawner.cs" />
     <Compile Include="Assets\_Rockets\_Scripts\GameManagement\ObjectPoolingManager.cs" />
     <Compile Include="Assets\_Rockets\_Scripts\GameManagement\PlanetScript.cs" />

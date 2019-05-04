@@ -111,7 +111,7 @@ MonoBehaviour:
   lifeDuration: 2
   player: {fileID: 112111498, guid: 8f91872caa4a0c345b3a2b0c83205f25, type: 3}
   enemy: {fileID: 1620346394, guid: 209c1c42c4fa67b499d32b1accb1b150, type: 3}
-  PlayerPrefab: {fileID: 459515678, guid: 8f91872caa4a0c345b3a2b0c83205f25, type: 3}
+  PlayerPrefab: {fileID: 1620346389, guid: 209c1c42c4fa67b499d32b1accb1b150, type: 3}
   bulletDamage: 10
   shieldDamageBoost: 1
 --- !u!54 &3182654268640199263

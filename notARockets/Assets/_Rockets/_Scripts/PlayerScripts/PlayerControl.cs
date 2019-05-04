@@ -4,28 +4,33 @@ using UnityEngine;
 
 public class PlayerControl : MonoBehaviour
 {
-    public float moveSpeed;
+    public PlayerRotationScript playerStats;  //Характеристики игрока
+
     Rigidbody rb;
     Transform tr;
-    public Joystick joystick;
-    //public float rotationSpeed;
-    private Vector3 moveDirection;
 
+    public Joystick joystick;                 //Джойстик управления
+
+    private Vector3 moveDirection;
+    private float moveSpeed;
     void Start()
     {
         rb = GetComponent<Rigidbody>();
         tr = GetComponent<Transform>();
+        
     }
     void Update()
     {
-        moveDirection = new Vector3(joystick.Horizontal, 0, joystick.Vertical);
+        moveSpeed = playerStats.moveSpeed; //Подгружаем скорость
+
+        moveDirection = new Vector3(joystick.Horizontal, 0, joystick.Vertical); //Двигаемся в направлении осей джойстика
     }
     void FixedUpdate()
     {
-        rb.MovePosition(rb.position + tr.TransformDirection(moveDirection) * moveSpeed * Time.deltaTime);
+        rb.MovePosition(rb.position + tr.TransformDirection(moveDirection) * moveSpeed * Time.deltaTime); //Двигаем физику
     }
 
-
-
     
+
+
 }

@@ -14,7 +14,13 @@ TagManager:
   - PlayerShield
   - enemyBullet
   - PlanetSurface
-  - Planet
+  - PlayerHealthBar
+  - PlayerShieldBar
+  - EnemyHealthBar
+  - EnemyShieldBar
+  - SecondPlanet
+  - FirstPlanet
+  - FrostEffect
   layers:
   - Default
   - TransparentFX

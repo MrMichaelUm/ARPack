@@ -7,24 +7,30 @@ public class BulletScript : MonoBehaviour
 {
     
     public float speed = 2f;
-    public float lifeDuration = 2f;
+    public float lifeDuration = 2f; // Время жизни пули
+
     public PlayerRotationScript player;
     public EnemyRotationScript enemy;
+
     public GameObject PlayerPrefab;
+
     public float bulletDamage;
-    public int shieldDamageBoost = 1;
+    public int shieldDamageBoost = 1; // Коефициент урона щитам
+
     Rigidbody rb;
     Transform tr;
 
     
-    private float lifeTimer;
+    private float lifeTimer; // Вспомогательный таймер жизни
     
     private Vector3 moveDirection;
+
     Vector3 movement;
 
     void OnEnable ()
     {
         lifeTimer = lifeDuration;
+
         rb = GetComponent<Rigidbody>();
         tr = GetComponent<Transform>();
 
@@ -40,6 +46,8 @@ public class BulletScript : MonoBehaviour
         moveDirection = PlayerPrefab.transform.forward;
        // Debug.Log("Our Vectors:"+" x "+moveDirection.x+" y "+moveDirection.y+" z "+moveDirection.z);
     }
+
+
     void Update()
     {
 
@@ -63,12 +71,14 @@ public class BulletScript : MonoBehaviour
         {
             //Debug.Log("Got it!");
             player.BulletDamage(bulletDamage, shieldDamageBoost);
+
             gameObject.SetActive(false);
         }
         if (gameObject.CompareTag("playerBullet") && (other.CompareTag("Enemy")))
         {
-            Debug.Log("GodLike!");
+            //Debug.Log("GodLike!");
             enemy.BulletDamage(bulletDamage, shieldDamageBoost);
+
             gameObject.SetActive(false);
         }
     }

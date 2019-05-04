@@ -4,23 +4,36 @@ using UnityEngine;
 
 public class CollisionWithPlanet : MonoBehaviour
 {
-    public GameObject Impact;
-    public GameObject Explosion;
-    public GameObject Shadow;
+    public GameObject Impact;        //Еффект при столконовении с планетой
+    public GameObject Explosion;     //Еффект при столкновении с игроком
+    public GameObject Shadow;        //Тень
+
     public PlayerRotationScript player;
     public EnemyRotationScript enemy;
+
     public float MeteorDamage;
     public int ShieldDamageBoost;
-    public List<ParticleSystem> trails;
+
+    public List<ParticleSystem> trails;  //Дым, огонь и другие "цепные" эффекты
 
     public bool MeteorDestroyed;
 
     void OnEnable()
     {
         MeteorDestroyed = false;
+
+        if (player.gameObject.activeSelf)
+        {
+            player = GameObject.FindWithTag("Player").GetComponent<PlayerRotationScript>();
+        }
+        if (enemy.gameObject.activeSelf)
+        {
+            enemy = GameObject.FindWithTag("Enemy").GetComponent<EnemyRotationScript>();
+        }
     }
     void OnCollisionEnter(Collision other)
     {
+        /* Запоминаем точку столкноения и угол(вращение относительно точки) при столкновении */
         ContactPoint contact = other.contacts[0];
         Quaternion rot = Quaternion.FromToRotation(Vector3.up, contact.normal);
         Vector3 pos = contact.point;
@@ -28,13 +41,14 @@ public class CollisionWithPlanet : MonoBehaviour
 
         if (other.collider.CompareTag("PlanetSurface")) {
 
-            
+            //Создаём кратер
             if (Impact != null)
             {
                 var ImpactVFX = Instantiate(Impact, pos, rot) as GameObject;
                 Destroy(ImpactVFX, 10);
             }
 
+            //Плавно убираем дым с огнём
             if (trails.Count > 0 )
             {
                 for (int i = 0; i<trails.Count; i++)
@@ -51,30 +65,34 @@ public class CollisionWithPlanet : MonoBehaviour
                     }
                 }
             }
+
             MeteorDestroyed = true;
             gameObject.SetActive(false);
             
         }
         else
         {
-            if (other.collider.CompareTag("Player")|| (other.collider.CompareTag("PlayerShield")))
+            if (other.collider.CompareTag("Player"))
             {
                 //Debug.Log("Meteor Hit the Player!");
-                player.MeteorDamage(MeteorDamage, ShieldDamageBoost);
+                player.MeteorDamage(MeteorDamage, ShieldDamageBoost);  //Вызываем функцию урона игроку
             }
-            if (other.collider.CompareTag("Enemy")||(other.collider.CompareTag("EnemyShield")))
+            if (other.collider.CompareTag("Enemy"))
             {
-                Debug.Log("Meteor Hit the Enemy!");
-                enemy.MeteorDamage(MeteorDamage, ShieldDamageBoost);
+                //Debug.Log("Meteor Hit the Enemy!");
+                enemy.MeteorDamage(MeteorDamage, ShieldDamageBoost);  //Вызываем функцию урона противнику
             }
-                if (Explosion != null)
-                {
+
+            //Создаём взрыв
+            if (Explosion != null)
+            {
                     var ExplosionVFX = Instantiate(Explosion, pos, rot) as GameObject;
                     Destroy(ExplosionVFX, 10);
-                }
+            }
 
-                if (trails.Count > 0)
-                {
+            //Плавно убираем дым с огнём
+            if (trails.Count > 0)
+             {
                     for (int i = 0; i < trails.Count; i++)
                     {
                         if (trails[i] != null)
@@ -88,12 +106,11 @@ public class CollisionWithPlanet : MonoBehaviour
                             }
                         }
                     }
-                }
-                MeteorDestroyed = true;
-                gameObject.SetActive(false);
-
             }
-        
-        
+
+            MeteorDestroyed = true;
+            gameObject.SetActive(false);
+
+        }
     }
 }

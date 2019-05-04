@@ -67,8 +67,10 @@ public class MissileMovement : MonoBehaviour
         if (searchTimer <= 0)
         {
 
-            searchDirection = Vector3.MoveTowards(tr.position, tr.forward , moveSpeed * Time.deltaTime);
+            //searchDirection = Vector3.MoveTowards(tr.position, tr.forward , moveSpeed * Time.deltaTime);
             searchRotation = Quaternion.LookRotation(enemyTarget.transform.position - tr.position, tr.up);
+            tr.rotation = Quaternion.Slerp(tr.rotation, searchRotation, rotationSpeed * Time.deltaTime);
+            movement = tr.forward*moveSpeed*Time.deltaTime;
             searchFlag = true;
         }
         
@@ -79,15 +81,15 @@ public class MissileMovement : MonoBehaviour
     {
         if (searchFlag)
         {
-            movement = tr.forward/4;
+            
             rb.MovePosition(tr.position + movement);
-            tr.rotation = Quaternion.Slerp(tr.rotation, searchRotation, rotationSpeed*Time.deltaTime);
+            
             searchingTimer -= Time.deltaTime;
 
             if (searchingTimer <= 0)
             {
                 searchTimer = searchTimeDelay;
-                movement = tr.forward;
+                movement = tr.forward * moveSpeed * Time.deltaTime;
                 searchingTimer = searchingTime;
                 searchFlag = false;
                 

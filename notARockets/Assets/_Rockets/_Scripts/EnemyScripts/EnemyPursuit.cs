@@ -8,43 +8,59 @@ public class EnemyPursuit : MonoBehaviour
     public Rigidbody player;
     Rigidbody rb;
     Transform tr;
-    //GameObject gm;
+
     public float speed;
+    public float rotationSpeed;
+
     public Slider healthBar;
+
     public float stoppingDistance;
     public float retreatingDistance;
 
-    private Vector3 moveDirection;
+    private Vector3 movement;
     private float health;
+
+    private Quaternion moveRotation;
+    private float originStoppingDistance;
+    private float originRetreatingDistance;
     void Start()
     {
         rb = GetComponent<Rigidbody>();
         tr = GetComponent<Transform>();
-       // gm = GetComponent<GameObject>();
+
+        originStoppingDistance = stoppingDistance;     //Сохраняем изначальную дистанцию остановки
+        originRetreatingDistance = retreatingDistance; //И дистанцию отступления
+
         
     }
-
-    // Update is called once per frame
     void Update()
     {
-        moveDirection = new Vector3(player.position.z, 0, player.position.x);
-        health = healthBar.value;
+        moveRotation = Quaternion.LookRotation(player.transform.position - tr.position, tr.up);  //Нахоим нужное направление поворота на цель
+        tr.rotation = Quaternion.Slerp(tr.rotation, moveRotation, rotationSpeed * Time.deltaTime);  //Плавно нводимся на цель с заданной угловой скоростью
+
+        health = healthBar.value;               //Следим за уровнем здоровья для изменеия поведения
+
+        /* Добавляем агрессии в поведение противника */
         if (health <= 50)
         {
             speed = 16;
-            stoppingDistance = 7;
-            retreatingDistance = 5;
+            rotationSpeed = 10;
+            stoppingDistance = originStoppingDistance/2+2f;
+            retreatingDistance = originRetreatingDistance/2+2f;
         }
-        
+
+        movement = tr.forward * speed * Time.deltaTime;  //Движение происходит вперёд
     }
     void FixedUpdate()
     {
-        
+       
+        /* Двигаемся через физику, т.к. нас притягивает планета. Задаём характер движения в зависимости от расстояния до игрока */
+
         if (Vector3.Distance(tr.position,player.position) >= stoppingDistance)
         {
 
-            tr.position = Vector3.MoveTowards(tr.position, player.position, speed * Time.deltaTime);
-            //rb.MovePosition(rb.position + tr.TransformDirection(moveDirection) * speed * Time.deltaTime);
+            rb.MovePosition(tr.position + movement);   
+
         }
         else if ((Vector3.Distance(tr.position, player.position) < stoppingDistance)&&(Vector3.Distance(tr.position, player.position) >= retreatingDistance))
         {
@@ -52,8 +68,7 @@ public class EnemyPursuit : MonoBehaviour
         }
         else if (Vector3.Distance(tr.position, player.position) < retreatingDistance)
         {
-            tr.position = Vector3.MoveTowards(tr.position, player.position, -speed * Time.deltaTime);
-            //rb.MovePosition(rb.position - tr.TransformDirection(moveDirection) * speed * Time.deltaTime);
+            rb.MovePosition(tr.position - movement);
         }
 
 

@@ -13,6 +13,7 @@ public class ObjectPoolingManager : MonoBehaviour
     public int bulletAmount = 20;
     public int meteorAmount = 20;
     public int missileAmount = 6;
+
     private Queue<GameObject> playerBullets;
     private Queue<GameObject> enemyBullets;
     private Queue<GameObject> meteors;
@@ -21,17 +22,20 @@ public class ObjectPoolingManager : MonoBehaviour
     
     void Awake()
     {
-        instance = this;
+        instance = this;            // Делаем ссылку
 
+        /* Создаём очереди для пуллинга всех необходимых объектов */
         playerBullets = new Queue<GameObject>(bulletAmount);
         enemyBullets = new Queue<GameObject>(bulletAmount);
         meteors = new Queue<GameObject>(meteorAmount);
         shadows = new Queue<GameObject>(meteorAmount);
         missiles = new Queue<GameObject>(missileAmount);
+
     }
 
     public GameObject GetPlayerBullet(GameObject BulletPrefab)
     {
+
         foreach (GameObject playerBullet in playerBullets)
         {
             if (!playerBullet.activeInHierarchy)
@@ -40,6 +44,7 @@ public class ObjectPoolingManager : MonoBehaviour
                 return playerBullet;
             }
         }
+
         GameObject prefabInstance = Instantiate(BulletPrefab);
         prefabInstance.transform.SetParent(transform);
         playerBullets.Enqueue(prefabInstance);

@@ -127,7 +127,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   joystick: {fileID: 0}
-  shoot: {fileID: 0}
   ShootEmitter: {fileID: 353892513}
   RightMissileEmitter: {fileID: 1150110284}
   LeftMissileEmitter: {fileID: 281715449160568797}
@@ -137,9 +136,9 @@ MonoBehaviour:
   MissilePrefab: {fileID: 3789607116029841545, guid: 9a60126ffd9f4594eb76b20be5d4920f,
     type: 3}
   Enemy: {fileID: 1620346389, guid: 209c1c42c4fa67b499d32b1accb1b150, type: 3}
-  playerHealthBar: {fileID: 0}
-  playerShieldBar: {fileID: 0}
+  FrostAnimationEffect: {fileID: 0}
   Win: 2
+  moveSpeed: 14
   playerStartHealth: 100
   playerStartShield: 100
   ShieldRecoveryDelay: 10

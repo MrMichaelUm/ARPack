@@ -114,16 +114,17 @@ MonoBehaviour:
   player: {fileID: 0}
   ShootEmitter: {fileID: 1887966364}
   enemyparent: {fileID: 0}
-  playerparent: {fileID: 0}
-  eulerSpeed: 5
+  probabilityInPercent: 10
+  freezeDuration: 3
+  freezeDamage: 0.1
   enemyHealth: 100
-  enemyShield: 100
+  enemyShield: 20
   BulletPrefab: {fileID: 7303864929662337296, guid: d0d4591fe65dd58438fbc8b62608da05,
     type: 3}
-  enemyHealthBar: {fileID: 0}
-  enemyShieldBar: {fileID: 0}
   ShieldPrefab: {fileID: 4787230232031656363}
   startBetweenShots: 2
+  castFreeze: 0
+  RandomDigit: 0
 --- !u!65 &5867755713956915442
 BoxCollider:
   m_ObjectHideFlags: 0
