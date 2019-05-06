@@ -14166,7 +14166,7 @@ GameObject:
   - component: {fileID: 6029877328033049399}
   m_Layer: 8
   m_Name: vfx_DoneMeteor_01
-  m_TagString: Untagged
+  m_TagString: DoneMeteor
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

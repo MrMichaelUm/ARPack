@@ -4,23 +4,40 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - playerBullet
   - Enemy
   - enemyEmitter
-  - EnemyShield
-  - Meteor
-  - PlayerMissile
-  - Shadow
-  - PlayerShield
-  - enemyBullet
+  - playerBullet
   - PlanetSurface
-  - PlayerHealthBar
-  - PlayerShieldBar
-  - EnemyHealthBar
-  - EnemyShieldBar
-  - SecondPlanet
-  - FirstPlanet
+  - Meteor
+  - PlayerShield
+  - EnemyShield
+  - Shadow
+  - PlayerMissile
   - FrostEffect
+  - FirstPlanet
+  - PlayerHealthBar
+  - EnemyShieldBar
+  - EnemyHealthBar
+  - PlayerShieldBar
+  - SecondPlanet
+  - ThirdPlanet
+  - FirstBoss
+  - SecondBoss
+  - ThirdBoss
+  - FirstLevel
+  - SecondLevel
+  - ThirdLevel
+  - Joystick
+  - FrostMeteor
+  - DoneFrostMeteor
+  - DoneMeteor
+  - FirstBossBullet
+  - SecondBossBullet
+  - ThirdBossBullet
+  - PlayerParent
+  - FirstBossParent
+  - SecondBossParent
+  - ThirdBossParent
   layers:
   - Default
   - TransparentFX
@@ -31,7 +48,7 @@ TagManager:
   - 
   - 
   - Meteor
-  - Ships
+  - Ship
   - 
   - 
   - 

@@ -15,6 +15,7 @@ public class PlayerControl : MonoBehaviour
     private float moveSpeed;
     void Start()
     {
+        joystick = GameObject.FindGameObjectWithTag("Joystick").GetComponent<FixedJoystick>();
         rb = GetComponent<Rigidbody>();
         tr = GetComponent<Transform>();
         

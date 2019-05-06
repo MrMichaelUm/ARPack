@@ -5,7 +5,10 @@ using UnityEngine;
 public class MissileMovement : MonoBehaviour
 {
     public EnemyRotationScript enemyTarget;
+
     public GameObject PlayerPrefab;
+    public GameObject EnemyPrefab;
+
     public float moveSpeed;
     public float rotationSpeed;
     public float damage;
@@ -14,6 +17,8 @@ public class MissileMovement : MonoBehaviour
     public float searchTimeDelay;
     public float searchingTime;
     public float switchsearchTime;
+    public int NumberOfLevel;
+    public string BossTag;
 
     Vector3 startMoveDirection;
     Vector3 searchDirection;
@@ -43,10 +48,33 @@ public class MissileMovement : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         tr = GetComponent<Transform>();
 
-        if (enemyTarget.gameObject.activeSelf)
+        PlayerPrefab = GameObject.FindGameObjectWithTag("Player");
+
+        if (NumberOfLevel == 0)
         {
-            enemyTarget = GameObject.FindWithTag("Enemy").GetComponent<EnemyRotationScript>();
+            EnemyPrefab = GameObject.FindWithTag("FirstBoss");
+            if (EnemyPrefab.activeSelf)
+                enemyTarget = EnemyPrefab.GetComponent<EnemyRotationScript>();
+            //BulletTag = "FirstBossBullet";
+            BossTag = "FirstBoss";
         }
+        else if (NumberOfLevel == 1)
+        {
+            EnemyPrefab = GameObject.FindWithTag("SecondBoss");
+            if (EnemyPrefab.activeSelf)
+                enemyTarget = EnemyPrefab.GetComponent<EnemyRotationScript>();
+            //BulletTag = "SecondBossBullet";
+            BossTag = "SecondBoss";
+        }
+        else if (NumberOfLevel == 2)
+        {
+            EnemyPrefab = GameObject.FindWithTag("ThirdBoss");
+            if (EnemyPrefab.activeSelf)
+                enemyTarget = EnemyPrefab.GetComponent<EnemyRotationScript>();
+            //BulletTag = "ThirdBossBullet";
+            BossTag = "ThirdBoss";
+        }
+
         startMoveDirection = PlayerPrefab.transform.forward;
         searchFlag = false;
     }
@@ -103,7 +131,7 @@ public class MissileMovement : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Enemy"))
+        if (other.CompareTag(BossTag))
         {
             enemyTarget.MissileDamage(damage, shieldDamageBoost);
             gameObject.SetActive(false);

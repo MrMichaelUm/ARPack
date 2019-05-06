@@ -28,6 +28,8 @@ public class PlayerRotationScript : MonoBehaviour {
 
     public FrostEffectBehaviour FrostAnimationEffect;   //Связь со скриптом умения 2-го босса -- "Заморозка"
 
+    public GameController gameController;
+
     private Vector3 currentRotateDirection;
     private Vector3 previousRotateDirection;
     private Quaternion slerpRotation;
@@ -45,6 +47,7 @@ public class PlayerRotationScript : MonoBehaviour {
     private float playerShield;
 
     public float moveSpeed;                           //Скорость движения
+    public float RocketStorage;
 
     public float playerStartHealth;
     public float playerStartShield;
@@ -52,15 +55,23 @@ public class PlayerRotationScript : MonoBehaviour {
     public float ShieldRecoveryDelay;                 //Время которое игрок должен продержаться без получения урона, для восстановления щитов
     public float ShieldRecoveryValue;                 //Значение, на которое восполняется щит за каждый фрейм.
 
+    void Awake()
+    {
+        gameController = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
+        if (gameController == null)
+            Debug.Log("Fuck!!");
+        joystick = GameObject.FindGameObjectWithTag("Joystick").GetComponent<FixedJoystick>();
+        BulletPrefab = gameController.PlayerBullet;
+        MissilePrefab = gameController.PlayerMissile;
+        playerHealthBar = GameObject.FindGameObjectWithTag("PlayerHealthBar").GetComponent<Slider>();
+        playerShieldBar = GameObject.FindGameObjectWithTag("PlayerShieldBar").GetComponent<Slider>();
+        FrostAnimationEffect = GameObject.FindGameObjectWithTag("FrostEffect").GetComponent<FrostEffectBehaviour>();
+    }
     void Start()
     {
         rb = GetComponent<Rigidbody>();
         tr = GetComponent<Transform>();
         gm = GetComponent<GameObject>();
-        
-        playerHealthBar = GameObject.FindGameObjectWithTag("PlayerHealthBar").GetComponent<Slider>();
-        playerShieldBar = GameObject.FindGameObjectWithTag("PlayerShieldBar").GetComponent<Slider>();
-        FrostAnimationEffect = GameObject.FindGameObjectWithTag("FrostEffect").GetComponent<FrostEffectBehaviour>();
 
         playerHealthBar.value = playerStartHealth;
         playerShieldBar.value = playerStartShield;
@@ -88,19 +99,16 @@ public class PlayerRotationScript : MonoBehaviour {
 
     void Update()
     {
+
         ShieldRecovery();                                               //Всегда хотим попробовать восстановить щиты
-        /*
-        if ((gameObject.activeSelf)&&(!Enemy.activeSelf)) {
-            Win = 1;
-            PlayerPrefs.SetInt("Win", Win);
-            PlayerPrefs.Save();
-        }
-        */
+
     }
 
     void FixedUpdate()
     {
+
         PlayerBehaviour();  //Поведение игрока(В основном движение и поворот, и эффекты накладываемые на них).
+
     }
 
     /* Функция восстановления щитов */
@@ -108,7 +116,7 @@ public class PlayerRotationScript : MonoBehaviour {
     {
         if ((DamageInputFlag) && (playerShieldBar.value < 100))  //Если был урон, и щиты не полные
         {
-            
+            Debug.Log("ShiedTime!");
             if (ShieldRecoveryTime <= 0)                          
             {
                //Восстанавливаем щиты, если продержались достаточно(И возвращаем их, если они были уничтожены)
@@ -132,6 +140,7 @@ public class PlayerRotationScript : MonoBehaviour {
         }
     }
 
+    
     public void BulletDamage(float enemyBulletDamage, int shieldDamageBoost)
     {
         
@@ -338,7 +347,8 @@ public class PlayerRotationScript : MonoBehaviour {
         if (gameObject.activeSelf) { 
             GameObject bulletObject = ObjectPoolingManager.Instance.GetPlayerBullet(BulletPrefab);
             bulletObject.transform.position = ShootEmitter.position;
-            bulletObject.transform.forward = transform.forward;
+            //bulletObject.transform.up = ShootEmitter.up;
+            bulletObject.transform.forward = ShootEmitter.forward;
         }
     }
 

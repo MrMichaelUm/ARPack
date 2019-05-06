@@ -6,22 +6,52 @@ public class MeteorSpawner : MonoBehaviour
 {
     
 
-    public GameObject meteorPrefab; //Цельный префаб готового метеорита(С "тенью", эффектами и т.д.)
+    private GameObject meteorPrefab; //Цельный префаб готового метеорита(С "тенью", эффектами и т.д.)
+    public GameObject FrostMeteorPrefab;
+    public GameObject FlameMeteorPrefab;
 
-    public GameObject AlfaMainMeteor; //Префаб самого камня метеорита внутри цельного префаба
+    private GameObject AlfaMainMeteor; //Префаб самого камня метеорита внутри цельного префаба
+    public GameObject FrostAlfaMainMeteor;
+    public GameObject FlameAlfaMainMeteor;
+
+    
+
+
 
     float distance;  // Радиус спавна
     
     public float delayTime = 3f; //Частота спавна
+
+    private GameController gameController;
     
-    
-    
+    void Awake()
+    {
+        gameController = gameObject.GetComponent<GameController>();
+
+        if(gameController.NumberOfLevel == 1)
+        {
+            AlfaMainMeteor = FrostAlfaMainMeteor;
+            meteorPrefab = FrostMeteorPrefab;
+        }
+        else
+        {
+            //Debug.Log("Meteor Level 0!");
+            AlfaMainMeteor = FlameAlfaMainMeteor;
+            meteorPrefab = FlameMeteorPrefab;
+        }
+    }
     void Start()
     {
-        distance = AlfaMainMeteor.GetComponent<MeteorScript>().distance;
+        if (AlfaMainMeteor != null)
+        {
+            distance = AlfaMainMeteor.GetComponent<MeteorScript>().distance;
 
-        StartCoroutine(SpawnMeteor());
-        
+            StartCoroutine(SpawnMeteor());
+        }
+        else
+        {
+            Debug.Log("Meteor is null :(");
+        }
     }
 
     IEnumerator SpawnMeteor()

@@ -7,31 +7,61 @@ public class GameController : MonoBehaviour
 {
     public GameObject Player;
     public GameObject Enemy;
-
+    public int NumberOfLevel;
     public Slider PlayerHealth;
     public Slider PlayerShield;
     public Slider EnemyHealth;
     public Slider EnemyShield;
+
+    public GameObject PlayerBullet;
+    public GameObject PlayerMissile;
+    public GameObject FirstBossBullet;
+    public GameObject SecondBossBullet;
+    public GameObject ThirdBossBullet;
 
     public int Win;  //Переменная определяет победителя
 
     private PlayerRotationScript PlayerScript;
     private EnemyRotationScript EnemyScript;
 
+    void Awake()
+    {
+            Player = GameObject.FindGameObjectWithTag("Player");
+            Player.SetActive(true);
+            PlayerScript = Player.GetComponent<PlayerRotationScript>();
+    }
     void Start()
     {
+
+        if (NumberOfLevel == 0)
+        {
+                Enemy = GameObject.FindWithTag("FirstBoss");
+                Enemy.SetActive(true);
+                EnemyScript = Enemy.GetComponent<EnemyRotationScript>();
+        }
+        else if (NumberOfLevel == 1)
+        {
+                Enemy = GameObject.FindWithTag("SecondBoss");
+                Enemy.SetActive(true);
+                EnemyScript = Enemy.GetComponent<EnemyRotationScript>();
+        }
+        else if (NumberOfLevel == 2)
+        {
+                Enemy = GameObject.FindWithTag("ThirdBoss");
+                Enemy.SetActive(true);
+                EnemyScript = Enemy.GetComponent<EnemyRotationScript>();
+        }
+
         Win = 0;
 
-        Player.SetActive(true);
-        Enemy.SetActive(true);
+       
+        
 
         if (Player.gameObject.activeSelf)
         {
-            PlayerScript = GameObject.FindWithTag("Player").GetComponent<PlayerRotationScript>();
         }
         if (Enemy.gameObject.activeSelf)
         {
-            EnemyScript = GameObject.FindWithTag("Enemy").GetComponent<EnemyRotationScript>();
         }
 
         PlayerHealth.value = 100f;

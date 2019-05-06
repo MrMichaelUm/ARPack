@@ -8,7 +8,7 @@ public class EnemyRotationScript : MonoBehaviour
 
     Transform tr;
 
-    public Transform player;
+    public GameObject player;
     public Transform ShootEmitter;
     public Transform enemyparent;   //Пустой объект который выполняет движение по планете и хранит в себе объект врага
 
@@ -31,21 +31,45 @@ public class EnemyRotationScript : MonoBehaviour
 
     public bool castFreeze;            //Сигнал кастования умения "Заморозка"
 
+    public int NumberOfLevel;
+
     private PlayerRotationScript playerStats;  //Связь со скриптом игрока
+    private EnemyPursuit enemyPursuit;
 
     public int RandomDigit;                    //Случайное число для иллюзии вероятности
 
+    private float originStoppingDistance;
+    private float originRetreatingDistance;
+    private float originSpeed;
+    private float originRotationSpeed;
+
+    private float speed;
+    private float rotationSpeed;
+    private float stoppingDistance;
+    private float retreatingDistance;
     void Start()
     {
-
-        StartCoroutine(RandomPerSec());  //Задаёт сигнал для кастования умения один раз в заданный период времени(5 сек по стандарту)
+        //NumberOfLevel = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>().NumberOfLevel;
 
         tr = GetComponent<Transform>();
 
+        player = GameObject.FindGameObjectWithTag("Player");
         playerStats = player.GetComponent<PlayerRotationScript>();
         
         enemyHealthBar = GameObject.FindGameObjectWithTag("EnemyHealthBar").GetComponent<Slider>();
         enemyShieldBar = GameObject.FindGameObjectWithTag("EnemyShieldBar").GetComponent<Slider>();
+
+        enemyPursuit = enemyparent.GetComponent<EnemyPursuit>();
+        stoppingDistance = enemyPursuit.stoppingDistance;
+        retreatingDistance = enemyPursuit.retreatingDistance;
+        speed = enemyPursuit.speed;
+        rotationSpeed = enemyPursuit.rotationSpeed;
+
+
+        originStoppingDistance = stoppingDistance;     //Сохраняем изначальную дистанцию остановки
+        originRetreatingDistance = retreatingDistance; //И дистанцию отступления
+        originSpeed = speed;
+        originRotationSpeed = rotationSpeed;
 
         ShieldPrefab.SetActive(true); //Активируем щиты в начале
 
@@ -56,15 +80,31 @@ public class EnemyRotationScript : MonoBehaviour
         castFreeze = false;                 //В начале не кастуем умений
 
         RandomDigit = 102;                  //В начале задаём число не входящее в наш промежуток
+
+        StartCoroutine(RandomPerSec());  //Задаёт сигнал для кастования умения один раз в заданный период времени(5 сек по стандарту)
     }
 
     void Update()
     {
         /* Здесь можно подключить тот или иной общий стиль поведения :*/
-
-        Enemy2Behaviour();
-
+        if (gameObject.CompareTag("FirstBoss"))
+        {
+            
+            Enemy1Behaviour();
+        }
+        if (gameObject.CompareTag("SecondBoss")) {
+            Enemy2Behaviour();
+        }
+        if (gameObject.CompareTag("ThirdBoss"))
+        {
+            Enemy3Behaviour();
+        }
         /* Здесь можно было подключить тот или иной общий стиль поведения.*/
+
+        enemyPursuit.stoppingDistance = stoppingDistance;
+        enemyPursuit.retreatingDistance = retreatingDistance;
+        enemyPursuit.speed = speed;
+        enemyPursuit.rotationSpeed = rotationSpeed;
 
         /* Стрельба раз в определённый период времени*/
         if (timeBetweenShots <= 0)
@@ -87,21 +127,28 @@ public class EnemyRotationScript : MonoBehaviour
 
     public void Enemy1Behaviour()
     {
-        if (enemyHealth <= 50f)
+        if (enemyHealth <= 50)
         {
-
             startBetweenShots = 0.5f;
+            speed = originSpeed * 1.5f;
+            rotationSpeed = originRotationSpeed * 1.5f;
+            stoppingDistance = originStoppingDistance / 2 + 2f;
+            retreatingDistance = originRetreatingDistance / 2 + 2f;
         }
     }
 
     public void Enemy2Behaviour()
     {
-        if (enemyHealth <= 50f)
+        /* Добавляем агрессии в поведение противника */
+        if (enemyHealth <= 50)
         {
             startBetweenShots = 0.5f;
+            speed = originSpeed * 1.5f;
+            rotationSpeed = originRotationSpeed * 1.5f;
+            stoppingDistance = originStoppingDistance / 2 + 2f;
+            retreatingDistance = originRetreatingDistance / 2 + 2f;
         }
 
-        
         if (castFreeze)
         {
             playerStats.FreezeCast(freezeDuration, freezeDamage);  //Кастуем заморозку
@@ -109,12 +156,19 @@ public class EnemyRotationScript : MonoBehaviour
         }
 
     }
-    public void Shoot()
+
+    public void Enemy3Behaviour()
+    {
+
+    }
+
+        public void Shoot()
     {
         GameObject bulletObject = ObjectPoolingManager.Instance.GetEnemyBullet(BulletPrefab);  //Вызываем пулю из пула:)
-        bulletObject.transform.position = ShootEmitter.position;                               //Ставим её на позицию выстрелов
-        bulletObject.transform.forward = transform.forward;                                    //Направляем по направлению движения врага
-
+        bulletObject.transform.position = ShootEmitter.position;
+        //bulletObject.transform.up = ShootEmitter.up;                                              //Ставим её на позицию выстрелов
+        bulletObject.transform.forward = ShootEmitter.forward;                                    //Направляем по направлению движения врага
+        
     }
 
     /* задаём каст умений с определённой вероятностью в каждый заданный период */
@@ -124,7 +178,7 @@ public class EnemyRotationScript : MonoBehaviour
         yield return new WaitForSeconds(5f);
 
         RandomDigit = Random.Range(0, 101);
-        if (RandomDigit <= probabilityInPercent)
+        if (RandomDigit < probabilityInPercent)
         {
             castFreeze = true;
         }

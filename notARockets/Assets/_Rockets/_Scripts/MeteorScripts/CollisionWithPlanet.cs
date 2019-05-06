@@ -14,6 +14,9 @@ public class CollisionWithPlanet : MonoBehaviour
     public float MeteorDamage;
     public int ShieldDamageBoost;
 
+    public int NumberOfLevel;
+    public string BossTag;
+
     public List<ParticleSystem> trails;  //Дым, огонь и другие "цепные" эффекты
 
     public bool MeteorDestroyed;
@@ -22,13 +25,33 @@ public class CollisionWithPlanet : MonoBehaviour
     {
         MeteorDestroyed = false;
 
-        if (player.gameObject.activeSelf)
+        if (GameObject.FindGameObjectWithTag("Player").activeSelf)
         {
             player = GameObject.FindWithTag("Player").GetComponent<PlayerRotationScript>();
         }
-        if (enemy.gameObject.activeSelf)
+        if (NumberOfLevel == 0)
         {
-            enemy = GameObject.FindWithTag("Enemy").GetComponent<EnemyRotationScript>();
+            if (GameObject.FindGameObjectWithTag("FirstBoss").activeSelf)
+            {
+                enemy = GameObject.FindWithTag("FirstBoss").GetComponent<EnemyRotationScript>();
+                BossTag = "FirstBoss";
+            }
+        }
+        else if (NumberOfLevel == 1)
+        {
+            if (GameObject.FindGameObjectWithTag("SecondBoss").activeSelf)
+            {
+                enemy = GameObject.FindWithTag("SecondBoss").GetComponent<EnemyRotationScript>();
+                BossTag = "SecondBoss";
+            }
+        }
+        else if (NumberOfLevel == 0)
+        {
+            if (GameObject.FindGameObjectWithTag("ThirdBoss").activeSelf)
+            {
+                enemy = GameObject.FindWithTag("ThirdBoss").GetComponent<EnemyRotationScript>();
+                BossTag = "ThirdBoss";
+            }
         }
     }
     void OnCollisionEnter(Collision other)
@@ -77,7 +100,7 @@ public class CollisionWithPlanet : MonoBehaviour
                 //Debug.Log("Meteor Hit the Player!");
                 player.MeteorDamage(MeteorDamage, ShieldDamageBoost);  //Вызываем функцию урона игроку
             }
-            if (other.collider.CompareTag("Enemy"))
+            if (other.collider.CompareTag(BossTag))
             {
                 //Debug.Log("Meteor Hit the Enemy!");
                 enemy.MeteorDamage(MeteorDamage, ShieldDamageBoost);  //Вызываем функцию урона противнику
