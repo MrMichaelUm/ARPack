@@ -4,7 +4,8 @@ using UnityEngine.UI;
 using UnityEngine;
 
 
-public class PlayerRotationScript : MonoBehaviour {
+public class PlayerRotationScript : MonoBehaviour
+{
 
     Rigidbody rb;
     Transform tr;
@@ -58,8 +59,10 @@ public class PlayerRotationScript : MonoBehaviour {
     void Awake()
     {
         gameController = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
+
         if (gameController == null)
             Debug.Log("Fuck!!");
+
         joystick = GameObject.FindGameObjectWithTag("Joystick").GetComponent<FixedJoystick>();
         BulletPrefab = gameController.PlayerBullet;
         MissilePrefab = gameController.PlayerMissile;
@@ -94,7 +97,6 @@ public class PlayerRotationScript : MonoBehaviour {
 
         //Устанавливаем параметры для передачи вне сцены
         Win = 0;
-        PlayerPrefs.SetInt("Win", Win);
     }
 
     void Update()
@@ -117,9 +119,9 @@ public class PlayerRotationScript : MonoBehaviour {
         if ((DamageInputFlag) && (playerShieldBar.value < 100))  //Если был урон, и щиты не полные
         {
             Debug.Log("ShiedTime!");
-            if (ShieldRecoveryTime <= 0)                          
+            if (ShieldRecoveryTime <= 0)
             {
-               //Восстанавливаем щиты, если продержались достаточно(И возвращаем их, если они были уничтожены)
+                //Восстанавливаем щиты, если продержались достаточно(И возвращаем их, если они были уничтожены)
                 if (ShieldPrefab.activeSelf)
                 {
                     playerShield += ShieldRecoveryValue;
@@ -127,7 +129,7 @@ public class PlayerRotationScript : MonoBehaviour {
                 }
                 else
                 {
-                    
+
                     ShieldPrefab.SetActive(true);
                     playerShield += ShieldRecoveryValue;
                     playerShieldBar.value = playerShield;
@@ -140,14 +142,14 @@ public class PlayerRotationScript : MonoBehaviour {
         }
     }
 
-    
+
     public void BulletDamage(float enemyBulletDamage, int shieldDamageBoost)
     {
-        
+
         if (ShieldPrefab.activeSelf)
         {
             //Debug.Log("PlayerShieldDamaged!");
-            playerShield -= (enemyBulletDamage*shieldDamageBoost);
+            playerShield -= (enemyBulletDamage * shieldDamageBoost);
             playerShieldBar.value = playerShield;
             if (playerShield <= 0f)
             {
@@ -159,28 +161,14 @@ public class PlayerRotationScript : MonoBehaviour {
         {
             playerHealth -= enemyBulletDamage;
             playerHealthBar.value = playerHealth;
-            
+
         }
 
         if (playerHealth <= 0f)
         {
             playerHealthBar.value = 0f;
             gameObject.SetActive(false);
-            /*
-            if (!Enemy.activeSelf)
-            {
-                Win = 3;
-                PlayerPrefs.SetInt("Win", Win);
-                PlayerPrefs.Save();
-            }
-            else
-            {
-                Win = 2;
-                PlayerPrefs.SetInt("Win", Win);
-                PlayerPrefs.Save();
-            }
-            */
-            
+
         }
         else
         {
@@ -190,12 +178,46 @@ public class PlayerRotationScript : MonoBehaviour {
 
     }
 
+    public void MissileDamage(float enemyMissileDamage, int shieldDamageBoost)
+    {
+
+        if (ShieldPrefab.activeSelf)
+        {
+            //Debug.Log("PlayerShieldDamaged!");
+            playerShield -= (enemyMissileDamage * shieldDamageBoost);
+            playerShieldBar.value = playerShield;
+            if (playerShield <= 0f)
+            {
+                playerShieldBar.value = 0f;
+                ShieldPrefab.SetActive(false);
+            }
+        }
+        else if (gameObject.activeSelf)
+        {
+            playerHealth -= enemyMissileDamage;
+            playerHealthBar.value = playerHealth;
+
+        }
+
+        if (playerHealth <= 0f)
+        {
+            playerHealthBar.value = 0f;
+            gameObject.SetActive(false);
+
+        }
+        else
+        {
+            DamageInputFlag = true;
+            ShieldRecoveryTime = ShieldRecoveryDelay;
+        }
+
+    }
     public void MeteorDamage(float meteorDamage, int shieldDamageBoost)
     {
         if (ShieldPrefab.activeSelf)
         {
-            
-            playerShield -= (meteorDamage*shieldDamageBoost);
+
+            playerShield -= (meteorDamage * shieldDamageBoost);
 
             playerShieldBar.value = playerShield;
 
@@ -211,7 +233,7 @@ public class PlayerRotationScript : MonoBehaviour {
         }
         else if (gameObject.activeSelf)
         {
-            
+
             playerHealth -= meteorDamage;
             playerHealthBar.value = playerHealth;
 
@@ -221,20 +243,6 @@ public class PlayerRotationScript : MonoBehaviour {
         {
             playerHealthBar.value = 0f;
             gameObject.SetActive(false);
-            /*
-            if (!Enemy.activeSelf)
-            {
-                Win = 3;
-                PlayerPrefs.SetInt("Win", Win);
-                PlayerPrefs.Save();
-            }
-            else
-            {
-                Win = 2;
-                PlayerPrefs.SetInt("Win", Win);
-                PlayerPrefs.Save();
-            }
-            */
 
         }
         else
@@ -247,16 +255,16 @@ public class PlayerRotationScript : MonoBehaviour {
     /* Функция влияния заморозки на игрока */
     public void FreezeCast(float duration, float damagePerFrame)
     {
-        
+
         if (gameObject.activeSelf)
-        StartCoroutine(FreezeDuration(duration, damagePerFrame));
-        
+            StartCoroutine(FreezeDuration(duration, damagePerFrame));
+
     }
 
     /* Корутин влияния заморозки на игрока */
-    IEnumerator  FreezeDuration (float duration, float damagePerFrame)
+    IEnumerator FreezeDuration(float duration, float damagePerFrame)
     {
-        
+
         moveSpeed = 0.1f;                       //Замедлем игрока
         freezeRotation = true;                  //Замораживаем поворот
         freezeDamagePerFrame = damagePerFrame;  //Обновляем урон
@@ -266,9 +274,9 @@ public class PlayerRotationScript : MonoBehaviour {
         yield return new WaitForSeconds(duration);
 
         moveSpeed = speedForFreeze;             //Возвращаем сохраненную скорость
-        freezeRotation = false;                 
+        freezeRotation = false;
         FrostAnimationEffect.FrostFadeOut();    //Запускаем анимацию отмерзания экрана    
-        
+
     }
 
     /* Основное поведение игрока и его реакция на еффекты извне*/
@@ -305,7 +313,8 @@ public class PlayerRotationScript : MonoBehaviour {
                 ShieldRecoveryTime = ShieldRecoveryDelay;
             }
         }
-        else {
+        else
+        {
             float h1 = joystick.Horizontal; // set as your inputs 
             float v1 = joystick.Vertical;
 
@@ -344,7 +353,8 @@ public class PlayerRotationScript : MonoBehaviour {
     //Функция стрельбы
     public void Shoot()
     {
-        if (gameObject.activeSelf) { 
+        if (gameObject.activeSelf)
+        {
             GameObject bulletObject = ObjectPoolingManager.Instance.GetPlayerBullet(BulletPrefab);
             bulletObject.transform.position = ShootEmitter.position;
             //bulletObject.transform.up = ShootEmitter.up;
@@ -357,7 +367,8 @@ public class PlayerRotationScript : MonoBehaviour {
     {
         if (gameObject.activeSelf)
         {
-            GameObject missileObject = ObjectPoolingManager.Instance.GetMissile(MissilePrefab);
+            GameObject missileObject = ObjectPoolingManager.Instance.GetPlayerMissile(MissilePrefab);
+
 
             //Меняем борт запуска
             if (MissileEmitterChange)

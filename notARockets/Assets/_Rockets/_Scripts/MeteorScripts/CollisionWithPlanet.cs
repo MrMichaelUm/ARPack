@@ -21,14 +21,11 @@ public class CollisionWithPlanet : MonoBehaviour
 
     public bool MeteorDestroyed;
 
-    void OnEnable()
+    void Awake()
     {
-        MeteorDestroyed = false;
 
-        if (GameObject.FindGameObjectWithTag("Player").activeSelf)
-        {
             player = GameObject.FindWithTag("Player").GetComponent<PlayerRotationScript>();
-        }
+
         if (NumberOfLevel == 0)
         {
             if (GameObject.FindGameObjectWithTag("FirstBoss").activeSelf)
@@ -54,15 +51,22 @@ public class CollisionWithPlanet : MonoBehaviour
             }
         }
     }
+    void OnEnable()
+    {
+
+        MeteorDestroyed = false;
+        
+    }
     void OnCollisionEnter(Collision other)
     {
         /* Запоминаем точку столкноения и угол(вращение относительно точки) при столкновении */
         ContactPoint contact = other.contacts[0];
         Quaternion rot = Quaternion.FromToRotation(Vector3.up, contact.normal);
         Vector3 pos = contact.point;
-        
 
-        if (other.collider.CompareTag("PlanetSurface")) {
+
+        if (other.collider.CompareTag("PlanetSurface"))
+        {
 
             //Создаём кратер
             if (Impact != null)
@@ -72,9 +76,9 @@ public class CollisionWithPlanet : MonoBehaviour
             }
 
             //Плавно убираем дым с огнём
-            if (trails.Count > 0 )
+            if (trails.Count > 0)
             {
-                for (int i = 0; i<trails.Count; i++)
+                for (int i = 0; i < trails.Count; i++)
                 {
                     if (trails[i] != null)
                     {
@@ -91,7 +95,7 @@ public class CollisionWithPlanet : MonoBehaviour
 
             MeteorDestroyed = true;
             gameObject.SetActive(false);
-            
+
         }
         else
         {
@@ -109,26 +113,26 @@ public class CollisionWithPlanet : MonoBehaviour
             //Создаём взрыв
             if (Explosion != null)
             {
-                    var ExplosionVFX = Instantiate(Explosion, pos, rot) as GameObject;
-                    Destroy(ExplosionVFX, 10);
+                var ExplosionVFX = Instantiate(Explosion, pos, rot) as GameObject;
+                Destroy(ExplosionVFX, 10);
             }
 
             //Плавно убираем дым с огнём
             if (trails.Count > 0)
-             {
-                    for (int i = 0; i < trails.Count; i++)
+            {
+                for (int i = 0; i < trails.Count; i++)
+                {
+                    if (trails[i] != null)
                     {
-                        if (trails[i] != null)
+                        trails[i].transform.parent = null;
+                        var ps = trails[i];
+                        if (ps != null)
                         {
-                            trails[i].transform.parent = null;
-                            var ps = trails[i];
-                            if (ps != null)
-                            {
-                                ps.Stop();
-                                Destroy(ps.gameObject, ps.main.duration + ps.main.startLifetime.constantMax);
-                            }
+                            ps.Stop();
+                            Destroy(ps.gameObject, ps.main.duration + ps.main.startLifetime.constantMax);
                         }
                     }
+                }
             }
 
             MeteorDestroyed = true;

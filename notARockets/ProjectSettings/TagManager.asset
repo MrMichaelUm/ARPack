@@ -38,6 +38,10 @@ TagManager:
   - FirstBossParent
   - SecondBossParent
   - ThirdBossParent
+  - SecondBossMissile
+  - ThirdBossMissile
+  - DoneMagmaMetor
+  - MagmaMeteor
   layers:
   - Default
   - TransparentFX

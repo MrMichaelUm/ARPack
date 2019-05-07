@@ -9,12 +9,13 @@ public class MeteorSpawner : MonoBehaviour
     private GameObject meteorPrefab; //Цельный префаб готового метеорита(С "тенью", эффектами и т.д.)
     public GameObject FrostMeteorPrefab;
     public GameObject FlameMeteorPrefab;
+    public GameObject MagmaMeteorPrefab;
 
     private GameObject AlfaMainMeteor; //Префаб самого камня метеорита внутри цельного префаба
     public GameObject FrostAlfaMainMeteor;
     public GameObject FlameAlfaMainMeteor;
+    public GameObject MagmaAlfaMainMeteor;
 
-    
 
 
 
@@ -28,16 +29,21 @@ public class MeteorSpawner : MonoBehaviour
     {
         gameController = gameObject.GetComponent<GameController>();
 
-        if(gameController.NumberOfLevel == 1)
+        if (gameController.NumberOfLevel == 0)
+        {
+            AlfaMainMeteor = FlameAlfaMainMeteor;
+            meteorPrefab = FlameMeteorPrefab;
+        }
+        else if (gameController.NumberOfLevel == 1)
         {
             AlfaMainMeteor = FrostAlfaMainMeteor;
             meteorPrefab = FrostMeteorPrefab;
         }
-        else
+        else if (gameController.NumberOfLevel == 2)
         {
             //Debug.Log("Meteor Level 0!");
-            AlfaMainMeteor = FlameAlfaMainMeteor;
-            meteorPrefab = FlameMeteorPrefab;
+            AlfaMainMeteor = MagmaAlfaMainMeteor;
+            meteorPrefab = MagmaMeteorPrefab;
         }
     }
     void Start()

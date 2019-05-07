@@ -18,9 +18,13 @@ public class EnemyPursuit : MonoBehaviour
 
     private Quaternion moveRotation;
     
-    void Start()
+    void Awake()
     {
         player = GameObject.FindGameObjectWithTag("PlayerParent").GetComponent<Rigidbody>();
+    }
+    void Start()
+    {
+
         rb = GetComponent<Rigidbody>();
         tr = GetComponent<Transform>();
 

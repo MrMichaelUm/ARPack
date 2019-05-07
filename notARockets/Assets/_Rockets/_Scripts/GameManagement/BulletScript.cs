@@ -5,14 +5,15 @@ using UnityEngine;
 
 public class BulletScript : MonoBehaviour
 {
-    
+
     public float speed = 2f;
     public float lifeDuration = 2f; // Время жизни пули
 
     public PlayerRotationScript player;
     public EnemyRotationScript enemy;
+    public GameController gameController;
 
-    public int NumberOfLevel; 
+    public int NumberOfLevel;
 
     public GameObject ShipPrefab;
     public GameObject EnemyPrefab;
@@ -23,7 +24,7 @@ public class BulletScript : MonoBehaviour
     Rigidbody rb;
     Transform tr;
 
-    
+
     private float lifeTimer; // Вспомогательный таймер жизни
 
     public string BulletTag = "FirstBossBullet";
@@ -33,40 +34,10 @@ public class BulletScript : MonoBehaviour
 
     Vector3 movement;
 
-    void Start()
+    void Awake()
     {
-        //NumberOfLevel = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>().NumberOfLevel;
-        
+        gameController = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
 
-        /*
-        if (NumberOfLevel == 0)
-        {
-            EnemyPrefab = GameObject.FindWithTag("FirstBoss");
-            if (EnemyPrefab.activeSelf)
-                enemy = EnemyPrefab.GetComponent<EnemyRotationScript>();
-            BulletTag = "FirstBossBullet";
-            BossTag = "FirstBoss";
-        }
-        else if (NumberOfLevel == 1)
-        {
-            EnemyPrefab = GameObject.FindWithTag("SecondBoss");
-            if (EnemyPrefab.activeSelf)
-                enemy = EnemyPrefab.GetComponent<EnemyRotationScript>();
-            BulletTag = "SecondBossBullet";
-            BossTag = "SecondBoss";
-        }
-        else if (NumberOfLevel == 2)
-        {
-            EnemyPrefab = GameObject.FindWithTag("ThirdBoss");
-            if (EnemyPrefab.activeSelf)
-                enemy = EnemyPrefab.GetComponent<EnemyRotationScript>();
-            BulletTag = "ThirdBossBullet";
-            BossTag = "ThirdBoss";
-        }
-        */
-    }
-    void OnEnable ()
-    {
         if (GameObject.FindGameObjectWithTag("Player").activeSelf)
         {
             //Debug.Log("FindPlayer!");
@@ -75,38 +46,43 @@ public class BulletScript : MonoBehaviour
 
         if (gameObject.CompareTag("playerBullet"))
         {
-            //Debug.Log("FindShip");
-            ShipPrefab = GameObject.FindGameObjectWithTag("Player");
-        }
+            /* Подвязываем босса к пулям игрока в зависимости от уровня */
+            NumberOfLevel = gameController.NumberOfLevel;
 
             if (NumberOfLevel == 0)
             {
-            //Debug.Log("Level 0!");
+                //Debug.Log("Level 0!");
                 enemy = GameObject.FindGameObjectWithTag("FirstBoss").GetComponent<EnemyRotationScript>();
             }
             else if (NumberOfLevel == 1)
             {
-                enemy = GameObject.FindGameObjectWithTag("SecondtBoss").GetComponent<EnemyRotationScript>();
+                enemy = GameObject.FindGameObjectWithTag("SecondBoss").GetComponent<EnemyRotationScript>();
             }
             else if (NumberOfLevel == 2)
             {
                 enemy = GameObject.FindGameObjectWithTag("ThirdBoss").GetComponent<EnemyRotationScript>();
             }
-        
+
+            ShipPrefab = GameObject.FindGameObjectWithTag("Player");
+        }
+    }
+    void OnEnable()
+    {
+
         lifeTimer = lifeDuration;
 
         rb = GetComponent<Rigidbody>();
         tr = GetComponent<Transform>();
 
         //moveDirection = ShipPrefab.transform.forward;
-       // Debug.Log("Our Vectors:"+" x "+moveDirection.x+" y "+moveDirection.y+" z "+moveDirection.z);
+        // Debug.Log("Our Vectors:"+" x "+moveDirection.x+" y "+moveDirection.y+" z "+moveDirection.z);
     }
 
 
     void Update()
     {
 
-        movement = tr.forward* speed * Time.deltaTime; 
+        movement = tr.forward * speed * Time.deltaTime;
         //Debug.Log("Movement:" + movement);
         lifeTimer -= Time.deltaTime;
         if (lifeTimer <= 0f)
@@ -117,12 +93,12 @@ public class BulletScript : MonoBehaviour
 
     void FixedUpdate()
     {
-        rb.MovePosition(tr.position + movement);        
+        rb.MovePosition(tr.position + movement);
     }
 
     void OnTriggerEnter(Collider other)
     {
-        if (gameObject.CompareTag(BulletTag)&&(other.CompareTag("Player")))
+        if (gameObject.CompareTag(BulletTag) && (other.CompareTag("Player")))
         {
             //Debug.Log("Got it!");
             player.BulletDamage(bulletDamage, shieldDamageBoost);
@@ -137,5 +113,5 @@ public class BulletScript : MonoBehaviour
             gameObject.SetActive(false);
         }
     }
-    
+
 }

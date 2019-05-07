@@ -12,13 +12,14 @@ public class ObjectPoolingManager : MonoBehaviour
 
     public int bulletAmount = 20;
     public int meteorAmount = 20;
-    public int missileAmount = 6;
+    public int missileAmount = 20;
 
     private Queue<GameObject> playerBullets;
     private Queue<GameObject> enemyBullets;
     private Queue<GameObject> meteors;
     private Queue<GameObject> shadows;
-    private Queue<GameObject> missiles;
+    private Queue<GameObject> playerMissiles;
+    private Queue<GameObject> enemyMissiles;
     
     void Awake()
     {
@@ -29,8 +30,8 @@ public class ObjectPoolingManager : MonoBehaviour
         enemyBullets = new Queue<GameObject>(bulletAmount);
         meteors = new Queue<GameObject>(meteorAmount);
         shadows = new Queue<GameObject>(meteorAmount);
-        missiles = new Queue<GameObject>(missileAmount);
-
+        playerMissiles = new Queue<GameObject>(missileAmount);
+        enemyMissiles = new Queue<GameObject>(missileAmount);
     }
 
     public GameObject GetPlayerBullet(GameObject BulletPrefab)
@@ -103,19 +104,36 @@ public class ObjectPoolingManager : MonoBehaviour
         return prefabInstance;
     }
 
-    public GameObject GetMissile(GameObject MissilePrefab)
+    public GameObject GetPlayerMissile(GameObject MissilePrefab)
     {
-        foreach (GameObject missile in missiles)
+        foreach (GameObject playermissile in playerMissiles)
         {
-            if (!missile.activeInHierarchy)
+            if (!playermissile.activeInHierarchy)
             {
-                missile.SetActive(true);
-                return missile;
+                playermissile.SetActive(true);
+                return playermissile;
             }
         }
         GameObject prefabInstance = Instantiate(MissilePrefab);
         prefabInstance.transform.SetParent(transform);
-        missiles.Enqueue(prefabInstance);
+        playerMissiles.Enqueue(prefabInstance);
+
+        return prefabInstance;
+    }
+
+    public GameObject GetBossMissile(GameObject MissilePrefab)
+    {
+        foreach (GameObject enemymissile in enemyMissiles)
+        {
+            if (!enemymissile.activeInHierarchy)
+            {
+                enemymissile.SetActive(true);
+                return enemymissile;
+            }
+        }
+        GameObject prefabInstance = Instantiate(MissilePrefab);
+        prefabInstance.transform.SetParent(transform);
+        enemyMissiles.Enqueue(prefabInstance);
 
         return prefabInstance;
     }

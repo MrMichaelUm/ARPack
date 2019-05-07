@@ -15,9 +15,14 @@ public class GameController : MonoBehaviour
 
     public GameObject PlayerBullet;
     public GameObject PlayerMissile;
+
     public GameObject FirstBossBullet;
     public GameObject SecondBossBullet;
     public GameObject ThirdBossBullet;
+
+    public GameObject SecondBossMissile;
+    public GameObject ThirdBossMissile;
+
 
     public int Win;  //Переменная определяет победителя
 
@@ -26,36 +31,38 @@ public class GameController : MonoBehaviour
 
     void Awake()
     {
-            Player = GameObject.FindGameObjectWithTag("Player");
-            Player.SetActive(true);
-            PlayerScript = Player.GetComponent<PlayerRotationScript>();
+
+        Player = GameObject.FindGameObjectWithTag("Player");
+        Player.SetActive(true);
+        PlayerScript = Player.GetComponent<PlayerRotationScript>();
+
     }
     void Start()
     {
 
         if (NumberOfLevel == 0)
         {
-                Enemy = GameObject.FindWithTag("FirstBoss");
-                Enemy.SetActive(true);
-                EnemyScript = Enemy.GetComponent<EnemyRotationScript>();
+            Enemy = GameObject.FindWithTag("FirstBoss");
+            Enemy.SetActive(true);
+            EnemyScript = Enemy.GetComponent<EnemyRotationScript>();
         }
         else if (NumberOfLevel == 1)
         {
-                Enemy = GameObject.FindWithTag("SecondBoss");
-                Enemy.SetActive(true);
-                EnemyScript = Enemy.GetComponent<EnemyRotationScript>();
+            Enemy = GameObject.FindWithTag("SecondBoss");
+            Enemy.SetActive(true);
+            EnemyScript = Enemy.GetComponent<EnemyRotationScript>();
         }
         else if (NumberOfLevel == 2)
         {
-                Enemy = GameObject.FindWithTag("ThirdBoss");
-                Enemy.SetActive(true);
-                EnemyScript = Enemy.GetComponent<EnemyRotationScript>();
+            Enemy = GameObject.FindWithTag("ThirdBoss");
+            Enemy.SetActive(true);
+            EnemyScript = Enemy.GetComponent<EnemyRotationScript>();
         }
 
         Win = 0;
 
-       
-        
+
+
 
         if (Player.gameObject.activeSelf)
         {
@@ -78,10 +85,10 @@ public class GameController : MonoBehaviour
             Player.SetActive(false);
             Win = 2;
         }
-
-        if (EnemyHealth.value == 0f)
+        else if (EnemyHealth.value == 0f)
         {
             Enemy.SetActive(false);
+
             if (!Player.activeSelf)
             {
                 Win = 3;

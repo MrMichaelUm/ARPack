@@ -10,56 +10,80 @@ public class EnemyRotationScript : MonoBehaviour
 
     public GameObject player;
     public Transform ShootEmitter;
+
+    public Transform RightMissileEmitter;  //Ракетный барабан правого борта
+    public Transform LeftMissileEmitter;   //Ракетный барабан левого борта
+    public GameObject MissilePrefab;
+    private bool MissileEmitterChange;                //Флаг смены ракетного барабана
+
     public Transform enemyparent;   //Пустой объект который выполняет движение по планете и хранит в себе объект врага
 
-    public int probabilityInPercent;  // Вероятность кастования умения в процентном соотношении
+    public int freezeProbabilityInPercent;  // Вероятность кастования умения в процентном соотношении
     public float freezeDuration;      //Длительность умения "Заморозка"
     public float freezeDamage;        //Урон заморозки за каждый фрэйм(примерно 2 милисекунды)
+
+    public int missileProbabilityInPercent;
 
     public float enemyHealth;
     public float enemyShield;
 
-    public GameObject BulletPrefab;  
+    public GameObject BulletPrefab;
     private Slider enemyHealthBar;   //Полоса здоровья
     private Slider enemyShieldBar;   //Полоса щитов
     public GameObject ShieldPrefab;  //Щит врага
 
-    
+
 
     private float timeBetweenShots;    //Вспомогательный таймер для скорости стрельбы
     public float startBetweenShots;    //Скорость(период) стрельбы 
 
+    //private float timeBetweenLaunches;
+    // public float startBetweenLaunches;
+
     public bool castFreeze;            //Сигнал кастования умения "Заморозка"
+    public bool launchMissile;
+    public bool launchDeathStorm;      //Muhahahahahahah
 
     public int NumberOfLevel;
 
     private PlayerRotationScript playerStats;  //Связь со скриптом игрока
     private EnemyPursuit enemyPursuit;
 
-    public int RandomDigit;                    //Случайное число для иллюзии вероятности
+    public int RandomDigit1;                    //Случайное число для иллюзии вероятности
+    public int RandomDigit2;
+    public int RandomDigit3;
 
     private float originStoppingDistance;
     private float originRetreatingDistance;
     private float originSpeed;
     private float originRotationSpeed;
+    private float originMissileProbability;
+    private float originFreezeProbability;
 
     private float speed;
     private float rotationSpeed;
     private float stoppingDistance;
     private float retreatingDistance;
+
+    void Awake()
+    {
+
+        player = GameObject.FindGameObjectWithTag("Player");
+        playerStats = player.GetComponent<PlayerRotationScript>();
+
+    }
     void Start()
     {
         //NumberOfLevel = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>().NumberOfLevel;
 
         tr = GetComponent<Transform>();
 
-        player = GameObject.FindGameObjectWithTag("Player");
-        playerStats = player.GetComponent<PlayerRotationScript>();
-        
+
         enemyHealthBar = GameObject.FindGameObjectWithTag("EnemyHealthBar").GetComponent<Slider>();
         enemyShieldBar = GameObject.FindGameObjectWithTag("EnemyShieldBar").GetComponent<Slider>();
 
         enemyPursuit = enemyparent.GetComponent<EnemyPursuit>();
+
         stoppingDistance = enemyPursuit.stoppingDistance;
         retreatingDistance = enemyPursuit.retreatingDistance;
         speed = enemyPursuit.speed;
@@ -70,16 +94,20 @@ public class EnemyRotationScript : MonoBehaviour
         originRetreatingDistance = retreatingDistance; //И дистанцию отступления
         originSpeed = speed;
         originRotationSpeed = rotationSpeed;
+        originMissileProbability = missileProbabilityInPercent;
+        originFreezeProbability = freezeProbabilityInPercent;
 
         ShieldPrefab.SetActive(true); //Активируем щиты в начале
 
         timeBetweenShots = startBetweenShots;
+        //timeBetweenLaunches = startBetweenLaunches;
 
         tr.rotation = enemyparent.rotation; //На всякий случай переприсваиваем напраление вращения родителя
 
         castFreeze = false;                 //В начале не кастуем умений
 
-        RandomDigit = 102;                  //В начале задаём число не входящее в наш промежуток
+        RandomDigit1 = 102;                  //В начале задаём число не входящее в наш промежуток
+        RandomDigit2 = 102;
 
         StartCoroutine(RandomPerSec());  //Задаёт сигнал для кастования умения один раз в заданный период времени(5 сек по стандарту)
     }
@@ -89,10 +117,11 @@ public class EnemyRotationScript : MonoBehaviour
         /* Здесь можно подключить тот или иной общий стиль поведения :*/
         if (gameObject.CompareTag("FirstBoss"))
         {
-            
+
             Enemy1Behaviour();
         }
-        if (gameObject.CompareTag("SecondBoss")) {
+        if (gameObject.CompareTag("SecondBoss"))
+        {
             Enemy2Behaviour();
         }
         if (gameObject.CompareTag("ThirdBoss"))
@@ -120,8 +149,8 @@ public class EnemyRotationScript : MonoBehaviour
     }
     void FixedUpdate()
     {
-        
-        
+
+
     }
 
 
@@ -129,7 +158,7 @@ public class EnemyRotationScript : MonoBehaviour
     {
         if (enemyHealth <= 50)
         {
-            startBetweenShots = 0.5f;
+            startBetweenShots = 1.5f;
             speed = originSpeed * 1.5f;
             rotationSpeed = originRotationSpeed * 1.5f;
             stoppingDistance = originStoppingDistance / 2 + 2f;
@@ -145,8 +174,8 @@ public class EnemyRotationScript : MonoBehaviour
             startBetweenShots = 0.5f;
             speed = originSpeed * 1.5f;
             rotationSpeed = originRotationSpeed * 1.5f;
-            stoppingDistance = originStoppingDistance / 2 + 2f;
-            retreatingDistance = originRetreatingDistance / 2 + 2f;
+            stoppingDistance = originStoppingDistance / 2 + 1f;
+            retreatingDistance = originRetreatingDistance / 2 + 1f;
         }
 
         if (castFreeze)
@@ -155,20 +184,67 @@ public class EnemyRotationScript : MonoBehaviour
             castFreeze = false;
         }
 
+        if (launchMissile)
+        {
+            LaunchMissile();
+            launchMissile = false;
+        }
+
     }
 
     public void Enemy3Behaviour()
     {
+        if (enemyHealth <= 80 && enemyHealth > 50)
+        {
+            startBetweenShots = 0.5f;
+            speed = originSpeed * 1.5f;
+            rotationSpeed = originRotationSpeed * 1.5f;
+            stoppingDistance = originStoppingDistance / 2 + 1f;
+            retreatingDistance = originRetreatingDistance / 2 + 1f;
+            freezeProbabilityInPercent = (int)(originFreezeProbability * 1.2f);
+            missileProbabilityInPercent = (int)(originMissileProbability * 1.2f);
+        }
+        else if (enemyHealth <= 50 && enemyHealth > 10)
+        {
+            startBetweenShots = 0.3f;
+            speed = originSpeed * 1.5f;
+            rotationSpeed = originRotationSpeed * 1.5f;
+            stoppingDistance = originStoppingDistance / 2 + 1f;
+            retreatingDistance = originRetreatingDistance / 2 + 1f;
+            freezeProbabilityInPercent = (int)(originFreezeProbability * 1.4f);
+            missileProbabilityInPercent = (int)(originMissileProbability * 1.4f);
+        }
+        else if (enemyHealth <= 10)
+        {
+            startBetweenShots = 0.1f;
+            speed = originSpeed * 1.5f;
+            rotationSpeed = originRotationSpeed * 1.5f;
+            stoppingDistance = originStoppingDistance / 2 + 1f;
+            retreatingDistance = originRetreatingDistance / 2 + 1f;
+            freezeProbabilityInPercent = (int)(originFreezeProbability * 1.8f);
+            missileProbabilityInPercent = (int)(originMissileProbability * 1.8f);
+        }
 
+        if (castFreeze)
+        {
+            playerStats.FreezeCast(freezeDuration, freezeDamage);  //Кастуем заморозку
+            castFreeze = false;
+        }
+
+        if (launchMissile)
+        {
+            LaunchMissile();
+            launchMissile = false;
+        }
     }
 
-        public void Shoot()
+    public void Shoot()
     {
         GameObject bulletObject = ObjectPoolingManager.Instance.GetEnemyBullet(BulletPrefab);  //Вызываем пулю из пула:)
         bulletObject.transform.position = ShootEmitter.position;
         //bulletObject.transform.up = ShootEmitter.up;                                              //Ставим её на позицию выстрелов
         bulletObject.transform.forward = ShootEmitter.forward;                                    //Направляем по направлению движения врага
-        
+
     }
 
     /* задаём каст умений с определённой вероятностью в каждый заданный период */
@@ -177,8 +253,19 @@ public class EnemyRotationScript : MonoBehaviour
 
         yield return new WaitForSeconds(5f);
 
-        RandomDigit = Random.Range(0, 101);
-        if (RandomDigit < probabilityInPercent)
+        RandomDigit1 = Random.Range(0, 101);
+        RandomDigit2 = Random.Range(0, 101);
+
+        if (RandomDigit2 < missileProbabilityInPercent)
+        {
+            launchMissile = true;
+        }
+        else
+        {
+            launchMissile = false;
+        }
+
+        if (RandomDigit1 < freezeProbabilityInPercent)
         {
             castFreeze = true;
         }
@@ -193,7 +280,7 @@ public class EnemyRotationScript : MonoBehaviour
     /* Функция получения урона от пули игрока */
     public void BulletDamage(float playerBulletDamage, int shieldDamageBoost)
     {
-        
+
         if (ShieldPrefab.activeSelf)
         {
             //Debug.Log("EnemyShieldDamaged!");
@@ -208,7 +295,7 @@ public class EnemyRotationScript : MonoBehaviour
         else if (gameObject.activeSelf)
         {
             enemyHealth -= playerBulletDamage;                        //Если нет щитов и объект ещё жив - отнимаем здоровье
-           enemyHealthBar.value = enemyHealth;
+            enemyHealthBar.value = enemyHealth;
 
             if (enemyHealth <= 0f)
             {
@@ -218,7 +305,7 @@ public class EnemyRotationScript : MonoBehaviour
 
         }
 
-        
+
 
     }
 
@@ -274,6 +361,29 @@ public class EnemyRotationScript : MonoBehaviour
                 enemyHealthBar.value = 0f;
                 gameObject.SetActive(false);                          //Уничтожение объекта
             }
+        }
+    }
+
+    //Функция запуска ракеты
+    public void LaunchMissile()
+    {
+        if (gameObject.activeSelf)
+        {
+            GameObject missileObject = ObjectPoolingManager.Instance.GetBossMissile(MissilePrefab);
+
+
+            //Меняем борт запуска
+            if (MissileEmitterChange)
+            {
+                missileObject.transform.position = RightMissileEmitter.position;
+                MissileEmitterChange = false;
+            }
+            else
+            {
+                missileObject.transform.position = LeftMissileEmitter.position;
+                MissileEmitterChange = true;
+            }
+            missileObject.transform.forward = transform.forward;
         }
     }
 

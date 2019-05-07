@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 7029890867427101367}
   m_Layer: 9
   m_Name: SecondBossOrientation
-  m_TagString: Untagged
+  m_TagString: SecondBossParent
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -65,6 +65,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   attractorPlanet: {fileID: 2151420274045675790, guid: d7c4b9edfbf198248a3dceb4fd37ef82,
     type: 3}
+  gameController: {fileID: 0}
+  NumberOfLevel: 0
 --- !u!54 &7029890867427101367
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -92,6 +94,37 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: SecondBoss
+      objectReference: {fileID: 0}
+    - target: {fileID: 7131438732031217851, guid: 1cc3fbd26d3a6a64bbe4dd1d2f7d3ed9,
+        type: 3}
+      propertyPath: RightMissileEmitter
+      value: 
+      objectReference: {fileID: 6494920765633398815}
+    - target: {fileID: 7131438732031217851, guid: 1cc3fbd26d3a6a64bbe4dd1d2f7d3ed9,
+        type: 3}
+      propertyPath: LeftMissileEmitter
+      value: 
+      objectReference: {fileID: 6132451209066602195}
+    - target: {fileID: 7131438732031217851, guid: 1cc3fbd26d3a6a64bbe4dd1d2f7d3ed9,
+        type: 3}
+      propertyPath: MissilePrefab
+      value: 
+      objectReference: {fileID: 8769091176889790865, guid: ef1fb643c0e53ee4781933562e655c59,
+        type: 3}
+    - target: {fileID: 7131438732031217851, guid: 1cc3fbd26d3a6a64bbe4dd1d2f7d3ed9,
+        type: 3}
+      propertyPath: enemyparent
+      value: 
+      objectReference: {fileID: 7029890867427101364}
+    - target: {fileID: 7131438732031217851, guid: 1cc3fbd26d3a6a64bbe4dd1d2f7d3ed9,
+        type: 3}
+      propertyPath: freezeProbabilityInPercent
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 7131438732031217851, guid: 1cc3fbd26d3a6a64bbe4dd1d2f7d3ed9,
+        type: 3}
+      propertyPath: missileProbabilityInPercent
+      value: 50
       objectReference: {fileID: 0}
     - target: {fileID: 7883290560698879507, guid: 1cc3fbd26d3a6a64bbe4dd1d2f7d3ed9,
         type: 3}
@@ -148,16 +181,23 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7131438732031217851, guid: 1cc3fbd26d3a6a64bbe4dd1d2f7d3ed9,
-        type: 3}
-      propertyPath: enemyparent
-      value: 
-      objectReference: {fileID: 7029890867427101364}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1cc3fbd26d3a6a64bbe4dd1d2f7d3ed9, type: 3}
 --- !u!4 &8131751073110081411 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7883290560698879507, guid: 1cc3fbd26d3a6a64bbe4dd1d2f7d3ed9,
+    type: 3}
+  m_PrefabInstance: {fileID: 2143390695447409040}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &6494920765633398815 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5160072379558672783, guid: 1cc3fbd26d3a6a64bbe4dd1d2f7d3ed9,
+    type: 3}
+  m_PrefabInstance: {fileID: 2143390695447409040}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &6132451209066602195 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5234323618092117827, guid: 1cc3fbd26d3a6a64bbe4dd1d2f7d3ed9,
     type: 3}
   m_PrefabInstance: {fileID: 2143390695447409040}
   m_PrefabAsset: {fileID: 0}
