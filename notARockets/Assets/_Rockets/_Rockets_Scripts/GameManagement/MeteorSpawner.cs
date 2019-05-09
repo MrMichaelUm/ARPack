@@ -58,7 +58,7 @@ namespace Rockets
             }
             else
             {
-                Debug.Log("Meteor is null :(");
+                //Debug.Log("Meteor is null :(");
             }
         }
 

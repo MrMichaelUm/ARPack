@@ -17,7 +17,7 @@ GameObject:
   m_TagString: SecondBossParent
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 122
   m_IsActive: 1
 --- !u!4 &7029890867427101364
 Transform:
@@ -28,7 +28,7 @@ Transform:
   m_GameObject: {fileID: 7029890867427101360}
   m_LocalRotation: {x: 1, y: 0, z: 0, w: 0}
   m_LocalPosition: {x: 0, y: -31.5, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.05, y: 0.05, z: 0.05}
   m_Children:
   - {fileID: 8131751073110081411}
   m_Father: {fileID: 0}
@@ -129,7 +129,7 @@ PrefabInstance:
     - target: {fileID: 7131438732031217851, guid: 1cc3fbd26d3a6a64bbe4dd1d2f7d3ed9,
         type: 3}
       propertyPath: speed
-      value: 9
+      value: 1.8
       objectReference: {fileID: 0}
     - target: {fileID: 7131438732031217851, guid: 1cc3fbd26d3a6a64bbe4dd1d2f7d3ed9,
         type: 3}
@@ -139,12 +139,12 @@ PrefabInstance:
     - target: {fileID: 7131438732031217851, guid: 1cc3fbd26d3a6a64bbe4dd1d2f7d3ed9,
         type: 3}
       propertyPath: stoppingDistance
-      value: 13
+      value: 2.6
       objectReference: {fileID: 0}
     - target: {fileID: 7131438732031217851, guid: 1cc3fbd26d3a6a64bbe4dd1d2f7d3ed9,
         type: 3}
       propertyPath: retreatingDistance
-      value: 9
+      value: 1.8
       objectReference: {fileID: 0}
     - target: {fileID: 7883290560698879507, guid: 1cc3fbd26d3a6a64bbe4dd1d2f7d3ed9,
         type: 3}
@@ -206,6 +206,36 @@ PrefabInstance:
       propertyPath: m_LocalPosition.y
       value: -0.5
       objectReference: {fileID: 0}
+    - target: {fileID: 8996585255187667483, guid: 1cc3fbd26d3a6a64bbe4dd1d2f7d3ed9,
+        type: 3}
+      propertyPath: m_CastShadows
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8996585255187667483, guid: 1cc3fbd26d3a6a64bbe4dd1d2f7d3ed9,
+        type: 3}
+      propertyPath: m_LightProbeUsage
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8996585255187667483, guid: 1cc3fbd26d3a6a64bbe4dd1d2f7d3ed9,
+        type: 3}
+      propertyPath: m_ReflectionProbeUsage
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4974772755286511306, guid: 1cc3fbd26d3a6a64bbe4dd1d2f7d3ed9,
+        type: 3}
+      propertyPath: m_CastShadows
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4974772755286511306, guid: 1cc3fbd26d3a6a64bbe4dd1d2f7d3ed9,
+        type: 3}
+      propertyPath: m_LightProbeUsage
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4974772755286511306, guid: 1cc3fbd26d3a6a64bbe4dd1d2f7d3ed9,
+        type: 3}
+      propertyPath: m_ReflectionProbeUsage
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4974772755286511306, guid: 1cc3fbd26d3a6a64bbe4dd1d2f7d3ed9,
         type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -216,6 +246,21 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[1]
       value: 
       objectReference: {fileID: 2100000, guid: 393626cd063910f4fa2e4546c6dc02e1, type: 2}
+    - target: {fileID: 302631472677945413, guid: 1cc3fbd26d3a6a64bbe4dd1d2f7d3ed9,
+        type: 3}
+      propertyPath: m_CastShadows
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 302631472677945413, guid: 1cc3fbd26d3a6a64bbe4dd1d2f7d3ed9,
+        type: 3}
+      propertyPath: m_LightProbeUsage
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 302631472677945413, guid: 1cc3fbd26d3a6a64bbe4dd1d2f7d3ed9,
+        type: 3}
+      propertyPath: m_ReflectionProbeUsage
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 302631472677945413, guid: 1cc3fbd26d3a6a64bbe4dd1d2f7d3ed9,
         type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -228,9 +273,39 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: 7f3a78d870948264ebb9ed05fdd03253, type: 2}
     - target: {fileID: 5272299879297167447, guid: 1cc3fbd26d3a6a64bbe4dd1d2f7d3ed9,
         type: 3}
+      propertyPath: m_CastShadows
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5272299879297167447, guid: 1cc3fbd26d3a6a64bbe4dd1d2f7d3ed9,
+        type: 3}
+      propertyPath: m_LightProbeUsage
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5272299879297167447, guid: 1cc3fbd26d3a6a64bbe4dd1d2f7d3ed9,
+        type: 3}
+      propertyPath: m_ReflectionProbeUsage
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5272299879297167447, guid: 1cc3fbd26d3a6a64bbe4dd1d2f7d3ed9,
+        type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 7f3a78d870948264ebb9ed05fdd03253, type: 2}
+    - target: {fileID: 2941082617820369040, guid: 1cc3fbd26d3a6a64bbe4dd1d2f7d3ed9,
+        type: 3}
+      propertyPath: m_CastShadows
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2941082617820369040, guid: 1cc3fbd26d3a6a64bbe4dd1d2f7d3ed9,
+        type: 3}
+      propertyPath: m_LightProbeUsage
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2941082617820369040, guid: 1cc3fbd26d3a6a64bbe4dd1d2f7d3ed9,
+        type: 3}
+      propertyPath: m_ReflectionProbeUsage
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2941082617820369040, guid: 1cc3fbd26d3a6a64bbe4dd1d2f7d3ed9,
         type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -241,6 +316,21 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[1]
       value: 
       objectReference: {fileID: 2100000, guid: 7f3a78d870948264ebb9ed05fdd03253, type: 2}
+    - target: {fileID: 1783755158095824771, guid: 1cc3fbd26d3a6a64bbe4dd1d2f7d3ed9,
+        type: 3}
+      propertyPath: m_CastShadows
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1783755158095824771, guid: 1cc3fbd26d3a6a64bbe4dd1d2f7d3ed9,
+        type: 3}
+      propertyPath: m_LightProbeUsage
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1783755158095824771, guid: 1cc3fbd26d3a6a64bbe4dd1d2f7d3ed9,
+        type: 3}
+      propertyPath: m_ReflectionProbeUsage
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1783755158095824771, guid: 1cc3fbd26d3a6a64bbe4dd1d2f7d3ed9,
         type: 3}
       propertyPath: m_Materials.Array.data[0]

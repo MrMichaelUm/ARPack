@@ -21,7 +21,7 @@ GameObject:
   m_TagString: FirstBossBullet
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 122
   m_IsActive: 1
 --- !u!4 &1699207971292865655
 Transform:
@@ -32,7 +32,7 @@ Transform:
   m_GameObject: {fileID: 7303864929662337296}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.02, y: 0.02, z: 0.2}
+  m_LocalScale: {x: 0.01, y: 0.01, z: 0.1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -107,7 +107,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e03f8dc0632a1a944b96157593e77174, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 10
+  speed: 2
   lifeDuration: 2
   player: {fileID: 112111498, guid: 8f91872caa4a0c345b3a2b0c83205f25, type: 3}
   enemy: {fileID: 1620346394, guid: 209c1c42c4fa67b499d32b1accb1b150, type: 3}
@@ -149,6 +149,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   attractorPlanet: {fileID: 284007881896018834, guid: e73d09b87cfcf2b488a88dabc4505af4,
     type: 3}
+  gameController: {fileID: 0}
+  NumberOfLevel: 0
 --- !u!65 &7509033299648816836
 BoxCollider:
   m_ObjectHideFlags: 0

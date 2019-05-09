@@ -284,8 +284,8 @@ ParticleSystem:
     startSize:
       serializedVersion: 2
       minMaxState: 3
-      scalar: 5
-      minScalar: 3
+      scalar: 1
+      minScalar: 0.6
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -746,7 +746,7 @@ ParticleSystem:
     sphericalDirectionAmount: 0
     randomPositionAmount: 0
     radius:
-      value: 0.2
+      value: 0.04
       mode: 0
       spread: 0
       speed:
@@ -4982,8 +4982,8 @@ ParticleSystem:
     startSize:
       serializedVersion: 2
       minMaxState: 3
-      scalar: 0.4
-      minScalar: 0.05
+      scalar: 0.08
+      minScalar: 0.01
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -5361,7 +5361,7 @@ ParticleSystem:
     angle: 75
     length: 5
     boxThickness: {x: 0, y: 0, z: 0}
-    radiusThickness: 1
+    radiusThickness: 0.4
     donutRadius: 0.2
     m_Position: {x: 0, y: 0, z: 0}
     m_Rotation: {x: 0, y: 0, z: 0}
@@ -5444,7 +5444,7 @@ ParticleSystem:
     sphericalDirectionAmount: 0
     randomPositionAmount: 0
     radius:
-      value: 0.4
+      value: 0.2
       mode: 0
       spread: 0
       speed:
@@ -9738,8 +9738,8 @@ ParticleSystem:
     startSize:
       serializedVersion: 2
       minMaxState: 3
-      scalar: 5
-      minScalar: 3
+      scalar: 1
+      minScalar: 0.6
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -10200,7 +10200,7 @@ ParticleSystem:
     sphericalDirectionAmount: 0
     randomPositionAmount: 0
     radius:
-      value: 0.2
+      value: 0.04
       mode: 0
       spread: 0
       speed:
@@ -14180,7 +14180,7 @@ Transform:
   m_GameObject: {fileID: 8592751181432662394}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.1, y: 0.1, z: 0.1}
   m_Children:
   - {fileID: 2649144614374588765}
   - {fileID: 8592751180704037462}
@@ -14208,7 +14208,7 @@ MonoBehaviour:
   Shadow: {fileID: 194993404560667651, guid: 44905fa1eb9e5e241bfa00f742f2da7c, type: 3}
   player: {fileID: 112111498, guid: 8f91872caa4a0c345b3a2b0c83205f25, type: 3}
   enemy: {fileID: 1620346394, guid: 209c1c42c4fa67b499d32b1accb1b150, type: 3}
-  MeteorDamage: 20
+  MeteorDamage: 10
   ShieldDamageBoost: 4
   NumberOfLevel: 0
   BossTag: 
@@ -14316,11 +14316,31 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6051768424439926246, guid: 2a26604679c62b94680c528fe3cf9483,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6051768424439926246, guid: 2a26604679c62b94680c528fe3cf9483,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6051768424439926246, guid: 2a26604679c62b94680c528fe3cf9483,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 53205713279595188, guid: 2a26604679c62b94680c528fe3cf9483,
         type: 3}
       propertyPath: ShadowPrefab
       value: 
       objectReference: {fileID: 8774885911649224009}
+    - target: {fileID: 53205713279595188, guid: 2a26604679c62b94680c528fe3cf9483,
+        type: 3}
+      propertyPath: distance
+      value: 30
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2a26604679c62b94680c528fe3cf9483, type: 3}
 --- !u!4 &2649144614374588765 stripped
@@ -14340,11 +14360,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Shadow
-      objectReference: {fileID: 0}
-    - target: {fileID: 194993404560667651, guid: 44905fa1eb9e5e241bfa00f742f2da7c,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4898138769568046214, guid: 44905fa1eb9e5e241bfa00f742f2da7c,
         type: 3}
@@ -14401,8 +14416,22 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 5932032109134753630, guid: 44905fa1eb9e5e241bfa00f742f2da7c, type: 3}
+    - target: {fileID: 4898138769568046214, guid: 44905fa1eb9e5e241bfa00f742f2da7c,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4898138769568046214, guid: 44905fa1eb9e5e241bfa00f742f2da7c,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4898138769568046214, guid: 44905fa1eb9e5e241bfa00f742f2da7c,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 2
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 44905fa1eb9e5e241bfa00f742f2da7c, type: 3}
 --- !u!1 &8774885911649224009 stripped
 GameObject:

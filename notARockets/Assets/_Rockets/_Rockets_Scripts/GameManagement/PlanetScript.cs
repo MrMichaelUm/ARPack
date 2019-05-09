@@ -27,15 +27,14 @@ namespace Rockets
             }
         }
         public void Attract(Transform playerTransform)
-        {
+        { 
             Vector3 gravityUp = (playerTransform.position - transform.position).normalized;  //Вектор направления силы
             Vector3 localUp = playerTransform.up;
-
             playerTransform.GetComponent<Rigidbody>().AddForce(gravityUp * gravity);  //Применение силы в заданном направлении
 
             Quaternion targetRotation = Quaternion.FromToRotation(localUp, gravityUp) * playerTransform.rotation; //Поворот по шару
 
-            playerTransform.rotation = Quaternion.Slerp(playerTransform.rotation, targetRotation, 50f * Time.deltaTime); //Плавность поворота
+            playerTransform.rotation = Quaternion.Slerp(playerTransform.rotation, targetRotation, 10f * Time.deltaTime); //Плавность поворота
         }
     }
 }
