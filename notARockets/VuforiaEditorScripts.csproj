@@ -310,30 +310,6 @@
  <Reference Include="UnityEditor.Facebook.Extensions">
  <HintPath>F:/Unity/2018.3.1f1/Editor/Data/PlaybackEngines/Facebook/UnityEditor.Facebook.Extensions.dll</HintPath>
  </Reference>
- <Reference Include="AsyncBridge.Net35">
- <HintPath>F:/Unity Projects/notARockets/Assets/Plugins/GitHub/Editor/AsyncBridge.Net35.dll</HintPath>
- </Reference>
- <Reference Include="GitHub.Api">
- <HintPath>F:/Unity Projects/notARockets/Assets/Plugins/GitHub/Editor/GitHub.Api.dll</HintPath>
- </Reference>
- <Reference Include="GitHub.Logging">
- <HintPath>F:/Unity Projects/notARockets/Assets/Plugins/GitHub/Editor/GitHub.Logging.dll</HintPath>
- </Reference>
- <Reference Include="GitHub.Unity">
- <HintPath>F:/Unity Projects/notARockets/Assets/Plugins/GitHub/Editor/GitHub.Unity.dll</HintPath>
- </Reference>
- <Reference Include="GitHub.UnityShim">
- <HintPath>F:/Unity Projects/notARockets/Assets/Plugins/GitHub/Editor/GitHub.UnityShim.dll</HintPath>
- </Reference>
- <Reference Include="ReadOnlyCollectionsInterfaces">
- <HintPath>F:/Unity Projects/notARockets/Assets/Plugins/GitHub/Editor/ReadOnlyCollectionsInterfaces.dll</HintPath>
- </Reference>
- <Reference Include="sfw.net">
- <HintPath>F:/Unity Projects/notARockets/Assets/Plugins/GitHub/Editor/sfw.net.dll</HintPath>
- </Reference>
- <Reference Include="System.Threading">
- <HintPath>F:/Unity Projects/notARockets/Assets/Plugins/GitHub/Editor/System.Threading.dll</HintPath>
- </Reference>
  <Reference Include="UnityEditor.Advertisements">
  <HintPath>F:/Unity Projects/notARockets/Library/PackageCache/com.unity.ads@2.3.1/Editor/UnityEditor.Advertisements.dll</HintPath>
  </Reference>

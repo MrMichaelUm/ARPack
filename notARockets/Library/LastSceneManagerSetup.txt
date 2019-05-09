@@ -1,4 +1,4 @@
 sceneSetups:
-- path: Assets/_Rockets/Scenes/SampleScene.unity
+- path: Assets/_Rockets/_Rockets_Scenes/Rockets.unity
   isLoaded: 1
   isActive: 1
