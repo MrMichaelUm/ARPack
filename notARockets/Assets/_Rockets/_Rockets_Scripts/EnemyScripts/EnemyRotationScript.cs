@@ -169,8 +169,8 @@ namespace Rockets
                 startBetweenShots = 1.5f;
                 speed = originSpeed * 1.5f;
                 rotationSpeed = originRotationSpeed * 1.5f;
-                stoppingDistance = originStoppingDistance / 2 + 2f;
-                retreatingDistance = originRetreatingDistance / 2 + 2f;
+                stoppingDistance = originStoppingDistance / 2 + 0.4f;
+                retreatingDistance = originRetreatingDistance / 2 + 0.4f;
             }
         }
 
@@ -182,8 +182,8 @@ namespace Rockets
                 startBetweenShots = 0.5f;
                 speed = originSpeed * 1.5f;
                 rotationSpeed = originRotationSpeed * 1.5f;
-                stoppingDistance = originStoppingDistance / 2 + 1f;
-                retreatingDistance = originRetreatingDistance / 2 + 1f;
+                stoppingDistance = originStoppingDistance / 2 + 0.2f;
+                retreatingDistance = originRetreatingDistance / 2 + 0.2f;
             }
 
             if (castFreeze && GameManager.gameIsGoing && !GameManager.countdownGameStarted)
@@ -207,8 +207,8 @@ namespace Rockets
                 startBetweenShots = 0.5f;
                 speed = originSpeed * 1.5f;
                 rotationSpeed = originRotationSpeed * 1.5f;
-                stoppingDistance = originStoppingDistance / 2 + 1f;
-                retreatingDistance = originRetreatingDistance / 2 + 1f;
+                stoppingDistance = originStoppingDistance / 2 + 0.2f;
+                retreatingDistance = originRetreatingDistance / 2 + 0.2f;
                 freezeProbabilityInPercent = (int)(originFreezeProbability * 1.2f);
                 missileProbabilityInPercent = (int)(originMissileProbability * 1.2f);
             }
@@ -217,8 +217,8 @@ namespace Rockets
                 startBetweenShots = 0.3f;
                 speed = originSpeed * 1.5f;
                 rotationSpeed = originRotationSpeed * 1.5f;
-                stoppingDistance = originStoppingDistance / 2 + 1f;
-                retreatingDistance = originRetreatingDistance / 2 + 1f;
+                stoppingDistance = originStoppingDistance / 2 + 0.2f;
+                retreatingDistance = originRetreatingDistance / 2 + 0.2f;
                 freezeProbabilityInPercent = (int)(originFreezeProbability * 1.4f);
                 missileProbabilityInPercent = (int)(originMissileProbability * 1.4f);
             }
@@ -227,8 +227,8 @@ namespace Rockets
                 startBetweenShots = 0.1f;
                 speed = originSpeed * 1.5f;
                 rotationSpeed = originRotationSpeed * 1.5f;
-                stoppingDistance = originStoppingDistance / 2 + 1f;
-                retreatingDistance = originRetreatingDistance / 2 + 1f;
+                stoppingDistance = originStoppingDistance / 2 + 0.2f;
+                retreatingDistance = originRetreatingDistance / 2 + 0.2f;
                 freezeProbabilityInPercent = (int)(originFreezeProbability * 1.8f);
                 missileProbabilityInPercent = (int)(originMissileProbability * 1.8f);
             }

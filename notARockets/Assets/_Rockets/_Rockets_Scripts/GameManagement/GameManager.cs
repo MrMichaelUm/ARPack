@@ -106,7 +106,7 @@ namespace Rockets
         
         void Start()
         {
-
+            
             if (NumberOfLevel == 0)
             {
                 Enemy = GameObject.FindWithTag("FirstBoss");
@@ -135,10 +135,10 @@ namespace Rockets
             timer = startGameTime;
             looseTimer = LooseTime;
 
-            PlayerHealth.value = 100f;
-            PlayerShield.value = 100f;
-            EnemyHealth.value = 100f;
-            EnemyShield.value = 100f;
+            PlayerHealth = GameObject.FindGameObjectWithTag("PlayerHealthBar").GetComponent<Slider>();
+            PlayerShield = GameObject.FindGameObjectWithTag("PlayerShieldBar").GetComponent<Slider>();
+            EnemyHealth = GameObject.FindGameObjectWithTag("EnemyHealthBar").GetComponent<Slider>();
+            EnemyShield = GameObject.FindGameObjectWithTag("EnemyShieldBar").GetComponent<Slider>();
 
 
             SetControl();
@@ -161,15 +161,20 @@ namespace Rockets
             if (PlayerHealth.value == 0f)
             {
                 Player.SetActive(false);
+
                 if (NumberOfLevel == 1)
                     FrostAnimationEffect.FrostFadeOut();
                 else if (NumberOfLevel == 2)
                     PetrifiedAnimationEffect.PetrifiedFadeOut();
+
                 Win = 2;
+
                 if (!coinsCalculated)
                 {
                     CountCoins();
                 }
+                ShootButton.interactable = false;
+                MissileButton.interactable = false;
                 //enable gameover menu
                 //gameOverMenu.SetActive(true);
                 //set gameover board values

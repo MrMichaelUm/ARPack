@@ -32,7 +32,7 @@ Transform:
   m_GameObject: {fileID: 3455106987499036182}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.08, y: 0.08, z: 0.1}
+  m_LocalScale: {x: 0.04, y: 0.04, z: 0.04}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -100,11 +100,11 @@ MonoBehaviour:
   EnemyPrefab: {fileID: 0}
   gameController: {fileID: 0}
   moveSpeed: 3.2
-  rotationSpeed: 1.6
+  rotationSpeed: 3
   damage: 60
   shieldDamageBoost: 3
   lifeTime: 15
-  searchTimeDelay: 0.2
+  searchTimeDelay: 0.5
   searchingTime: 3
   NumberOfLevel: 0
   BossTag: 
@@ -124,7 +124,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   attractorPlanet: {fileID: 0}
   gameController: {fileID: 0}
-  NumberOfLevel: 0
+  NumberOfLevel: 2
 --- !u!136 &5570489560072947888
 CapsuleCollider:
   m_ObjectHideFlags: 0

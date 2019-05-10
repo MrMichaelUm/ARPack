@@ -56,7 +56,7 @@ namespace Rockets
             {
 
                 BossMissile = false;
-                Debug.Log("PlayerMissileTagges!");
+                //Debug.Log("PlayerMissileTagges!");
                 if (NumberOfLevel == 0)
                 {
                     EnemyPrefab = GameObject.FindWithTag("FirstBoss");
@@ -72,7 +72,7 @@ namespace Rockets
                     if (EnemyPrefab.activeInHierarchy)
                         BossTarget = EnemyPrefab.GetComponent<EnemyRotationScript>();
                     //BulletTag = "SecondBossBullet";
-                    Debug.Log("SecondBossTagged!");
+                    //Debug.Log("SecondBossTagged!");
                     BossTag = "SecondBoss";
                 }
                 else if (NumberOfLevel == 2)
@@ -95,7 +95,7 @@ namespace Rockets
                         PlayerTarget = PlayerPrefab.GetComponent<PlayerRotationScript>();
                     else Debug.Log("Interesting FuckUp");
 
-                        Debug.Log("BossMissileTagged!");
+                        //Debug.Log("BossMissileTagged!");
                     //}
                 
            // }
@@ -178,14 +178,14 @@ namespace Rockets
 
         void OnTriggerEnter(Collider other)
         {
-            if (gameObject.CompareTag("PlayerMissile") && other.CompareTag(BossTag))
+            if (gameObject.CompareTag("PlayerMissile") && other.gameObject != null && other.gameObject.activeInHierarchy && other.CompareTag(BossTag))
             {
                 BossTarget.MissileDamage(damage, shieldDamageBoost);
                 gameObject.SetActive(false);
 
             }
 
-            if ((gameObject.CompareTag("SecondBossMissile") || gameObject.CompareTag("ThirdBossMissile")) && other.CompareTag("Player"))
+            if ((gameObject.CompareTag("SecondBossMissile") || gameObject.CompareTag("ThirdBossMissile")) && other.gameObject != null && other.gameObject.activeInHierarchy && other.CompareTag("Player"))
             {
                 PlayerTarget.MissileDamage(damage, shieldDamageBoost);
                 gameObject.SetActive(false);

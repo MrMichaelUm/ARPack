@@ -107,7 +107,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e03f8dc0632a1a944b96157593e77174, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 10
+  speed: 6
   lifeDuration: 2
   player: {fileID: 0}
   enemy: {fileID: 5828766044199451964, guid: 31ca6ab2db5146447ac872e8cf48da15, type: 3}
@@ -150,6 +150,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   attractorPlanet: {fileID: 9072561822459368170, guid: a43bffed3c9df0f468b090c42251cc13,
     type: 3}
+  gameController: {fileID: 0}
+  NumberOfLevel: 0
 --- !u!65 &1076963477980631617
 BoxCollider:
   m_ObjectHideFlags: 0

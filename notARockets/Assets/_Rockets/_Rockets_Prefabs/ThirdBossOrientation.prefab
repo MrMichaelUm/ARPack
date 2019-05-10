@@ -28,7 +28,7 @@ Transform:
   m_GameObject: {fileID: 2322251464934021135}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.1, y: 0.1, z: 0.1}
+  m_LocalScale: {x: 0.05, y: 0.05, z: 0.05}
   m_Children:
   - {fileID: 8670804128390562516}
   m_Father: {fileID: 0}
@@ -119,7 +119,7 @@ PrefabInstance:
     - target: {fileID: 5828766044199451964, guid: 31ca6ab2db5146447ac872e8cf48da15,
         type: 3}
       propertyPath: freezeProbabilityInPercent
-      value: 20
+      value: 40
       objectReference: {fileID: 0}
     - target: {fileID: 5828766044199451964, guid: 31ca6ab2db5146447ac872e8cf48da15,
         type: 3}
@@ -140,22 +140,22 @@ PrefabInstance:
     - target: {fileID: 5828766044199451964, guid: 31ca6ab2db5146447ac872e8cf48da15,
         type: 3}
       propertyPath: speed
-      value: 12
+      value: 2.4
       objectReference: {fileID: 0}
     - target: {fileID: 5828766044199451964, guid: 31ca6ab2db5146447ac872e8cf48da15,
         type: 3}
       propertyPath: rotationSpeed
-      value: 10
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 5828766044199451964, guid: 31ca6ab2db5146447ac872e8cf48da15,
         type: 3}
       propertyPath: stoppingDistance
-      value: 10
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 5828766044199451964, guid: 31ca6ab2db5146447ac872e8cf48da15,
         type: 3}
       propertyPath: retreatingDistance
-      value: 6
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 3623733156248624647, guid: 31ca6ab2db5146447ac872e8cf48da15,
         type: 3}

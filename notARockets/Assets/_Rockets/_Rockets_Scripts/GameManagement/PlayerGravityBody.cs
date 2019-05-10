@@ -19,11 +19,26 @@ namespace Rockets
         {
             gameController = GameManager.Instance;
 
-            /* Подвязываем планету к игроку в зависимости от уровня */
-            NumberOfLevel = gameController.NumberOfLevel;
+           
 
-            if (gameObject.CompareTag("PlayerParent") || gameObject.CompareTag("PlayerMissile"))
+            
+        }
+        void Start()
+        {
+            GetComponent<Rigidbody>().useGravity = false;   //Мы создаём свою гравитацию
+            GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeRotation;  //Со своим вращением
+
+            playerTransform = transform;
+        }
+
+        void FixedUpdate()
+        {
+            if (attractorPlanet == null)
             {
+                /* Подвязываем планету к игроку в зависимости от уровня */
+                NumberOfLevel = gameController.NumberOfLevel;
+                //if (gameObject.CompareTag("PlayerParent") || gameObject.CompareTag("PlayerMissile"))
+                //{
                 if (NumberOfLevel == 0)
                 {
                     attractorPlanet = GameObject.FindGameObjectWithTag("FirstPlanet").GetComponent<PlanetScript>();
@@ -36,19 +51,9 @@ namespace Rockets
                 {
                     attractorPlanet = GameObject.FindGameObjectWithTag("ThirdPlanet").GetComponent<PlanetScript>();
                 }
+                //}
             }
-        }
-        void Start()
-        {
 
-            GetComponent<Rigidbody>().useGravity = false;   //Мы создаём свою гравитацию
-            GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeRotation;  //Со своим вращением
-
-            playerTransform = transform;
-        }
-
-        void FixedUpdate()
-        {
             if (attractorPlanet)
             {
                 attractorPlanet.Attract(playerTransform);

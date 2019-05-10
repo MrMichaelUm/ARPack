@@ -52,7 +52,7 @@ namespace Rockets
                 }
             }
 
-            if (gameObject.CompareTag("playerBullet") && gameController.Win != 1)
+            if (gameObject.CompareTag("playerBullet") && gameController.Win != 1 && gameController.LooseTime > 0)
             {
                 /* Подвязываем босса к пулям игрока в зависимости от уровня */
                 NumberOfLevel = gameController.NumberOfLevel;
@@ -109,14 +109,14 @@ namespace Rockets
 
         void OnTriggerEnter(Collider other)
         {
-            if (gameObject.CompareTag(BulletTag) && (other.CompareTag("Player")) && (other.gameObject.activeInHierarchy))
+            if (gameObject.CompareTag(BulletTag) && (other.gameObject != null) && (other.CompareTag("Player")) && (other.gameObject.activeInHierarchy))
             {
                 //Debug.Log("Got it!");
                 player.BulletDamage(bulletDamage, shieldDamageBoost);
 
                 gameObject.SetActive(false);
             }
-            if (gameObject.CompareTag("playerBullet") && (other.CompareTag(BossTag)) && (other.gameObject.activeInHierarchy))
+            if (gameObject.CompareTag("playerBullet") && (other.gameObject != null) && (other.CompareTag(BossTag)) && (other.gameObject.activeInHierarchy))
             {
                 //Debug.Log("GodLike!");
                 enemy.BulletDamage(bulletDamage, shieldDamageBoost);

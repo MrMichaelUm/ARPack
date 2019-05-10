@@ -67,11 +67,14 @@
      <Compile Include="Assets\_Rockets\_Rockets_Scripts\GameManagement\PlanetScript.cs" />
      <Compile Include="Assets\_Rockets\_Rockets_Scripts\GameManagement\PlayerGravityBody.cs" />
      <Compile Include="Assets\_Rockets\_Rockets_Scripts\GameManagement\ReloadSlider.cs" />
+     <Compile Include="Assets\_Rockets\_Rockets_Scripts\GameManagement\RocketsPlayerSetPositionScript.cs" />
      <Compile Include="Assets\_Rockets\_Rockets_Scripts\MeteorScripts\CollisionWithPlanet.cs" />
      <Compile Include="Assets\_Rockets\_Rockets_Scripts\MeteorScripts\MeteorScript.cs" />
+     <Compile Include="Assets\_Rockets\_Rockets_Scripts\PlayerScripts\MissileLaunchButtonBehaviour.cs" />
      <Compile Include="Assets\_Rockets\_Rockets_Scripts\PlayerScripts\MissileMovement.cs" />
      <Compile Include="Assets\_Rockets\_Rockets_Scripts\PlayerScripts\PlayerControl.cs" />
      <Compile Include="Assets\_Rockets\_Rockets_Scripts\PlayerScripts\PlayerRotationScript.cs" />
+     <Compile Include="Assets\_Rockets\_Rockets_Scripts\PlayerScripts\ShootButtonBehavior.cs" />
      <Compile Include="Assets\_Rockets\Rockets_Joystick_Pack\Examples\JoystickPlayerExample.cs" />
      <Compile Include="Assets\_Rockets\Rockets_Joystick_Pack\Examples\JoystickSetterExample.cs" />
      <Compile Include="Assets\_Rockets\Rockets_Joystick_Pack\Scripts\Base\Joystick.cs" />

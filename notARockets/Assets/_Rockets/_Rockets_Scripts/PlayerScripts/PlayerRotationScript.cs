@@ -57,7 +57,7 @@ namespace Rockets
         public float moveSpeed;                           //Скорость движения
 
         public int MissilesStorage;
-        private int currentMissileAmount;
+        public int currentMissileAmount;
 
         public float playerStartHealth;
         public float playerStartShield;
@@ -86,8 +86,9 @@ namespace Rockets
             FrostAnimationEffect = GameObject.FindGameObjectWithTag("FrostEffect").GetComponent<FrostEffectBehaviour>();
             PetrifiedAnimationEffect = GameObject.FindGameObjectWithTag("PetrifiedEffect").GetComponent<PetrifiedEffectBehaviour>();
 
-            PlayerPrefs.SetInt("MissileStorage", 3);
-            MissilesStorage = PlayerPrefs.GetInt("MissileStorage");
+            //PlayerPrefs.SetInt("MissileStorage", 3);
+            //MissilesStorage = PlayerPrefs.GetInt("MissileStorage");
+
             currentMissileAmount = MissilesStorage;
         }
         void Start()
@@ -151,7 +152,7 @@ namespace Rockets
         {
             if ((DamageInputFlag) && (playerShieldBar.value < 100))  //Если был урон, и щиты не полные
             {
-                Debug.Log("ShiedTime!");
+                //Debug.Log("ShiedTime!");
                 if (ShieldRecoveryTime <= 0)
                 {
                     //Восстанавливаем щиты, если продержались достаточно(И возвращаем их, если они были уничтожены)
@@ -179,7 +180,7 @@ namespace Rockets
         public void BulletDamage(float enemyBulletDamage, int shieldDamageBoost)
         {
 
-            if (ShieldPrefab.activeInHierarchy)
+            if (ShieldPrefab != null && ShieldPrefab.activeInHierarchy)
             {
                 //Debug.Log("PlayerShieldDamaged!");
                 playerShield -= (enemyBulletDamage * shieldDamageBoost);
@@ -190,7 +191,7 @@ namespace Rockets
                     ShieldPrefab.SetActive(false);
                 }
             }
-            else if (gameObject.activeInHierarchy)
+            else if (gameObject != null && gameObject.activeInHierarchy)
             {
                 playerHealth -= enemyBulletDamage;
                 playerHealthBar.value = playerHealth;
@@ -214,7 +215,7 @@ namespace Rockets
         public void MissileDamage(float enemyMissileDamage, int shieldDamageBoost)
         {
 
-            if (ShieldPrefab.activeInHierarchy)
+            if (ShieldPrefab != null && ShieldPrefab.activeInHierarchy)
             {
                 //Debug.Log("PlayerShieldDamaged!");
                 playerShield -= (enemyMissileDamage * shieldDamageBoost);
@@ -225,7 +226,7 @@ namespace Rockets
                     ShieldPrefab.SetActive(false);
                 }
             }
-            else if (gameObject.activeInHierarchy)
+            else if (gameObject != null && gameObject.activeInHierarchy)
             {
                 playerHealth -= enemyMissileDamage;
                 playerHealthBar.value = playerHealth;
@@ -247,7 +248,7 @@ namespace Rockets
         }
         public void MeteorDamage(float meteorDamage, int shieldDamageBoost)
         {
-            if (ShieldPrefab.activeInHierarchy)
+            if (ShieldPrefab != null && ShieldPrefab.activeInHierarchy)
             {
 
                 playerShield -= (meteorDamage * shieldDamageBoost);
@@ -264,7 +265,7 @@ namespace Rockets
                     playerShieldBar.value = playerShield;
                 }
             }
-            else if (gameObject.activeInHierarchy)
+            else if (gameObject != null && gameObject.activeInHierarchy)
             {
 
                 playerHealth -= meteorDamage;
@@ -307,7 +308,7 @@ namespace Rockets
         {
             if (GameManager.gameIsGoing && !GameManager.countdownGameStarted)
             {
-                moveSpeed = 0.1f;                       //Замедлем игрока
+                moveSpeed = 0.2f;                       //Замедлем игрока
                 freezeRotation = true;                  //Замораживаем поворот
                 freezeDamagePerFrame = damagePerFrame;  //Обновляем урон
 
@@ -326,7 +327,7 @@ namespace Rockets
         {
             if (GameManager.gameIsGoing && !GameManager.countdownGameStarted)
             {
-                moveSpeed = 0.1f;                       //Замедлем игрока
+                moveSpeed = 0.2f;                       //Замедлем игрока
             petrifyRotation = true;                  //Замораживаем поворот
             petrifyDamagePerFrame = damagePerFrame;  //Обновляем урон
 
@@ -374,8 +375,8 @@ namespace Rockets
                     ShieldRecoveryTime = ShieldRecoveryDelay;
                 }
             }
-            else
-            {
+            //else
+            //{
                 float h1 = joystick.Horizontal; // set as your inputs 
                 float v1 = joystick.Vertical;
 
@@ -408,7 +409,7 @@ namespace Rockets
 
 
                 }
-            }
+            //}
         }
 
         //Функция стрельбы

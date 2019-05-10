@@ -348,11 +348,12 @@ MonoBehaviour:
   freezeRotation: 0
   Win: 0
   moveSpeed: 3
-  MissilesStorage: 3
+  MissilesStorage: 2
+  currentMissileAmount: 0
   playerStartHealth: 100
   playerStartShield: 100
-  ShieldRecoveryDelay: 10
-  ShieldRecoveryValue: 0.2
+  ShieldRecoveryDelay: 15
+  ShieldRecoveryValue: 0.1
   startBetweenShots: 1
 --- !u!1 &2588313012902518152
 GameObject:
